@@ -6,7 +6,7 @@ const user = useSupabaseUser()
   <div class="min-h-screen flex flex-col">
     <UHeader>
       <template #title>
-        <span class="font-bold">BetoTrack</span>
+        <span class="font-bold">BetoTracker</span>
       </template>
 
       <template #right>
@@ -36,7 +36,7 @@ const user = useSupabaseUser()
 
     <UFooter>
       <template #left>
-        <span class="text-sm text-muted">BetoTrack · Personal finance, fast.</span>
+        <span class="text-sm text-muted">BetoTracker · Personal finance, fast.</span>
       </template>
     </UFooter>
   </div>

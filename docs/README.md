@@ -1,4 +1,4 @@
-# BetoTrack Documentation
+# BetoTracker Documentation
 
 ## Quick Start
 
@@ -42,6 +42,8 @@
 ### Database (`prisma/`)
 - **schema.prisma** — Prisma models (User, Account, Category, Transaction)
 - **sql/rls_and_trigger.sql** — RLS policies and Supabase auth trigger (appended to migrations)
+- **prisma.config.ts** (root) — Prisma 7 config: schema path, migrations path, direct connection URL
+- Client is generated to `server/generated/prisma` (gitignored) and instantiated with the `@prisma/adapter-pg` driver adapter
 
 ### Shared (`shared/`)
 - **schemas.ts** — Zod validators for API request/response bodies (also used by UI forms)
@@ -116,5 +118,23 @@ pnpm prisma generate
 # Create and apply migrations
 pnpm prisma migrate dev
 ```
+
+## Docker
+
+```bash
+# Build and run with docker compose (reads credentials from .env)
+docker compose up --build
+
+# Or manually
+docker build -t beto-tracker .
+docker run --env-file .env -p 3000:3000 beto-tracker
+```
+
+## CI/CD
+
+GitHub Actions ([.github/workflows/ci.yml](../.github/workflows/ci.yml)) runs on pushes and PRs to `main`:
+
+1. **Build** — install deps, generate Prisma client, `nuxt build`
+2. **Docker image** — builds the image; on pushes to `main` it is pushed to GitHub Container Registry as `ghcr.io/<owner>/<repo>`
 
 See [SETUP.md](SETUP.md) for provisioning instructions.

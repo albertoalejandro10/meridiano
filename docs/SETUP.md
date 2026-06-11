@@ -1,4 +1,4 @@
-# BetoTrack Setup Guide
+# BetoTracker Setup Guide
 
 This guide walks you through provisioning Supabase and Google OAuth, then wiring them into the app.
 
@@ -12,15 +12,18 @@ This guide walks you through provisioning Supabase and Google OAuth, then wiring
    - Click **Create new project** and wait ~2 minutes for the database to initialize
 
 3. Once ready, go to **Project Settings** (gear icon, bottom left)
-4. Click **API** in the left sidebar
-5. Copy these values into your `.env` file:
+4. Click **API Keys** in the left sidebar
+5. Copy these values into your `.env` file (use the **new API keys**, not the legacy `anon`/`service_role` JWT keys):
    - **Project URL** → `SUPABASE_URL`
-   - **anon public** key → `SUPABASE_KEY`
+   - **Publishable key** (`sb_publishable_...`) → `SUPABASE_KEY`
+   - Optionally, create/copy a **Secret key** (`sb_secret_...`) → `SUPABASE_SERVICE_KEY` (server-only; not needed yet)
+
+> If the dashboard still shows legacy keys, open the **API Keys** page and click **Create new API keys** / opt in to the publishable & secret keys.
 
 Example `.env` so far:
 ```
 SUPABASE_URL=https://abcdef123456.supabase.co
-SUPABASE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+SUPABASE_KEY=sb_publishable_AbCdEf123456...
 DATABASE_URL=
 DIRECT_URL=
 ```
@@ -44,7 +47,7 @@ DIRECT_URL=postgresql://postgres.abcdef123456:PASSWORD@ap-southeast-1.db.supabas
 2. Create a **new project**:
    - Click the project dropdown at the top
    - Click **NEW PROJECT**
-   - **Project name**: BetoTrack
+   - **Project name**: BetoTracker
    - Click **Create** and wait a few seconds
 
 3. Enable OAuth:
@@ -53,7 +56,7 @@ DIRECT_URL=postgresql://postgres.abcdef123456:PASSWORD@ap-southeast-1.db.supabas
    - **User Type**: External
    - Click **Create**
    - Fill in:
-     - **App name**: BetoTrack
+     - **App name**: BetoTracker
      - **User support email**: Your email
      - **Developer contact**: Your email
    - Click **Save and Continue** → skip scopes → **Save and Continue** → **Back to Dashboard**
@@ -69,7 +72,7 @@ DIRECT_URL=postgresql://postgres.abcdef123456:PASSWORD@ap-southeast-1.db.supabas
    - Click **Credentials**
    - Click **+ CREATE CREDENTIALS** → **OAuth client ID**
    - **Application type**: Web application
-   - **Name**: BetoTrack Web Client
+   - **Name**: BetoTracker Web Client
    - Under **Authorized redirect URIs**, add:
      - `http://localhost:3000/confirm` (for local development)
      - `https://<YOUR_SUPABASE_PROJECT_REF>.supabase.co/auth/v1/callback` (replace `<YOUR_SUPABASE_PROJECT_REF>` with your Supabase project ref, e.g., `abcdef123456`)

@@ -12,7 +12,7 @@ const links = [
       <template #header="{ collapsed }">
         <NuxtLink to="/app" class="flex items-center gap-2 font-bold">
           <UIcon name="i-lucide-piggy-bank" class="size-6 text-primary shrink-0" />
-          <span v-if="!collapsed">BetoTrack</span>
+          <span v-if="!collapsed">BetoTracker</span>
         </NuxtLink>
       </template>
 

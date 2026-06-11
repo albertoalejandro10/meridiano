@@ -1,6 +1,6 @@
 <script setup lang="ts">
 useSeoMeta({
-  title: 'BetoTrack — Personal finance, fast',
+  title: 'BetoTracker — Personal finance, fast',
   description: 'Track income, expenses and net worth across multiple currencies. Built for fast entry.',
 })
 
@@ -27,7 +27,7 @@ const features = [
   <div>
     <UPageHero
       title="Your money, clearly."
-      description="BetoTrack is a personal finance tracker focused on fast transaction entry and a clear view of your financial status."
+      description="BetoTracker is a personal finance tracker focused on fast transaction entry and a clear view of your financial status."
       :links="[
         { label: 'Get started', to: '/login', trailingIcon: 'i-lucide-arrow-right', size: 'xl' },
       ]"

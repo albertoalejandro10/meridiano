@@ -29,7 +29,7 @@ async function signInWithGoogle() {
         <UIcon name="i-lucide-piggy-bank" class="size-10 text-primary" />
         <div class="text-center">
           <h1 class="text-xl font-semibold">
-            Welcome to BetoTrack
+            Welcome to BetoTracker
           </h1>
           <p class="text-sm text-muted mt-1">
             Sign in to start tracking your finances.

@@ -1,5 +1,5 @@
 {
-  "name": "beto-track",
+  "name": "beto-tracker",
   "type": "module",
   "private": true,
   "scripts": {
@@ -10,17 +10,19 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@nuxt/ui": "^4.0.0",
-    "@nuxtjs/supabase": "^2.0.0",
-    "@prisma/client": "^6.0.0",
-    "nuxt": "^4.4.7",
-    "vue": "^3.5.35",
-    "vue-router": "^5.1.0",
-    "zod": "^3.24.0"
+    "@nuxt/ui": "4.8.2",
+    "@nuxtjs/supabase": "2.0.9",
+    "@prisma/adapter-pg": "^7.8.0",
+    "@prisma/client": "7.8.0",
+    "dotenv": "^17.4.2",
+    "nuxt": "4.4.8",
+    "vue": "3.5.35",
+    "vue-router": "5.1.0",
+    "zod": "4.4.3"
   },
   "devDependencies": {
-    "prisma": "^6.0.0",
-    "tailwindcss": "^4.3.0"
+    "prisma": "7.8.0",
+    "tailwindcss": "4.3.0"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

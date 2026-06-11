@@ -15,8 +15,8 @@ export const accountSchema = z.object({
 export const accountUpdateSchema = accountSchema.partial()
 
 export const transactionSchema = z.object({
-  accountId: z.string().uuid(),
-  categoryId: z.string().uuid().nullish(),
+  accountId: z.uuid(),
+  categoryId: z.uuid().nullish(),
   type: z.enum(transactionTypes),
   amount: z.coerce.number().positive().finite(),
   date: z.coerce.date(),
@@ -26,11 +26,11 @@ export const transactionSchema = z.object({
 export const transactionUpdateSchema = transactionSchema.partial()
 
 export const transactionQuerySchema = z.object({
-  accountId: z.string().uuid().optional(),
+  accountId: z.uuid().optional(),
   type: z.enum(transactionTypes).optional(),
   from: z.coerce.date().optional(),
   to: z.coerce.date().optional(),
-  cursor: z.string().uuid().optional(),
+  cursor: z.uuid().optional(),
   limit: z.coerce.number().int().min(1).max(100).default(25),
 })
 

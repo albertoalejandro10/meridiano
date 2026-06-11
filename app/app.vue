@@ -1,6 +1,6 @@
 <script setup lang="ts">
 useHead({
-  titleTemplate: title => (title ? `${title} · BetoTrack` : 'BetoTrack'),
+  titleTemplate: title => (title ? `${title} · BetoTracker` : 'BetoTracker'),
 })
 </script>
 
