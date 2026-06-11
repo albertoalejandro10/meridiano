@@ -2,6 +2,24 @@
 
 This guide walks you through provisioning Supabase and Google OAuth, then wiring them into the app.
 
+## Phase 0: Local Development (no Supabase needed)
+
+For day-to-day development before Supabase is provisioned:
+
+```bash
+cp .env.example .env        # ships with local-dev defaults and Supabase placeholders
+docker compose up -d postgres   # Postgres 18 on localhost:5433
+pnpm install
+pnpm prisma migrate dev     # apply migrations to the local DB
+pnpm dev                    # http://localhost:3000
+```
+
+Notes:
+
+- The local DB runs on host port **5433** (5432 is often taken by other projects).
+- With placeholder `SUPABASE_URL`/`SUPABASE_KEY`, all pages render and `/api/v1/*` correctly returns 401, but Google login does not work until Phases 1–3 are done.
+- `prisma/sql/rls_and_trigger.sql` is **Supabase-only** (it references the `auth` schema) — do not apply it to the local Postgres. It gets appended to a migration when moving to Supabase (Phase 4).
+
 ## Phase 1: Create Supabase Project
 
 1. Go to [supabase.com](https://supabase.com) and sign in (or create an account with GitHub)
