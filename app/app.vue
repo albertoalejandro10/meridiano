@@ -1,6 +1,13 @@
+<script setup lang="ts">
+useHead({
+  titleTemplate: title => (title ? `${title} · BetoTrack` : 'BetoTrack'),
+})
+</script>
+
 <template>
-  <div>
-    <NuxtRouteAnnouncer />
-    <NuxtWelcome />
-  </div>
+  <UApp>
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
+  </UApp>
 </template>
