@@ -1,2 +1,51 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
+
+/* Theme picker swatches reference these palette tokens at runtime via
+   `var(--color-<name>-<shade>)`. Tailwind only emits a color token when it sees
+   the color used, so safelist every selectable primary/neutral palette (the
+   `bg-*` utilities pull in the matching `--color-*-400/500` variables). */
+@source inline("bg-{red,orange,amber,yellow,lime,green,emerald,teal,cyan,sky,blue,indigo,violet,purple,fuchsia,pink,rose,slate,gray,zinc,stone,taupe,mauve,mist,olive}-{400,500}");
+
+:root {
+  --ui-radius: 0rem;
+}
+
+@theme {
+  --font-sans: 'Outfit', system-ui, sans-serif;
+
+  /* Landing-only fonts. Declared here so the bundled @nuxt/fonts provisions them
+     from Google Fonts; they are only *applied* inside `.landing-theme` below. */
+  --font-instrument: 'Instrument Sans', -apple-system, sans-serif;
+  --font-plex: 'IBM Plex Mono', monospace;
+
+  /* Hero title shimmer (landing page). */
+  --animate-shimmer: shimmer 8s ease-in-out infinite alternate;
+
+  @keyframes shimmer {
+    0% {
+      background-position: 0% center;
+    }
+    100% {
+      background-position: 200% center;
+    }
+  }
+}
+
+/* Marketing landing page look — scoped so the dark surfaces, lime primary and
+   terminal fonts never leak into the dashboard or fight the runtime theme picker.
+   The page also forces `colorMode: 'dark'` (see app/pages/index.vue). */
+.landing-theme {
+  --font-sans: var(--font-instrument);
+  --font-mono: var(--font-plex);
+
+  /* Primary colour is inherited from the Nuxt UI theme picker (sky by default) —
+     no override here, so the landing follows whatever the user selects. */
+
+  /* Dark surfaces (from the template's `.dark` overrides). */
+  --ui-bg: var(--ui-color-neutral-950);
+  --ui-bg-muted: var(--ui-color-neutral-900);
+  --ui-bg-elevated: var(--ui-color-neutral-900);
+  --ui-bg-accented: var(--ui-color-neutral-800);
+  --ui-border: var(--ui-color-neutral-900);
+}

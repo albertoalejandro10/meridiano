@@ -11,7 +11,9 @@ COPY package.json pnpm-lock.yaml ./
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
     pnpm install --frozen-lockfile --ignore-scripts
 COPY . .
-RUN pnpm prisma generate && pnpm nuxt prepare && pnpm build
+# Migrations are applied at deploy time via `npx nuxt db migrate` (hub.db
+# applyMigrationsDuringBuild is disabled), so the build needs no database.
+RUN pnpm nuxt prepare && pnpm build
 
 FROM node:22-alpine AS runner
 WORKDIR /app

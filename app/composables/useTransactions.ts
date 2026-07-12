@@ -1,5 +1,3 @@
-import type { TransactionInput } from '~~/shared/schemas'
-
 export interface TransactionFilters {
   accountId?: string
   type?: 'INCOME' | 'EXPENSE'
@@ -7,39 +5,27 @@ export interface TransactionFilters {
   to?: string
 }
 
+// Filter-keyed transaction list. Fetch-only: mutations live on the transactions
+// store (useTransactionsStore), whose refreshNuxtData() reaches every key here.
 export function useTransactions(filters?: Ref<TransactionFilters>) {
   const query = computed(() => ({
     limit: 50,
     ...(filters?.value ?? {}),
   }))
 
-  const { data, refresh, status } = useFetch('/api/v1/transactions', {
-    key: 'transactions',
+  // The key must track the query: consumers with different filters (dashboard vs
+  // filtered list) would otherwise share one cache entry and clobber each other.
+  const key = computed(() => {
+    const f = filters?.value ?? {}
+    const parts = [f.accountId, f.type, f.from, f.to].filter(Boolean)
+    return parts.length ? `transactions:${parts.join(':')}` : 'transactions'
+  })
+
+  return useFetch('/api/v1/transactions', {
+    key,
     query,
     default: () => ({ items: [], nextCursor: null }),
   })
-
-  const toast = useToast()
-
-  async function createTransaction(input: TransactionInput) {
-    await $fetch('/api/v1/transactions', { method: 'POST', body: input })
-    await Promise.all([refresh(), refreshNuxtData('accounts')])
-    toast.add({ title: 'Transaction saved', color: 'success' })
-  }
-
-  async function updateTransaction(id: string, input: Partial<TransactionInput>) {
-    await $fetch(`/api/v1/transactions/${id}`, { method: 'PATCH', body: input })
-    await Promise.all([refresh(), refreshNuxtData('accounts')])
-    toast.add({ title: 'Transaction updated', color: 'success' })
-  }
-
-  async function deleteTransaction(id: string) {
-    await $fetch(`/api/v1/transactions/${id}`, { method: 'DELETE' })
-    await Promise.all([refresh(), refreshNuxtData('accounts')])
-    toast.add({ title: 'Transaction deleted', color: 'success' })
-  }
-
-  return { data, refresh, status, createTransaction, updateTransaction, deleteTransaction }
 }
 
 export function useCategories() {

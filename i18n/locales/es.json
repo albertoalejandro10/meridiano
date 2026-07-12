@@ -1,0 +1,528 @@
+{
+  "common": {
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "create": "Crear",
+    "add": "Agregar",
+    "new": "Nuevo",
+    "name": "Nombre",
+    "currency": "Moneda",
+    "amount": "Monto",
+    "date": "Fecha",
+    "fee": "Comisión",
+    "description": "Descripción",
+    "optional": "Opcional",
+    "optionalNote": "Nota opcional",
+    "value": "Valor",
+    "loadMore": "Cargar más",
+    "tryAgain": "Inténtalo de nuevo.",
+    "somethingWrong": "Algo salió mal",
+    "toasts": {
+      "createFailed": "No se pudo crear",
+      "updateFailed": "No se pudo actualizar",
+      "deleteFailed": "No se pudo eliminar",
+      "saveFailed": "No se pudo guardar"
+    }
+  },
+  "confirm": {
+    "title": "Confirmar acción",
+    "message": "¿Estás seguro?",
+    "confirm": "Confirmar"
+  },
+  "nav": {
+    "dashboard": "Panel",
+    "transactions": "Transacciones",
+    "accounts": "Cuentas",
+    "goals": "Metas",
+    "settings": "Configuración",
+    "signOut": "Cerrar sesión",
+    "account": "Cuenta"
+  },
+  "theme": {
+    "pickerLabel": "Selector de tema",
+    "primary": "Primario",
+    "black": "Negro",
+    "neutral": "Neutro",
+    "radius": "Radio",
+    "colorMode": "Modo de color",
+    "mode": {
+      "light": "claro",
+      "dark": "oscuro",
+      "system": "sistema"
+    },
+    "reset": "Restablecer",
+    "resetTheme": "Restablecer tema"
+  },
+  "accountTypes": {
+    "CASH": "Efectivo",
+    "INVESTMENT": "Inversión",
+    "CRYPTO": "Cripto",
+    "PROPERTY": "Propiedad",
+    "VEHICLE": "Vehículo",
+    "OTHER_ASSET": "Otro activo",
+    "CREDIT_CARD": "Tarjeta de crédito",
+    "LOAN": "Préstamo",
+    "OTHER_LIABILITY": "Otro pasivo"
+  },
+  "dashboard": {
+    "title": "Inicio",
+    "tabs": {
+      "assets": "Activos",
+      "debts": "Deudas",
+      "all": "Todo"
+    },
+    "addType": "Agregar {type}",
+    "nothingHere": "Aún no hay nada aquí.",
+    "welcome": "Hola de nuevo, {name}",
+    "subtitle": "Esto es lo que está pasando con tus finanzas",
+    "netWorth": "Patrimonio neto",
+    "also": "También",
+    "assets": "Activos",
+    "noAssets": "Aún no tienes activos. Crea una cuenta para empezar.",
+    "lastTransaction": "Última transacción"
+  },
+  "accounts": {
+    "title": "Cuentas",
+    "assets": "Activos",
+    "liabilities": "Pasivos",
+    "debts": "Deudas",
+    "archived": "Archivadas",
+    "empty": "Aún no tienes cuentas. Crea una para empezar a llevar el control.",
+    "noneYet": "Aún no hay {section}.",
+    "sellNamed": "Vender {name}",
+    "editNamed": "Editar {name}",
+    "deleteNamed": "Eliminar {name}",
+    "toasts": {
+      "created": "Cuenta creada",
+      "updated": "Cuenta actualizada",
+      "deleted": "Cuenta eliminada",
+      "sold": "Activo vendido",
+      "saleFailed": "No se pudo vender",
+      "hasTransactions": {
+        "title": "La cuenta tiene transacciones",
+        "description": "Mejor archívala."
+      }
+    },
+    "confirmDelete": {
+      "title": "Eliminar cuenta",
+      "message": "¿Eliminar \"{name}\"? Esta acción no se puede deshacer."
+    },
+    "modal": {
+      "editTitle": "Editar cuenta",
+      "newTyped": "Nueva cuenta: {type}",
+      "newAsset": "Nuevo activo",
+      "newDebt": "Nueva deuda",
+      "newAccount": "Nueva cuenta",
+      "whatToAdd": "¿Qué quieres agregar?",
+      "namePlaceholder": "p. ej. Banesco, Efectivo USD",
+      "amountOwed": "Monto adeudado",
+      "initialBalance": "Saldo inicial",
+      "archived": "Archivada"
+    },
+    "sell": {
+      "title": "Vender activo",
+      "titleNamed": "Vender {name}",
+      "recordedValue": "Valor registrado: {amount}. El dinero de la venta va a la cuenta elegida y este activo se archiva.",
+      "depositInto": "Depositar el dinero en",
+      "cashAccount": "Cuenta de efectivo",
+      "salePrice": "Precio de venta",
+      "note": "Nota",
+      "netAfterFee": "Recibes {net} después de la comisión de {fee}.",
+      "noCash": "Primero crea una cuenta de efectivo en {currency} para recibir el dinero.",
+      "submit": "Vender"
+    }
+  },
+  "transactions": {
+    "title": "Transacciones",
+    "transfer": "Transferencia",
+    "income": "Ingreso",
+    "expense": "Gasto",
+    "new": "Nueva transacción",
+    "empty": "No se encontraron transacciones.",
+    "allAccounts": "Todas las cuentas",
+    "allTypes": "Todos los tipos",
+    "toasts": {
+      "saved": "Transacción guardada",
+      "updated": "Transacción actualizada",
+      "deleted": "Transacción eliminada"
+    },
+    "confirmDelete": {
+      "title": "Eliminar transacción",
+      "transferTitle": "Eliminar transferencia",
+      "transferMessage": "¿Eliminar esta transferencia de {amount}? Se eliminarán ambos lados.",
+      "incomeMessage": "¿Eliminar este ingreso de {amount}? Esta acción no se puede deshacer.",
+      "expenseMessage": "¿Eliminar este gasto de {amount}? Esta acción no se puede deshacer.",
+      "feeNote": "Su comisión también se eliminará."
+    },
+    "modal": {
+      "editTitle": "Editar transacción",
+      "newTitle": "Nueva transacción",
+      "account": "Cuenta",
+      "selectAccount": "Selecciona una cuenta",
+      "category": "Categoría",
+      "noCategory": "Sin categoría",
+      "netAfterFee": "Neto recibido después de la comisión: {amount}",
+      "totalWithFee": "Total con comisión: {amount}"
+    }
+  },
+  "transfers": {
+    "toasts": {
+      "complete": "Transferencia realizada",
+      "failed": "No se pudo transferir"
+    },
+    "modal": {
+      "title": "Nueva transferencia",
+      "from": "Desde",
+      "to": "Hacia",
+      "source": "Origen",
+      "destination": "Destino",
+      "netAfterFee": "El destino recibe {net} después de la comisión de {fee}.",
+      "noDestination": "Agrega otra cuenta en la misma moneda para poder transferir.",
+      "submit": "Transferir"
+    }
+  },
+  "goals": {
+    "title": "Metas",
+    "goal": "Meta",
+    "subtitle": "Convierte tus activos en progreso hacia lo que importa.",
+    "new": "Nueva meta",
+    "empty": "Aún no tienes metas. Define un objetivo, vincula los activos que lo respaldan y mira crecer tu progreso.",
+    "saved": "Ahorrado",
+    "savedLower": "ahorrado",
+    "summaryOf": "de {target} en {count} meta | de {target} en {count} metas",
+    "notFound": "No se encontró esta meta.",
+    "backToGoals": "Volver a metas",
+    "savingSince": "Ahorrando desde {date}",
+    "targetOn": "objetivo {date}",
+    "target": "Objetivo",
+    "surplus": "Excedente",
+    "toGo": "Faltante",
+    "manage": "Administrar",
+    "noAssetsLinked": "Aún no hay activos vinculados. Vincula una cuenta y su saldo contará para esta meta.",
+    "linkAssets": "Vincular activos",
+    "toasts": {
+      "created": "Meta creada",
+      "updated": "Meta actualizada",
+      "deleted": "Meta eliminada"
+    },
+    "confirmDelete": {
+      "title": "Eliminar meta",
+      "message": "¿Eliminar \"{name}\"? Esta acción no se puede deshacer."
+    },
+    "modal": {
+      "editTitle": "Editar meta",
+      "newTitle": "Nueva meta",
+      "namePlaceholder": "p. ej. Fondo de emergencia, Viaje a Japón",
+      "targetAmount": "Monto objetivo",
+      "currencyHelp": "La moneda no se puede cambiar después de crearla",
+      "startDate": "Fecha de inicio",
+      "startDateHelp": "Ahorrando desde",
+      "targetDate": "Fecha objetivo",
+      "targetDateHelp": "Se usa para marcar el ritmo de tu ahorro",
+      "icon": "Ícono",
+      "iconHelp": "Elige el que refleje para qué estás ahorrando",
+      "color": "Color",
+      "linkedAssets": "Activos vinculados",
+      "linkedAssetsHelp": "Su saldo combinado es tu progreso hacia esta meta",
+      "noAssets": "Aún no hay cuentas de activos en {currency}. Crea una para vincularla aquí."
+    },
+    "card": {
+      "view": "Ver {name}",
+      "of": "de {amount}",
+      "targetReached": "Objetivo alcanzado — bien hecho.",
+      "stillToGo": "Aún faltan {amount}",
+      "toGo": "Faltan {amount}",
+      "savePerMonth": "Ahorra {amount}/mes",
+      "savePerMonthBy": "Ahorra {amount}/mes · antes del {date}",
+      "noAssets": "Aún no hay activos vinculados"
+    },
+    "milestones": {
+      "achieved": {
+        "title": "¡Meta lograda! 🎉",
+        "tone": "Lo lograste — es hora de celebrar este triunfo."
+      },
+      "almost": {
+        "title": "Casi lo logras",
+        "tone": "La línea de meta está a la vista. Mantén el impulso."
+      },
+      "halfway": {
+        "title": "Más de la mitad",
+        "tone": "Pasaste el punto medio — lo más difícil quedó atrás."
+      },
+      "momentum": {
+        "title": "Ganando impulso",
+        "tone": "Cada aporte cuenta. Mantén la constancia."
+      },
+      "start": {
+        "title": "Buen comienzo",
+        "tone": "El primer paso es el más difícil, y ya lo diste."
+      },
+      "begin": {
+        "title": "Listo para empezar",
+        "tone": "Vincula un activo o empieza a ahorrar para esta meta."
+      }
+    },
+    "pace": {
+      "achieved": "Lograda",
+      "on-track": "En camino",
+      "behind": "Atrasada",
+      "past-due": "Fecha vencida"
+    },
+    "reality": {
+      "achieved": {
+        "title": "Objetivo alcanzado",
+        "body": "Esta meta está completamente cubierta por tus activos vinculados. Disfrútala — o define un nuevo objetivo."
+      },
+      "onTrack": {
+        "title": "En camino",
+        "body": "Sigue apartando {required}/mes y la alcanzarás antes del {date}. Tu ritmo reciente de {pace}/mes te lo asegura."
+      },
+      "behind": {
+        "title": "Exigente — pero alcanzable",
+        "body": "Llegar al {date} requiere {required}/mes, y últimamente estás ahorrando cerca de {pace}/mes. A ese ritmo llegarías alrededor del {projected}. Aporta a tus activos vinculados o dale más margen a la fecha.",
+        "noPaceBody": "Llegar al {date} requiere {required}/mes. Todavía no vemos un ahorro constante en los últimos 6 meses — empieza con poco pero constante, o extiende la fecha objetivo.",
+        "later": "más adelante"
+      },
+      "pastDue": {
+        "title": "La fecha objetivo ya pasó",
+        "body": "Todavía faltan {remaining}. Define una nueva fecha objetivo para retomar el ritmo sin presión."
+      },
+      "noDate": {
+        "title": "Define un ritmo",
+        "body": "Te faltan {remaining}. Agrega una fecha objetivo y te mostraremos cuánto ahorrar cada mes."
+      }
+    }
+  },
+  "goalIcons": {
+    "target": { "label": "General", "description": "Cualquier meta de ahorro" },
+    "piggy-bank": { "label": "Ahorros", "description": "Construye un colchón de efectivo" },
+    "house": { "label": "Hogar", "description": "Comprar o renovar una casa" },
+    "plane": { "label": "Viaje", "description": "Un viaje o unas vacaciones" },
+    "car": { "label": "Vehículo", "description": "Un carro u otro vehículo" },
+    "graduation-cap": { "label": "Educación", "description": "Matrícula o cursos" },
+    "gem": { "label": "Lujo", "description": "Un gusto de alto precio" },
+    "baby": { "label": "Familia", "description": "Un bebé o una familia que crece" },
+    "heart": { "label": "Boda", "description": "Una boda o celebración" },
+    "shield": { "label": "Emergencia", "description": "Un respaldo para imprevistos" },
+    "gift": { "label": "Regalo", "description": "Un regalo para alguien" },
+    "palmtree": { "label": "Jubilación", "description": "Un ahorro a largo plazo" }
+  },
+  "auth": {
+    "signIn": "Iniciar sesión",
+    "signUp": "Regístrate",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "terms": "Términos de Servicio",
+    "email": "Correo electrónico",
+    "enterEmail": "Escribe tu correo",
+    "password": "Contraseña",
+    "enterPassword": "Escribe tu contraseña",
+    "name": "Nombre",
+    "enterName": "Escribe tu nombre",
+    "backToLogin": "Volver a iniciar sesión",
+    "rememberedIt": "¿La recordaste?",
+    "validation": {
+      "invalidEmail": "Correo inválido",
+      "passwordMin": "Debe tener al menos 8 caracteres",
+      "nameRequired": "El nombre es obligatorio",
+      "passwordsMismatch": "Las contraseñas no coinciden"
+    },
+    "login": {
+      "seoTitle": "Iniciar sesión",
+      "seoDescription": "Inicia sesión en tu cuenta para continuar",
+      "title": "Hola de nuevo",
+      "noAccount": "¿No tienes una cuenta?",
+      "agree": "Al iniciar sesión, aceptas nuestros",
+      "failed": "No se pudo iniciar sesión",
+      "failedHint": "Revisa tus credenciales e inténtalo de nuevo."
+    },
+    "signup": {
+      "seoTitle": "Regístrate",
+      "seoDescription": "Crea una cuenta para empezar",
+      "title": "Crea una cuenta",
+      "submit": "Crear cuenta",
+      "haveAccount": "¿Ya tienes una cuenta?",
+      "agree": "Al registrarte, aceptas nuestros",
+      "failed": "No se pudo crear la cuenta"
+    },
+    "forgot": {
+      "seoTitle": "Olvidé mi contraseña",
+      "seoDescription": "Restablece la contraseña de tu cuenta",
+      "title": "¿Olvidaste tu contraseña?",
+      "submit": "Enviar enlace",
+      "description": "Escribe tu correo y te enviaremos un enlace para restablecerla.",
+      "checkEmail": "Revisa tu correo",
+      "checkEmailBody": "Si existe una cuenta con ese correo, te enviamos un enlace para restablecer tu contraseña."
+    },
+    "reset": {
+      "seoTitle": "Restablecer contraseña",
+      "seoDescription": "Elige una nueva contraseña para tu cuenta",
+      "title": "Define una nueva contraseña",
+      "submit": "Actualizar contraseña",
+      "description": "Elige una nueva contraseña para tu cuenta.",
+      "newPassword": "Nueva contraseña",
+      "enterNewPassword": "Escribe una nueva contraseña",
+      "confirmPassword": "Confirmar contraseña",
+      "reEnterPassword": "Vuelve a escribir tu nueva contraseña",
+      "updated": "Contraseña actualizada",
+      "updatedBody": "Ya puedes iniciar sesión con tu nueva contraseña.",
+      "failed": "No se pudo restablecer",
+      "failedHint": "Solicita un nuevo enlace de restablecimiento.",
+      "invalidLink": "Enlace inválido",
+      "invalidLinkBody": "El enlace falta o está dañado. Solicita uno nuevo para continuar.",
+      "requestNew": "Solicitar un nuevo enlace"
+    }
+  },
+  "settings": {
+    "title": "Configuración",
+    "comingSoon": "Próximamente",
+    "nav": {
+      "general": "General",
+      "account": "Cuenta",
+      "preferences": "Preferencias",
+      "apiKey": "Clave API",
+      "accounts": "Cuentas",
+      "imports": "Importaciones",
+      "transactions": "Transacciones",
+      "tags": "Etiquetas",
+      "categories": "Categorías",
+      "rules": "Reglas",
+      "merchants": "Comercios"
+    },
+    "account": {
+      "title": "Cuenta",
+      "description": "Tu perfil y datos de acceso.",
+      "name": "Nombre",
+      "email": "Correo electrónico",
+      "notSet": "Sin definir",
+      "placeholderTitle": "Editar tu perfil aún no está disponible",
+      "placeholderDescription": "Pronto podrás actualizar tu nombre, correo y contraseña desde aquí."
+    },
+    "preferences": {
+      "title": "Preferencias",
+      "description": "Idioma, moneda, formato de fecha y apariencia.",
+      "language": "Idioma",
+      "languageHint": "Se usa en toda la aplicación.",
+      "placeholderTitle": "Más preferencias próximamente",
+      "placeholderDescription": "Define tu moneda predeterminada, formato de fecha y tema para toda la aplicación."
+    },
+    "apiKey": {
+      "title": "Clave API",
+      "description": "Acceso programático a tus datos de BetoTracker.",
+      "placeholderTitle": "Aún no hay claves API",
+      "placeholderDescription": "Genera una clave para acceder a tus datos desde scripts e integraciones."
+    },
+    "accounts": {
+      "title": "Cuentas",
+      "description": "Administra las cuentas que llevas.",
+      "placeholderTitle": "La administración de cuentas llega pronto",
+      "placeholderDescription": "Conecta, renombra y organiza tus cuentas financieras desde aquí."
+    },
+    "imports": {
+      "title": "Importaciones",
+      "description": "Trae datos desde otras aplicaciones.",
+      "placeholderTitle": "Las importaciones llegan pronto",
+      "placeholderDescription": "Sube un CSV para importar transacciones y saldos a BetoTracker."
+    },
+    "merchants": {
+      "title": "Comercios",
+      "description": "Identifica a quién le pagaste.",
+      "placeholderTitle": "Aún no hay comercios",
+      "placeholderDescription": "BetoTracker agrupará aquí las transacciones por comercio."
+    },
+    "rules": {
+      "title": "Reglas",
+      "description": "Automatiza cómo se categorizan las transacciones.",
+      "placeholderTitle": "Aún no hay reglas",
+      "placeholderDescription": "Crea reglas para categorizar y etiquetar transacciones automáticamente."
+    },
+    "tags": {
+      "title": "Etiquetas",
+      "description": "Etiqueta transacciones para analizar tus gastos.",
+      "placeholderTitle": "Aún no hay etiquetas",
+      "placeholderDescription": "Crea etiquetas para agrupar transacciones entre categorías."
+    },
+    "categories": {
+      "title": "Categorías",
+      "description": "Organiza las transacciones en categorías.",
+      "placeholderTitle": "La administración de categorías llega pronto",
+      "placeholderDescription": "Crea y personaliza las categorías que usas en tus transacciones."
+    }
+  },
+  "landing": {
+    "seo": {
+      "title": "BetoTracker — Finanzas personales, con claridad",
+      "description": "Controla ingresos, gastos y patrimonio neto en todas las monedas que uses. Hecho para registrar rápido y con un panel que por fin tiene sentido."
+    },
+    "title": "Cada moneda.\nUna imagen clara.",
+    "description": "Controla ingresos, gastos y patrimonio neto en todas las monedas que uses — con un registro tan rápido que toma segundos, y un panel que por fin tiene sentido.",
+    "getStarted": "Comenzar",
+    "hero": {
+      "headline": "Nuevo — Metas y seguimiento de patrimonio"
+    },
+    "nav": {
+      "features": "Funciones",
+      "metrics": "Métricas",
+      "open": "Abrir navegación",
+      "close": "Cerrar navegación"
+    },
+    "terminal": {
+      "amount": "Monto",
+      "account": "Cuenta",
+      "category": "Categoría",
+      "salary": "Salario",
+      "linkedToGoal": "Vinculado a la meta",
+      "emergencyFund": "Fondo de emergencia",
+      "savedIn": "Guardado en",
+      "netWorth": "Patrimonio neto",
+      "acrossAccounts": "en 4 cuentas"
+    },
+    "logos": {
+      "title": "Funciona con el dinero que ya usas"
+    },
+    "features": {
+      "headline": "Hecho para el día a día",
+      "title": "Todo sobre tu dinero, en un solo lugar.",
+      "description": "Se acabó saltar entre aplicaciones y hojas de cálculo. Cuentas, transacciones, transferencias y metas en una sola vista siempre al día.",
+      "fastEntry": {
+        "title": "Registro rápido",
+        "description": "Registra una transacción en segundos. Optimizado para el uso diario en móvil y escritorio."
+      },
+      "multiCurrency": {
+        "title": "Multimoneda",
+        "description": "Maneja USD, EUR, VES y más, lado a lado. Los saldos se mantienen en su moneda original."
+      },
+      "netWorth": {
+        "title": "Patrimonio neto de un vistazo",
+        "description": "Cuentas, activos y deudas consolidados en un número claro y siempre al día."
+      },
+      "goals": {
+        "title": "Metas de ahorro",
+        "description": "Define un objetivo y mira cómo cada aporte te acerca — las transferencias se excluyen automáticamente."
+      },
+      "transfers": {
+        "title": "Transferencias",
+        "description": "Mueve dinero entre cuentas como un par vinculado, para que tus saldos siempre cuadren."
+      },
+      "private": {
+        "title": "Solo tuyo",
+        "description": "Cada cuenta y transacción está limitada a ti. Tus datos nunca se comparten."
+      }
+    },
+    "metrics": {
+      "headline": "En números",
+      "title": "Hecho para la forma en que realmente llevas tus cuentas.",
+      "description": "Un tracker que sigue el ritmo de la vida real — varias monedas, registros diarios rápidos y un número que siempre dice la verdad.",
+      "currencies": "Monedas",
+      "perEntry": "Por registro",
+      "netWorthNumber": "Número de patrimonio",
+      "spreadsheets": "Hojas de cálculo"
+    },
+    "cta": {
+      "title": "¿Listo para ver\ntu panorama completo?",
+      "description": "Gratis para empezar. Sin tarjeta de crédito. Configura tu primera cuenta en menos de un minuto."
+    },
+    "footer": {
+      "tagline": "BetoTracker · Finanzas personales, rápido."
+    }
+  }
+}

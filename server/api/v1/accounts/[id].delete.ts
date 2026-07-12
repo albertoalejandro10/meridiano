@@ -1,11 +1,16 @@
+import { db, schema } from '@nuxthub/db'
+import { and, eq } from 'drizzle-orm'
+
 export default defineEventHandler(async (event) => {
   const userId = event.context.userId as string
   const id = getRouterParam(event, 'id')!
 
-  const account = await prisma.account.findFirst({ where: { id, userId } })
+  const account = await db.query.accounts.findFirst({
+    where: (a, { and, eq }) => and(eq(a.id, id), eq(a.userId, userId)),
+  })
   if (!account) throw createError({ statusCode: 404, statusMessage: 'Account not found' })
 
-  const txCount = await prisma.transaction.count({ where: { accountId: id } })
+  const txCount = await db.$count(schema.transactions, eq(schema.transactions.accountId, id))
   if (txCount > 0) {
     throw createError({
       statusCode: 409,
@@ -13,6 +18,6 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  await prisma.account.delete({ where: { id } })
+  await db.delete(schema.accounts).where(and(eq(schema.accounts.id, id), eq(schema.accounts.userId, userId)))
   return { ok: true }
 })

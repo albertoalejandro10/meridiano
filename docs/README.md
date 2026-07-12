@@ -2,106 +2,135 @@
 
 ## Quick Start
 
-- **[SETUP.md](SETUP.md)** — Complete guide to provisioning Supabase, Google OAuth, and running the app locally
+- **[STATUS.md](STATUS.md)** — Project status: what's done, known limitations, and the MVP roadmap
+- **[MVP_GAP.md](MVP_GAP.md)** — What's missing from the MVP: phase-by-phase gap analysis and ordered next steps
+- **[SETUP.md](SETUP.md)** — Running the app locally (NuxtHub + Postgres) and deploying
 
 ## Project Structure
 
 ### Frontend (`app/`)
+
 - **pages/** — Routes:
   - `index.vue` — Public landing page
-  - `login.vue` — Google OAuth sign-in page
-  - `confirm.vue` — OAuth callback handler
-  - `app/index.vue` — Dashboard (totals, recent transactions)
+  - `login.vue` / `signup.vue` — Email/password auth
+  - `forgot-password.vue` / `reset-password.vue` — Password-reset request and completion
+  - `app/index.vue` — Home (Maybe-style: assets/debts panel, net worth chart, assets table)
   - `app/accounts/index.vue` — Accounts list and cards
   - `app/transactions/index.vue` — Transaction history with filters
+  - `app/goals/index.vue` — Savings goals with progress tracking
 
 - **layouts/** — Page shells:
   - `default.vue` — Public layout (header, footer)
-  - `dashboard.vue` — Authenticated app layout (sidebar, nav)
+  - `dashboard.vue` — Authenticated app layout (collapsible sidebar, defaults collapsed)
 
-- **components/**
-  - `UserMenu.vue` — Account dropdown (sign out, dark mode)
-  - `accounts/AccountModal.vue` — Create/edit account form
-  - `transactions/TransactionModal.vue` — Create/edit transaction form
+- **components/** — Nuxt default naming: folder = prefix, file = suffix (`account/Modal.vue` → `<AccountModal>`):
+  - `UserMenu.vue` — Account dropdown in the sidebar footer (sign out, dark mode)
+  - `account/Modal.vue` — Create/edit account form
+  - `transaction/Modal.vue` — Create/edit transaction form
+  - `goal/Modal.vue` — Create/edit goal form
+  - `chart/` — Reusable charts (see its [README](../app/components/chart/README.md))
+  - `global/ConfirmModal.vue` — Globally registered confirm dialog (used by `useConfirm()`)
 
 - **composables/** — Reusable logic:
-  - `useAccounts.ts` — Account CRUD and state
-  - `useTransactions.ts` — Transaction CRUD and filtering
-  - `useCurrency.ts` — Money formatting with symbols
+  - `useAccounts.ts` / `useTransactions.ts` / `useGoals.ts` — CRUD wrappers with toasts
+  - `useConfirm.ts` — Promise-based confirm dialog (`const ok = await confirm({...})`)
+
+- **stores/** — Pinia:
+  - `session.ts` — User session (`user`, `isAuthenticated`, `firstName`, `email`), backed by `useUserSession()` from nuxt-auth-utils
+
+- **utils/** — Auto-imported helpers:
+  - `index.ts` — `formatMoney`, `formatPercent`, `percentOf`
+  - `dates/` — All date handling via date-fns (`formatShortDate`, `toISODate`, `lastNDays`, …)
 
 - **assets/css/main.css** — Tailwind + Nuxt UI imports
 
 ### Backend (`server/`)
-- **middleware/auth.ts** — JWT validation for `/api/v1/*` routes; mirrors Supabase users to DB
-- **utils/prisma.ts** — Prisma client singleton
-- **api/v1/** — REST endpoints:
-  - `accounts/` — GET (list + balance), POST (create), PATCH, DELETE
-  - `transactions/` — GET (list + filters), POST, PATCH, DELETE
-  - `categories/` — GET (auto-seed defaults), POST
 
-### Database (`prisma/`)
-- **schema.prisma** — Prisma models (User, Account, Category, Transaction)
-- **sql/rls_and_trigger.sql** — RLS policies and Supabase auth trigger (appended to migrations)
-- **prisma.config.ts** (root) — Prisma 7 config: schema path, migrations path, direct connection URL
-- Client is generated to `server/generated/prisma` (gitignored) and instantiated with the `@prisma/adapter-pg` driver adapter
+- **api/auth/** — `register` (seeds default categories), `login`, `logout`, `password/{request,reset}` (nuxt-auth-utils sealed-cookie sessions, hashed passwords)
+- **middleware/auth.ts** — Resolves the session for `/api/v1/*` and sets `event.context.userId` (else 401)
+- **utils/serialize.ts** — `toAmount` / `toDateStr` helpers for the Drizzle pg numeric/date boundary
+- **utils/defaultCategories.ts** — Starter category set seeded on register
+- **utils/mail.ts** — Email seam (currently logs the password-reset link; TODO: wire a provider)
+- **db/schema.ts** — Drizzle ORM schema (users, accounts, categories, transactions, goals) + relations
+- **db/migrations/postgresql/** — Generated SQL migrations (committed)
+- **api/v1/** — REST endpoints:
+  - `accounts/` — GET (list + derived balance), POST, PATCH, DELETE
+  - `transactions/` — GET (list + filters + keyset cursor pagination), POST, PATCH, DELETE
+  - `categories/` — GET (auto-seed defaults), POST
+  - `goals/` — GET (list + saved progress), POST, PATCH, DELETE
+
+### Database — NuxtHub Database + Drizzle ORM
+
+- **Engine**: PostgreSQL (`hub.db.dialect: 'postgresql'` in `nuxt.config.ts`), accessed via Drizzle ORM with the `postgres-js` driver. The connection string comes from `DATABASE_URL` (`POSTGRES_URL` / `POSTGRESQL_URL` also work).
+- **Client**: `import { db, schema } from '@nuxthub/db'` in server routes. `drizzle.config.ts` is generated by NuxtHub (do not edit it by hand).
+- **Migrations**: `npx nuxt db generate` (after a schema change) → `npx nuxt db migrate`. Migrations also auto-apply on `nuxt dev`.
 
 ### Shared (`shared/`)
-- **schemas.ts** — Zod validators for API request/response bodies (also used by UI forms)
+
+- **schemas.ts** — Zod validators for API request/response bodies and auth (also used by UI forms)
 
 ### Configuration
-- **nuxt.config.ts** — Nuxt + Supabase + Tailwind setup
-- **package.json** — Dependencies and build scripts
-- **.env.example** — Template for credentials (copy to `.env` and fill in)
-- **.gitignore** — Ignores `.env`, `node_modules`, `.nuxt`, etc.
+
+- **nuxt.config.ts** — Nuxt + `@nuxthub/core` (`hub.db`) + nuxt-auth-utils + nuxt-charts + Pinia
+- **auth.d.ts** — Augments the `#auth-utils` session `User` type (`id`, `email`, `name`)
+- **package.json** — Dependencies (exact pinned versions, pnpm only) and scripts
+- **.env.example** — Template for `DATABASE_URL` and `NUXT_SESSION_PASSWORD`
+- **.gitignore** — Ignores `.env`, `node_modules`, `.nuxt`, `.data`, etc.
 
 ## Architecture
 
-```
-User → Landing (/) → Login with Google → Supabase Auth
+```text
+User → Landing (/) → Login/Signup (email + password) → /api/auth/{register,login}
                                              ↓
-                                    OAuth redirect to /confirm
+                              nuxt-auth-utils sealed-cookie session
                                              ↓
-                                         /app/* (protected by @nuxtjs/supabase)
+                                         /app/* (route guard middleware)
                                              ↓
-                        Nuxt API route → /api/v1/* (auth middleware)
+                        Nuxt API route → /api/v1/* (auth middleware → event.context.userId)
                                              ↓
-                            Prisma → PostgreSQL + RLS policies
+                            Drizzle ORM (@nuxthub/db) → PostgreSQL
 ```
 
 **Security layers:**
-1. **Route guard** — `@nuxtjs/supabase` redirects unauthenticated requests to `/login`
-2. **API middleware** — `server/middleware/auth.ts` validates Supabase JWT and extracts user ID
-3. **RLS** — PostgreSQL policies ensure queries only return data for the authenticated user
+
+1. **Route guard** — `app/middleware/auth.global.ts` redirects unauthenticated requests to `/login`
+2. **API middleware** — `server/middleware/auth.ts` requires a valid session and extracts the user id
+3. **Ownership scoping** — every `/api/v1/*` query is filtered by `userId`; there is no separate RLS layer
 
 ## Key Features (Foundation Phase)
 
-✅ **Google OAuth** — Sign in with Google  
-✅ **Accounts** — Cash, bank, card, savings with balance tracking  
-✅ **Transactions** — Income/expense with optional category and description  
-✅ **Categories** — Auto-seeded defaults (Salary, Food, Transport, etc.)  
-✅ **Multi-currency** — USD, EUR, VES stored per account; balances calculated on-the-fly  
-✅ **Derived balances** — No balance column; calculated as initialBalance + signed transaction sum  
-✅ **Dashboard** — Totals per currency, recent transactions list  
-✅ **Forms** — Fast entry: type toggle, amount, account select (pre-fills currency), optional category, date  
-✅ **RLS** — Two-layer security: API JWT check + PostgreSQL policies  
+- ✅ **Auth** — Email/password via nuxt-auth-utils (sealed-cookie sessions, hashed passwords), password reset, default categories seeded on register
+- ✅ **Accounts** — Cash, bank, card, savings with balance tracking
+- ✅ **Transactions** — Income/expense with optional category and description
+- ✅ **Categories** — Auto-seeded defaults (Salary, Food, Transport, etc.)
+- ✅ **Goals** — Target amount + progress from net savings (income − expenses) since start date
+- ✅ **Multi-currency** — USD, EUR, VES stored per account; balances calculated on-the-fly
+- ✅ **Derived balances** — No balance column; calculated as initialBalance + signed transaction sum
+- ✅ **Home** — Maybe-style: assets/debts side panel with sparklines, net worth chart, assets weight table
+- ✅ **Forms** — Fast entry: type toggle, amount, account select (pre-fills currency), optional category, date
 
 ## Later Phases (Not Yet Implemented)
 
-- Transfers (linked transaction pairs)
-- Transaction tags (many-to-many)
-- Budgets (monthly per category)
-- Recurring transactions (rules + cron job)
-- Assets and debts
-- Net worth (calculated + monthly snapshots)
+See [MVP_GAP.md](MVP_GAP.md) for the ordered list. Summary:
+
+- Real-auth hardening (email verification / password reset), production deploy
+- **Blob storage (post-MVP)** — transaction receipt attachments + user avatars via NuxtHub Blob (`hub.blob`). The schema already reserves `transactions.receiptPathname` and `users.avatarPathname`; see [SETUP.md](SETUP.md#post-mvp-blob-storage).
+- Transfers, tags, budgets, recurring transactions
+- Assets and debts as first-class models, net worth snapshots
 - Multi-currency conversion (API rate fetch + manual VES)
-- Dashboard charts
-- Vercel deploy configuration
+- More dashboard charts
 
 ## Development
 
 ```bash
+# Start local Postgres (port 5433)
+docker compose up -d postgres
+
 # Install deps
 pnpm install
+
+# Apply database migrations (auto-applies on `nuxt dev` too)
+npx nuxt db migrate
 
 # Run dev server
 pnpm dev
@@ -109,14 +138,8 @@ pnpm dev
 # Build for production
 pnpm build
 
-# Lint
-pnpm lint
-
-# Generate Prisma client
-pnpm prisma generate
-
-# Create and apply migrations
-pnpm prisma migrate dev
+# After changing server/db/schema.ts: regenerate the migration
+npx nuxt db generate
 ```
 
 ## Docker
@@ -134,7 +157,7 @@ docker run --env-file .env -p 3000:3000 beto-tracker
 
 GitHub Actions ([.github/workflows/ci.yml](../.github/workflows/ci.yml)) runs on pushes and PRs to `main`:
 
-1. **Build** — install deps, generate Prisma client, `nuxt build`
+1. **Build** — install deps, `nuxt build` (no database needed; `hub.db.applyMigrationsDuringBuild` is off)
 2. **Docker image** — builds the image; on pushes to `main` it is pushed to GitHub Container Registry as `ghcr.io/<owner>/<repo>`
 
-See [SETUP.md](SETUP.md) for provisioning instructions.
+See [SETUP.md](SETUP.md) for setup and deployment instructions.

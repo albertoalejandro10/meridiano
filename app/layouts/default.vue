@@ -1,19 +1,21 @@
 <script setup lang="ts">
-const user = useSupabaseUser()
+const { loggedIn } = useUserSession()
 </script>
 
 <template>
   <div class="min-h-screen flex flex-col">
     <UHeader>
       <template #title>
-        <span class="font-bold">BetoTracker</span>
+        <NuxtLink to="/" class="flex items-center">
+          <Logo class="text-xl" />
+        </NuxtLink>
       </template>
 
       <template #right>
         <UButton
-          v-if="user"
+          v-if="loggedIn"
           to="/app"
-          label="Dashboard"
+          :label="$t('nav.dashboard')"
           icon="i-lucide-layout-dashboard"
           color="neutral"
           variant="ghost"
@@ -21,7 +23,7 @@ const user = useSupabaseUser()
         <UButton
           v-else
           to="/login"
-          label="Sign in"
+          :label="$t('auth.signIn')"
           icon="i-lucide-log-in"
           color="neutral"
           variant="ghost"
@@ -36,7 +38,7 @@ const user = useSupabaseUser()
 
     <UFooter>
       <template #left>
-        <span class="text-sm text-muted">BetoTracker · Personal finance, fast.</span>
+        <span class="text-sm text-muted">{{ $t('landing.footer.tagline') }}</span>
       </template>
     </UFooter>
   </div>

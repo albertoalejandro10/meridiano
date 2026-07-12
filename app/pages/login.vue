@@ -1,51 +1,102 @@
 <script setup lang="ts">
-useSeoMeta({ title: 'Sign in' })
+import * as z from 'zod'
+import type { FormSubmitEvent } from '@nuxt/ui'
 
-const supabase = useSupabaseClient()
-const user = useSupabaseUser()
-const loading = ref(false)
+definePageMeta({
+  layout: 'auth',
+})
 
-watch(user, (u) => {
-  if (u) navigateTo('/app')
+const { t } = useI18n()
+
+useSeoMeta({
+  title: () => t('auth.login.seoTitle'),
+  description: () => t('auth.login.seoDescription'),
+})
+
+const { loggedIn, fetch: refreshSession } = useUserSession()
+const toast = useToast()
+
+watch(loggedIn, (v) => {
+  if (v) navigateTo('/app')
 }, { immediate: true })
 
-async function signInWithGoogle() {
+const fields = computed(() => [{
+  name: 'email',
+  type: 'text' as const,
+  label: t('auth.email'),
+  placeholder: t('auth.enterEmail'),
+  required: true,
+}, {
+  name: 'password',
+  label: t('auth.password'),
+  type: 'password' as const,
+  placeholder: t('auth.enterPassword'),
+  required: true,
+}])
+
+// computed so the validation messages follow the locale
+const schema = computed(() => z.object({
+  email: z.email(t('auth.validation.invalidEmail')),
+  password: z.string().min(8, t('auth.validation.passwordMin')),
+}))
+
+type Schema = z.output<typeof schema.value>
+
+const loading = ref(false)
+
+async function onSubmit(payload: FormSubmitEvent<Schema>) {
   loading.value = true
-  const { error } = await supabase.auth.signInWithOAuth({
-    provider: 'google',
-    options: { redirectTo: `${window.location.origin}/confirm` },
-  })
-  if (error) {
+  try {
+    await $fetch('/api/auth/login', {
+      method: 'POST',
+      body: { email: payload.data.email, password: payload.data.password },
+    })
+    await refreshSession()
+    await navigateTo('/app')
+  } catch (error) {
+    toast.add({
+      title: t('auth.login.failed'),
+      description: (error as { data?: { statusMessage?: string } })?.data?.statusMessage ?? t('auth.login.failedHint'),
+      color: 'error',
+    })
+  } finally {
     loading.value = false
-    useToast().add({ title: 'Sign-in failed', description: error.message, color: 'error' })
   }
 }
 </script>
 
 <template>
-  <div class="flex items-center justify-center py-24">
-    <UPageCard class="w-full max-w-md">
-      <div class="flex flex-col items-center gap-6 py-4">
-        <UIcon name="i-lucide-piggy-bank" class="size-10 text-primary" />
-        <div class="text-center">
-          <h1 class="text-xl font-semibold">
-            Welcome to BetoTracker
-          </h1>
-          <p class="text-sm text-muted mt-1">
-            Sign in to start tracking your finances.
-          </p>
-        </div>
-        <UButton
-          label="Continue with Google"
-          icon="i-simple-icons-google"
-          color="neutral"
-          variant="outline"
-          size="lg"
-          block
-          :loading="loading"
-          @click="signInWithGoogle"
-        />
-      </div>
-    </UPageCard>
-  </div>
+  <UAuthForm
+    :fields="fields"
+    :schema="schema"
+    :title="$t('auth.login.title')"
+    :loading="loading"
+    @submit="onSubmit"
+  >
+    <template #leading>
+      <Logo symbol class="size-9" />
+    </template>
+
+    <template #description>
+      {{ $t('auth.login.noAccount') }} <ULink
+        to="/signup"
+        class="text-primary font-medium"
+      >{{ $t('auth.signUp') }}</ULink>.
+    </template>
+
+    <template #password-hint>
+      <ULink
+        to="/forgot-password"
+        class="text-primary font-medium"
+        tabindex="-1"
+      >{{ $t('auth.forgotPassword') }}</ULink>
+    </template>
+
+    <template #footer>
+      {{ $t('auth.login.agree') }} <ULink
+        to="/"
+        class="text-primary font-medium"
+      >{{ $t('auth.terms') }}</ULink>.
+    </template>
+  </UAuthForm>
 </template>

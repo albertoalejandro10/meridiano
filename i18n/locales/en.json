@@ -1,0 +1,528 @@
+{
+  "common": {
+    "cancel": "Cancel",
+    "save": "Save",
+    "create": "Create",
+    "add": "Add",
+    "new": "New",
+    "name": "Name",
+    "currency": "Currency",
+    "amount": "Amount",
+    "date": "Date",
+    "fee": "Fee",
+    "description": "Description",
+    "optional": "Optional",
+    "optionalNote": "Optional note",
+    "value": "Value",
+    "loadMore": "Load more",
+    "tryAgain": "Please try again.",
+    "somethingWrong": "Something went wrong",
+    "toasts": {
+      "createFailed": "Create failed",
+      "updateFailed": "Update failed",
+      "deleteFailed": "Delete failed",
+      "saveFailed": "Save failed"
+    }
+  },
+  "confirm": {
+    "title": "Confirm action",
+    "message": "Are you sure?",
+    "confirm": "Confirm"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "transactions": "Transactions",
+    "accounts": "Accounts",
+    "goals": "Goals",
+    "settings": "Settings",
+    "signOut": "Sign out",
+    "account": "Account"
+  },
+  "theme": {
+    "pickerLabel": "Theme picker",
+    "primary": "Primary",
+    "black": "Black",
+    "neutral": "Neutral",
+    "radius": "Radius",
+    "colorMode": "Color Mode",
+    "mode": {
+      "light": "light",
+      "dark": "dark",
+      "system": "system"
+    },
+    "reset": "Reset",
+    "resetTheme": "Reset theme"
+  },
+  "accountTypes": {
+    "CASH": "Cash",
+    "INVESTMENT": "Investment",
+    "CRYPTO": "Crypto",
+    "PROPERTY": "Property",
+    "VEHICLE": "Vehicle",
+    "OTHER_ASSET": "Other Asset",
+    "CREDIT_CARD": "Credit Card",
+    "LOAN": "Loan",
+    "OTHER_LIABILITY": "Other Liability"
+  },
+  "dashboard": {
+    "title": "Home",
+    "tabs": {
+      "assets": "Assets",
+      "debts": "Debts",
+      "all": "All"
+    },
+    "addType": "Add {type}",
+    "nothingHere": "Nothing here yet.",
+    "welcome": "Welcome back, {name}",
+    "subtitle": "Here's what's happening with your finances",
+    "netWorth": "Net worth",
+    "also": "Also",
+    "assets": "Assets",
+    "noAssets": "No assets yet. Create an account to get started.",
+    "lastTransaction": "Last transaction"
+  },
+  "accounts": {
+    "title": "Accounts",
+    "assets": "Assets",
+    "liabilities": "Liabilities",
+    "debts": "Debts",
+    "archived": "Archived",
+    "empty": "No accounts yet. Create one to start tracking.",
+    "noneYet": "No {section} yet.",
+    "sellNamed": "Sell {name}",
+    "editNamed": "Edit {name}",
+    "deleteNamed": "Delete {name}",
+    "toasts": {
+      "created": "Account created",
+      "updated": "Account updated",
+      "deleted": "Account deleted",
+      "sold": "Asset sold",
+      "saleFailed": "Sale failed",
+      "hasTransactions": {
+        "title": "Account has transactions",
+        "description": "Archive it instead."
+      }
+    },
+    "confirmDelete": {
+      "title": "Delete account",
+      "message": "Delete \"{name}\"? This cannot be undone."
+    },
+    "modal": {
+      "editTitle": "Edit account",
+      "newTyped": "New {type}",
+      "newAsset": "New asset",
+      "newDebt": "New debt",
+      "newAccount": "New account",
+      "whatToAdd": "What would you like to add?",
+      "namePlaceholder": "e.g. Banesco, Cash USD",
+      "amountOwed": "Amount owed",
+      "initialBalance": "Initial balance",
+      "archived": "Archived"
+    },
+    "sell": {
+      "title": "Sell asset",
+      "titleNamed": "Sell {name}",
+      "recordedValue": "Recorded value: {amount}. The proceeds go to the chosen account and this asset is archived.",
+      "depositInto": "Deposit proceeds into",
+      "cashAccount": "Cash account",
+      "salePrice": "Sale price",
+      "note": "Note",
+      "netAfterFee": "You receive {net} after the {fee} fee.",
+      "noCash": "Create a cash account in {currency} to receive the proceeds first.",
+      "submit": "Sell"
+    }
+  },
+  "transactions": {
+    "title": "Transactions",
+    "transfer": "Transfer",
+    "income": "Income",
+    "expense": "Expense",
+    "new": "New transaction",
+    "empty": "No transactions found.",
+    "allAccounts": "All accounts",
+    "allTypes": "All types",
+    "toasts": {
+      "saved": "Transaction saved",
+      "updated": "Transaction updated",
+      "deleted": "Transaction deleted"
+    },
+    "confirmDelete": {
+      "title": "Delete transaction",
+      "transferTitle": "Delete transfer",
+      "transferMessage": "Delete this transfer of {amount}? Both sides will be removed.",
+      "incomeMessage": "Delete this income of {amount}? This cannot be undone.",
+      "expenseMessage": "Delete this expense of {amount}? This cannot be undone.",
+      "feeNote": "Its fee will be removed too."
+    },
+    "modal": {
+      "editTitle": "Edit transaction",
+      "newTitle": "New transaction",
+      "account": "Account",
+      "selectAccount": "Select account",
+      "category": "Category",
+      "noCategory": "No category",
+      "netAfterFee": "Net received after the fee: {amount}",
+      "totalWithFee": "Total with fee: {amount}"
+    }
+  },
+  "transfers": {
+    "toasts": {
+      "complete": "Transfer complete",
+      "failed": "Transfer failed"
+    },
+    "modal": {
+      "title": "New transfer",
+      "from": "From",
+      "to": "To",
+      "source": "Source",
+      "destination": "Destination",
+      "netAfterFee": "Destination receives {net} after the {fee} fee.",
+      "noDestination": "Add another account in the same currency to transfer into.",
+      "submit": "Transfer"
+    }
+  },
+  "goals": {
+    "title": "Goals",
+    "goal": "Goal",
+    "subtitle": "Turn your assets into progress toward what matters.",
+    "new": "New goal",
+    "empty": "No goals yet. Set a target, link the assets behind it, and watch your progress grow.",
+    "saved": "Saved",
+    "savedLower": "saved",
+    "summaryOf": "of {target} across {count} goal | of {target} across {count} goals",
+    "notFound": "This goal could not be found.",
+    "backToGoals": "Back to goals",
+    "savingSince": "Saving since {date}",
+    "targetOn": "target {date}",
+    "target": "Target",
+    "surplus": "Surplus",
+    "toGo": "To go",
+    "manage": "Manage",
+    "noAssetsLinked": "No assets linked yet. Attach an account and its balance counts toward this goal.",
+    "linkAssets": "Link assets",
+    "toasts": {
+      "created": "Goal created",
+      "updated": "Goal updated",
+      "deleted": "Goal deleted"
+    },
+    "confirmDelete": {
+      "title": "Delete goal",
+      "message": "Delete \"{name}\"? This cannot be undone."
+    },
+    "modal": {
+      "editTitle": "Edit goal",
+      "newTitle": "New goal",
+      "namePlaceholder": "e.g. Emergency fund, Trip to Japan",
+      "targetAmount": "Target amount",
+      "currencyHelp": "Currency can’t change after creation",
+      "startDate": "Start date",
+      "startDateHelp": "Saving since",
+      "targetDate": "Target date",
+      "targetDateHelp": "Used to pace your saving",
+      "icon": "Icon",
+      "iconHelp": "Pick the one that matches what you're saving for",
+      "color": "Color",
+      "linkedAssets": "Linked assets",
+      "linkedAssetsHelp": "Their combined balance is your progress toward this goal",
+      "noAssets": "No {currency} asset accounts yet. Create one to link it here."
+    },
+    "card": {
+      "view": "View {name}",
+      "of": "of {amount}",
+      "targetReached": "Target reached — nicely done.",
+      "stillToGo": "{amount} still to go",
+      "toGo": "{amount} to go",
+      "savePerMonth": "Save {amount}/mo",
+      "savePerMonthBy": "Save {amount}/mo · by {date}",
+      "noAssets": "No assets linked yet"
+    },
+    "milestones": {
+      "achieved": {
+        "title": "Goal achieved! 🎉",
+        "tone": "You did it — time to celebrate this win."
+      },
+      "almost": {
+        "title": "Almost there",
+        "tone": "The finish line is in sight. Keep the momentum."
+      },
+      "halfway": {
+        "title": "Over halfway",
+        "tone": "You've passed the midpoint — the hardest part is behind you."
+      },
+      "momentum": {
+        "title": "Building momentum",
+        "tone": "Every contribution counts. Stay consistent."
+      },
+      "start": {
+        "title": "Off to a start",
+        "tone": "The first step is the hardest, and you already took it."
+      },
+      "begin": {
+        "title": "Ready to begin",
+        "tone": "Link an asset or start saving toward this goal."
+      }
+    },
+    "pace": {
+      "achieved": "Achieved",
+      "on-track": "On track",
+      "behind": "Behind pace",
+      "past-due": "Past due"
+    },
+    "reality": {
+      "achieved": {
+        "title": "Target reached",
+        "body": "This goal is fully funded by your linked assets. Time to enjoy it — or set a new target."
+      },
+      "onTrack": {
+        "title": "On track",
+        "body": "Keep setting aside {required}/mo and you'll reach this by {date}. Your recent pace of {pace}/mo has you covered."
+      },
+      "behind": {
+        "title": "A stretch — but reachable",
+        "body": "Hitting {date} needs {required}/mo, and you're saving about {pace}/mo lately. At that pace you'd get there around {projected}. Add to your linked assets or give the date some room.",
+        "noPaceBody": "Reaching {date} needs {required}/mo. We don't see steady savings in the last 6 months yet — start small and consistent, or extend the target date.",
+        "later": "later"
+      },
+      "pastDue": {
+        "title": "Target date has passed",
+        "body": "There's still {remaining} to go. Set a fresh target date to re-pace this goal without the pressure."
+      },
+      "noDate": {
+        "title": "Set a pace",
+        "body": "You have {remaining} to go. Add a target date and we'll show how much to save each month."
+      }
+    }
+  },
+  "goalIcons": {
+    "target": { "label": "General", "description": "Any savings goal" },
+    "piggy-bank": { "label": "Savings", "description": "Build a cash cushion" },
+    "house": { "label": "Home", "description": "Buy or renovate a home" },
+    "plane": { "label": "Travel", "description": "A trip or vacation" },
+    "car": { "label": "Vehicle", "description": "A car or other vehicle" },
+    "graduation-cap": { "label": "Education", "description": "Tuition or courses" },
+    "gem": { "label": "Luxury", "description": "A big-ticket splurge" },
+    "baby": { "label": "Family", "description": "A baby or growing family" },
+    "heart": { "label": "Wedding", "description": "A wedding or celebration" },
+    "shield": { "label": "Emergency", "description": "A rainy-day safety net" },
+    "gift": { "label": "Gift", "description": "A present for someone" },
+    "palmtree": { "label": "Retirement", "description": "A long-term nest egg" }
+  },
+  "auth": {
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "forgotPassword": "Forgot password?",
+    "terms": "Terms of Service",
+    "email": "Email",
+    "enterEmail": "Enter your email",
+    "password": "Password",
+    "enterPassword": "Enter your password",
+    "name": "Name",
+    "enterName": "Enter your name",
+    "backToLogin": "Back to login",
+    "rememberedIt": "Remembered it?",
+    "validation": {
+      "invalidEmail": "Invalid email",
+      "passwordMin": "Must be at least 8 characters",
+      "nameRequired": "Name is required",
+      "passwordsMismatch": "Passwords do not match"
+    },
+    "login": {
+      "seoTitle": "Login",
+      "seoDescription": "Login to your account to continue",
+      "title": "Welcome back",
+      "noAccount": "Don't have an account?",
+      "agree": "By signing in, you agree to our",
+      "failed": "Sign-in failed",
+      "failedHint": "Please check your credentials and try again."
+    },
+    "signup": {
+      "seoTitle": "Sign up",
+      "seoDescription": "Create an account to get started",
+      "title": "Create an account",
+      "submit": "Create account",
+      "haveAccount": "Already have an account?",
+      "agree": "By signing up, you agree to our",
+      "failed": "Sign-up failed"
+    },
+    "forgot": {
+      "seoTitle": "Forgot password",
+      "seoDescription": "Reset your account password",
+      "title": "Forgot your password?",
+      "submit": "Send reset link",
+      "description": "Enter your email and we'll send you a link to reset it.",
+      "checkEmail": "Check your email",
+      "checkEmailBody": "If an account exists for that email, we've sent a link to reset your password."
+    },
+    "reset": {
+      "seoTitle": "Reset password",
+      "seoDescription": "Choose a new password for your account",
+      "title": "Set a new password",
+      "submit": "Update password",
+      "description": "Choose a new password for your account.",
+      "newPassword": "New password",
+      "enterNewPassword": "Enter a new password",
+      "confirmPassword": "Confirm password",
+      "reEnterPassword": "Re-enter your new password",
+      "updated": "Password updated",
+      "updatedBody": "You can now log in with your new password.",
+      "failed": "Reset failed",
+      "failedHint": "Please request a new reset link.",
+      "invalidLink": "Invalid reset link",
+      "invalidLinkBody": "This link is missing or malformed. Request a new one to continue.",
+      "requestNew": "Request a new link"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "comingSoon": "Coming soon",
+    "nav": {
+      "general": "General",
+      "account": "Account",
+      "preferences": "Preferences",
+      "apiKey": "API Key",
+      "accounts": "Accounts",
+      "imports": "Imports",
+      "transactions": "Transactions",
+      "tags": "Tags",
+      "categories": "Categories",
+      "rules": "Rules",
+      "merchants": "Merchants"
+    },
+    "account": {
+      "title": "Account",
+      "description": "Your profile and login details.",
+      "name": "Name",
+      "email": "Email",
+      "notSet": "Not set",
+      "placeholderTitle": "Editing your profile isn't available yet",
+      "placeholderDescription": "Soon you'll be able to update your name, email, and password from here."
+    },
+    "preferences": {
+      "title": "Preferences",
+      "description": "Language, currency, date format, and appearance.",
+      "language": "Language",
+      "languageHint": "Used across the whole app.",
+      "placeholderTitle": "More preferences are coming soon",
+      "placeholderDescription": "Set your default currency, date format, and theme for the whole app."
+    },
+    "apiKey": {
+      "title": "API Key",
+      "description": "Programmatic access to your BetoTracker data.",
+      "placeholderTitle": "No API keys yet",
+      "placeholderDescription": "Generate a key to access your data from scripts and integrations."
+    },
+    "accounts": {
+      "title": "Accounts",
+      "description": "Manage the accounts you track.",
+      "placeholderTitle": "Account management is coming soon",
+      "placeholderDescription": "Connect, rename, and organize your financial accounts from here."
+    },
+    "imports": {
+      "title": "Imports",
+      "description": "Bring in data from other apps.",
+      "placeholderTitle": "Imports are coming soon",
+      "placeholderDescription": "Upload a CSV to import transactions and balances into BetoTracker."
+    },
+    "merchants": {
+      "title": "Merchants",
+      "description": "Recognize who you paid.",
+      "placeholderTitle": "No merchants yet",
+      "placeholderDescription": "BetoTracker will group transactions by merchant here."
+    },
+    "rules": {
+      "title": "Rules",
+      "description": "Automate how transactions are categorized.",
+      "placeholderTitle": "No rules yet",
+      "placeholderDescription": "Set up rules to auto-categorize and tag transactions as they come in."
+    },
+    "tags": {
+      "title": "Tags",
+      "description": "Label transactions to slice your spending.",
+      "placeholderTitle": "No tags yet",
+      "placeholderDescription": "Create tags to group transactions across categories."
+    },
+    "categories": {
+      "title": "Categories",
+      "description": "Organize transactions into categories.",
+      "placeholderTitle": "Category management is coming soon",
+      "placeholderDescription": "Create and customize the categories used across your transactions."
+    }
+  },
+  "landing": {
+    "seo": {
+      "title": "BetoTracker — Personal finance, clearly",
+      "description": "Track income, expenses and net worth across every currency you hold. Built for fast entry and a dashboard that finally makes sense."
+    },
+    "title": "Every currency.\nOne clear picture.",
+    "description": "Track income, expenses and net worth across every currency you hold — with entry so fast it takes seconds, and a dashboard that finally makes sense.",
+    "getStarted": "Get started",
+    "hero": {
+      "headline": "New — Goals & net-worth tracking"
+    },
+    "nav": {
+      "features": "Features",
+      "metrics": "Metrics",
+      "open": "Open navigation",
+      "close": "Close navigation"
+    },
+    "terminal": {
+      "amount": "Amount",
+      "account": "Account",
+      "category": "Category",
+      "salary": "Salary",
+      "linkedToGoal": "Linked to goal",
+      "emergencyFund": "Emergency Fund",
+      "savedIn": "Saved in",
+      "netWorth": "Net worth",
+      "acrossAccounts": "across 4 accounts"
+    },
+    "logos": {
+      "title": "Works with the money you already use"
+    },
+    "features": {
+      "headline": "Built for daily use",
+      "title": "Everything about your money, in one place.",
+      "description": "No more juggling apps and spreadsheets. Accounts, transactions, transfers and goals in a single, always-current view.",
+      "fastEntry": {
+        "title": "Fast entry",
+        "description": "Log a transaction in seconds. Optimized for daily use on mobile and desktop."
+      },
+      "multiCurrency": {
+        "title": "Multi-currency",
+        "description": "Hold USD, EUR, VES and more side by side. Balances stay in their native currency."
+      },
+      "netWorth": {
+        "title": "Net worth at a glance",
+        "description": "Accounts, assets and debts consolidated into one clear, always-current number."
+      },
+      "goals": {
+        "title": "Savings goals",
+        "description": "Set a target and watch every contribution move you closer — transfers excluded automatically."
+      },
+      "transfers": {
+        "title": "Transfers",
+        "description": "Move money between accounts as one linked pair, so your balances always reconcile."
+      },
+      "private": {
+        "title": "Yours alone",
+        "description": "Every account and transaction is scoped to you. Your data is never shared."
+      }
+    },
+    "metrics": {
+      "headline": "By the numbers",
+      "title": "Built for the way you actually track.",
+      "description": "A tracker that keeps up with real life — multiple currencies, quick daily entries, and one number that always tells the truth.",
+      "currencies": "Currencies",
+      "perEntry": "Per entry",
+      "netWorthNumber": "Net-worth number",
+      "spreadsheets": "Spreadsheets"
+    },
+    "cta": {
+      "title": "Ready to see\nyour whole picture?",
+      "description": "Free to start. No credit card. Set up your first account in under a minute."
+    },
+    "footer": {
+      "tagline": "BetoTracker · Personal finance, fast."
+    }
+  }
+}
