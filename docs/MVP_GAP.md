@@ -35,7 +35,7 @@
 2. Transfers (linked pair + `transferId`)
 3. Tags (m:n) + category management UI
 4. Budgets
-5. Recurring transactions (`RecurringRule` + cron)
+5. ~~Recurring transactions (`RecurringRule` + cron)~~ — **shipped, deliberately without a cron** (confirm-first: the app asks whether each due bill was paid instead of auto-creating it). See the Recurring payments section in `CLAUDE.md`.
 6. Assets/Debts as first-class models + net worth snapshots (home page currently infers them from accounts)
 7. Multi-currency conversion (FreeCurrencyAPI cron, manual VES rate)
 8. More dashboard charts

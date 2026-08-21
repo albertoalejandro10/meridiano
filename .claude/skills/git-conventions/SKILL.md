@@ -1,6 +1,6 @@
 ---
 name: git-conventions
-description: Git rules for BetoTracker. Use before any commit, push, or other git write operation.
+description: Git rules for Meridiano. Use before any commit, push, or other git write operation.
 ---
 
 # Git Conventions

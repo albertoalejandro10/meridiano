@@ -7,8 +7,44 @@
    `bg-*` utilities pull in the matching `--color-*-400/500` variables). */
 @source inline("bg-{red,orange,amber,yellow,lime,green,emerald,teal,cyan,sky,blue,indigo,violet,purple,fuchsia,pink,rose,slate,gray,zinc,stone,taupe,mauve,mist,olive}-{400,500}");
 
+/* The categorical chart palette below needs the -600 steps emitted too. */
+@source inline("bg-{sky,amber,violet,emerald,rose,teal,indigo,pink}-600");
+
 :root {
   --ui-radius: 0rem;
+}
+
+/* Categorical chart palette (analytics). Fixed slot order — a series keeps its
+   slot, never cycles; a 9th category folds into the gray "Other". Dark mode
+   selects its own steps (not an automatic flip); both modes validated for CVD
+   separation and >= 3:1 contrast against their surfaces. */
+:root {
+  --chart-1: var(--color-sky-600);
+  --chart-2: var(--color-amber-600);
+  --chart-3: var(--color-violet-600);
+  --chart-4: var(--color-emerald-600);
+  --chart-5: var(--color-rose-600);
+  --chart-6: var(--color-teal-600);
+  --chart-7: var(--color-indigo-600);
+  --chart-8: var(--color-pink-600);
+  --chart-other: var(--color-gray-400);
+}
+
+.dark {
+  --chart-3: var(--color-violet-500);
+  --chart-5: var(--color-rose-500);
+  --chart-7: var(--color-indigo-500);
+  --chart-8: var(--color-pink-500);
+  --chart-other: var(--color-gray-500);
+}
+
+/* Unovis (nuxt-charts) fills the donut's background ring with a near-white
+   default and only darkens it under `body.theme-dark`, which Nuxt UI never
+   sets — so the ring glows white in dark mode. Follow the theme surface
+   instead; `html:root` outranks the library's runtime-injected `:root` rule
+   regardless of stylesheet order. */
+html:root {
+  --vis-donut-background-color: var(--ui-bg-elevated);
 }
 
 @theme {
@@ -32,17 +68,20 @@
   }
 }
 
-/* Marketing landing page look — scoped so the dark surfaces, lime primary and
-   terminal fonts never leak into the dashboard or fight the runtime theme picker.
-   The page also forces `colorMode: 'dark'` (see app/pages/index.vue). */
+/* Marketing landing page look — scoped so the deepened surfaces and terminal
+   fonts never leak into the dashboard or fight the runtime theme picker.
+   The page follows the visitor's color mode (theme picker in the header). */
 .landing-theme {
   --font-sans: var(--font-instrument);
   --font-mono: var(--font-plex);
 
   /* Primary colour is inherited from the Nuxt UI theme picker (sky by default) —
      no override here, so the landing follows whatever the user selects. */
+}
 
-  /* Dark surfaces (from the template's `.dark` overrides). */
+/* Deepened dark surfaces (from the template's `.dark` overrides) — only when
+   dark mode is active; light mode keeps the default Nuxt UI light surfaces. */
+.dark .landing-theme {
   --ui-bg: var(--ui-color-neutral-950);
   --ui-bg-muted: var(--ui-color-neutral-900);
   --ui-bg-elevated: var(--ui-color-neutral-900);

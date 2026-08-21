@@ -1,75 +1,44 @@
-# Nuxt Minimal Starter
+# Meridiano
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Personal finance, clearly. Multi-currency accounts, transactions, transfers, goals, and
+net worth — built for people whose money doesn't live in one currency or one country.
 
-## Setup
+Bilingual (English / Español). Amounts are never summed across currencies: net worth is
+computed per currency, because there are no FX rates to fake.
 
-Make sure to install dependencies:
+## Stack
+
+Nuxt 4 · NuxtHub · PostgreSQL via Drizzle ORM · nuxt-auth-utils · Nuxt UI v4 · Pinia ·
+Zod 4 · nuxt-charts · date-fns · @nuxtjs/i18n
+
+## Getting started
 
 ```bash
-# npm
-npm install
-
-# pnpm
 pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
+cp .env.example .env             # set NUXT_SESSION_PASSWORD (≥32 chars)
+docker compose up -d postgres    # local Postgres 18 on port 5433
+pnpm dev                         # http://localhost:3000
 ```
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+`pnpm dev` applies any pending database migrations on boot.
 
 ```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
+npx nuxt db generate   # generate a migration after editing server/db/schema.ts
+npx nuxt db migrate    # apply migrations to the DB at DATABASE_URL
+pnpm build             # production build (no database needed)
 ```
 
-## Production
+Use **pnpm** — never npm or yarn. Dependency versions are pinned exact.
 
-Build the application for production:
+## Documentation
 
-```bash
-# npm
-npm run build
+- [docs/STATUS.md](docs/STATUS.md) — what's built, known limitations, roadmap
+- [docs/SETUP.md](docs/SETUP.md) — local setup, migrations, deployment, troubleshooting
+- [docs/MVP_GAP.md](docs/MVP_GAP.md) — phase-by-phase gap analysis
+- [docs/AI_FEATURES.md](docs/AI_FEATURES.md) — the AI digest and coaching features
+- [CLAUDE.md](CLAUDE.md) — architecture notes and conventions
 
-# pnpm
-pnpm build
+## License
 
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+All rights reserved. This source is public for reference; it is not licensed for reuse,
+redistribution, or derivative works.

@@ -1,49 +1,39 @@
 <script setup lang="ts">
-// BetoTracker logo: a "B" letter-mark pierced by a vertical bar so it reads as a
-// currency/dollar symbol, paired with the typographic wordmark. The mark stands
-// in for the "B", so the wordmark reads "eto" + "Tracker" — no redundant letter.
-// The mark + "eto" use the primary/foreground colors, "Tracker" is muted — all
-// theme-aware via Nuxt UI's color tokens.
+// Meridiano logo: the brand mark (see app/utils/brand.ts) beside the wordmark. The mark
+// is abstract rather than a letter, so the wordmark spells the name in full — the two
+// are independent and either can be used alone. The mark is `fill-primary`, so it
+// follows the theme via Nuxt UI's color tokens.
 //
-// Pass `symbol` to render just the "$"-style "B" (favicon, collapsed sidebar,
-// small icon slots) — the full logo reuses that same mark. Size the wordmark with
-// a font-size class (e.g. `text-xl`); size the letter-mark with a box class (e.g.
-// `size-6`).
+// Pass `symbol` to render just the mark (favicon, collapsed sidebar, small icon slots) —
+// the full logo reuses it. Size the wordmark with a font-size class (e.g. `text-xl`);
+// size the mark with a box class (e.g. `size-6`).
 withDefaults(defineProps<{ symbol?: boolean }>(), { symbol: false })
 </script>
 
 <template>
   <svg
     v-if="symbol"
-    width="32"
-    height="32"
-    viewBox="0 0 48 48"
+    :viewBox="BRAND_MARK_VIEWBOX"
+    fill="none"
     role="img"
-    aria-label="BetoTracker"
+    :aria-label="BRAND_NAME"
   >
-    <title>BetoTracker</title>
-    <text
-      x="24"
-      y="25"
-      text-anchor="middle"
-      dominant-baseline="central"
-      font-family="Outfit, ui-sans-serif, system-ui, sans-serif"
-      font-weight="800"
-      font-size="44"
+    <title>{{ BRAND_NAME }}</title>
+    <path
+      v-for="(d, i) in BRAND_MARK_PATHS"
+      :key="i"
+      :d="d"
       class="fill-primary"
-    >B</text>
-    <rect x="22.2" y="3.5" width="3.6" height="41" rx="1.3" class="fill-primary" />
+    />
   </svg>
 
   <span
     v-else
-    class="inline-flex items-center gap-0 font-extrabold tracking-tight text-highlighted"
+    class="inline-flex items-center gap-[0.35em] font-extrabold tracking-tight text-highlighted"
     role="img"
-    aria-label="BetoTracker"
+    :aria-label="BRAND_NAME"
   >
-    <Logo symbol aria-hidden="true" class="size-[1.15em] shrink-0" />
-    <!-- Pull the wordmark left to close the gap left by the mark SVG's internal
-         right-side whitespace, so the "B" reads as the start of "BetoTracker". -->
-    <span class="ml-[-0.15em]">eto<span class="font-medium text-muted">Tracker</span></span>
+    <Logo symbol aria-hidden="true" class="h-[0.9em] w-[1.02em] shrink-0" />
+    <span>{{ BRAND_NAME }}</span>
   </span>
 </template>

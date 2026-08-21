@@ -1,9 +1,9 @@
 ---
 name: dev-workflow
-description: How to run, build, and verify BetoTracker locally. Use when starting the dev environment, running the app, applying database migrations, or verifying changes.
+description: How to run, build, and verify Meridiano locally. Use when starting the dev environment, running the app, applying database migrations, or verifying changes.
 ---
 
-# BetoTracker Dev Workflow
+# Meridiano Dev Workflow
 
 ## Package manager
 

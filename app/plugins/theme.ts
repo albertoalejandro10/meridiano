@@ -8,9 +8,10 @@ import colors from 'tailwindcss/colors'
 //  - radius and the optional black-as-primary override are CSS-variable overrides
 //    injected as a <style> tag. Doubling `:root` raises specificity above Nuxt UI's
 //    own `--ui-*` variables and the base value in main.css, so head order is irrelevant.
-//  - the favicon is rebuilt as a data-URI "$"-style "B" mark tinted with the resolved
-//    primary color, because a browser-tab icon is rendered in isolation and can't read
-//    the page's CSS variables. Tailwind's color values are the exact ones the theme uses.
+//  - the favicon is rebuilt as a data-URI copy of the brand mark (app/utils/brand.ts)
+//    tinted with the resolved primary color, because a browser-tab icon is rendered in
+//    isolation and can't read the page's CSS variables. Tailwind's color values are the
+//    exact ones the theme uses.
 const palettes = colors as unknown as Record<string, Record<string, string>>
 
 export default defineNuxtPlugin(() => {
@@ -37,15 +38,15 @@ export default defineNuxtPlugin(() => {
   })
 
   const faviconHref = computed(() => {
-    const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">'
-      + `<text x="24" y="25" text-anchor="middle" dominant-baseline="central" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="800" font-size="44" fill="${faviconFill.value}">B</text>`
-      + `<rect x="22.2" y="3.5" width="3.6" height="41" rx="1.3" fill="${faviconFill.value}"/>`
-      + '</svg>'
+    const paths = BRAND_MARK_PATHS
+      .map(d => `<path d="${d}" fill="${faviconFill.value}"/>`)
+      .join('')
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${BRAND_MARK_VIEWBOX}">${paths}</svg>`
     return `data:image/svg+xml,${encodeURIComponent(svg)}`
   })
 
   useHead({
-    style: [{ innerHTML: css, id: 'beto-theme-vars' }],
+    style: [{ innerHTML: css, id: 'meridiano-theme-vars' }],
     link: [{ key: 'favicon', rel: 'icon', type: 'image/svg+xml', href: faviconHref }],
   })
 })

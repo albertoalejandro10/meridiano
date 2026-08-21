@@ -7,14 +7,30 @@
     "new": "Nuevo",
     "name": "Nombre",
     "currency": "Moneda",
+    "cadence": {
+      "WEEKLY": "Semanal",
+      "BIWEEKLY": "Quincenal",
+      "MONTHLY": "Mensual",
+      "QUARTERLY": "Trimestral",
+      "YEARLY": "Anual"
+    },
     "amount": "Monto",
     "date": "Fecha",
-    "fee": "Comisión",
+    "internalFee": "Comisión interna",
+    "externalFee": "Comisión externa",
+    "lastFee": "La última vez: {amount}",
     "description": "Descripción",
     "optional": "Opcional",
     "optionalNote": "Nota opcional",
     "value": "Valor",
     "loadMore": "Cargar más",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "rename": "Renombrar",
+    "actions": "Acciones",
+    "today": "Hoy",
+    "yesterday": "Ayer",
+    "relativeDays": "hoy | ayer | hace {n} días",
     "tryAgain": "Inténtalo de nuevo.",
     "somethingWrong": "Algo salió mal",
     "toasts": {
@@ -31,9 +47,17 @@
   },
   "nav": {
     "dashboard": "Panel",
+    "chat": "Chat",
     "transactions": "Transacciones",
+    "analytics": "Analíticas",
     "accounts": "Cuentas",
+    "recurring": "Recurrentes",
+    "budgets": "Presupuestos",
     "goals": "Metas",
+    "planning": "Planificación",
+    "shoppingLists": "Listas de compras",
+    "tasks": "Tareas",
+    "notes": "Notas",
     "settings": "Configuración",
     "signOut": "Cerrar sesión",
     "account": "Cuenta"
@@ -64,6 +88,75 @@
     "LOAN": "Préstamo",
     "OTHER_LIABILITY": "Otro pasivo"
   },
+  "categories": {
+    "defaults": {
+      "salary": "Sueldo",
+      "freelance": "Freelance",
+      "bonus": "Bonificación",
+      "investments": "Rendimientos",
+      "rentalIncome": "Alquileres",
+      "remittances": "Remesas",
+      "refunds": "Reembolsos",
+      "gifts": "Regalos recibidos",
+      "otherIncome": "Otros ingresos",
+      "groceries": "Mercado",
+      "dining": "Comer fuera",
+      "transport": "Transporte",
+      "fuel": "Gasolina",
+      "housing": "Vivienda",
+      "utilities": "Servicios básicos",
+      "internetPhone": "Internet y teléfono",
+      "health": "Salud",
+      "insurance": "Seguros",
+      "education": "Educación",
+      "childcare": "Cuidado infantil",
+      "shopping": "Compras",
+      "clothing": "Ropa",
+      "personalCare": "Cuidado personal",
+      "fitness": "Gimnasio",
+      "entertainment": "Entretenimiento",
+      "subscriptions": "Suscripciones",
+      "travel": "Viajes",
+      "pets": "Mascotas",
+      "giftsGiven": "Regalos",
+      "donations": "Donaciones",
+      "taxes": "Impuestos",
+      "fees": "Comisiones",
+      "other": "Otros",
+      "adjustment": "Ajuste de saldo"
+    }
+  },
+  "chat": {
+    "title": "Chat IA",
+    "newConversation": "Nueva conversación",
+    "untitled": "Conversación sin título",
+    "noConversations": "Aún no hay conversaciones.",
+    "conversationActions": "Acciones de la conversación",
+    "inputPlaceholder": "Pregunta sobre tus finanzas…",
+    "sendFailed": "No se pudo enviar tu mensaje",
+    "retry": "Reintentar",
+    "noReply": "Este mensaje nunca recibió respuesta.",
+    "disclosure": "Tus datos financieros se envían al modelo de IA de OpenCode Go para responder tus preguntas.",
+    "empty": {
+      "title": "Pregunta sobre tus finanzas",
+      "description": "Inicia una nueva conversación para preguntar sobre tus saldos, gastos, pagos recurrentes o metas de ahorro."
+    },
+    "modelPicker": {
+      "placeholder": "Modelo"
+    },
+    "confirmDelete": {
+      "title": "¿Eliminar conversación?",
+      "message": "Esto eliminará permanentemente \"{title}\" y sus mensajes."
+    },
+    "toasts": {
+      "createFailed": "No se pudo iniciar una nueva conversación",
+      "renamed": "Conversación renombrada",
+      "renameFailed": "No se pudo renombrar la conversación",
+      "deleted": "Conversación eliminada",
+      "deleteFailed": "No se pudo eliminar la conversación"
+    },
+    "showConversations": "Mostrar conversaciones"
+  },
   "dashboard": {
     "title": "Inicio",
     "tabs": {
@@ -81,8 +174,81 @@
     "noAssets": "Aún no tienes activos. Crea una cuenta para empezar.",
     "lastTransaction": "Última transacción"
   },
+  "analytics": {
+    "title": "Analíticas",
+    "subtitle": "Información sobre tus gastos, ingresos y patrimonio",
+    "range": {
+      "m3": "Últimos 3 meses",
+      "m6": "Últimos 6 meses",
+      "m12": "Últimos 12 meses",
+      "m24": "Últimos 24 meses"
+    },
+    "digest": {
+      "title": "Resumen financiero con IA",
+      "description": "Una lectura rápida y en lenguaje sencillo de tus finanzas, generada a partir de los datos de abajo.",
+      "empty": "Obtén un resumen breve de cómo van tus finanzas este mes.",
+      "generate": "Explica mis finanzas",
+      "regenerate": "Regenerar",
+      "failed": "No se pudo generar el resumen",
+      "generatedAt": "Generado {when}",
+      "followUp": "Hacer una pregunta",
+      "followUpTitle": "Preguntas sobre mi resumen",
+      "followUpFailed": "No se pudo iniciar la conversación"
+    },
+    "cashflow": {
+      "title": "Flujo de caja",
+      "income": "Ingresos",
+      "expenses": "Gastos",
+      "avgSavingsRate": "Tasa de ahorro prom.",
+      "savingsRate": "Tasa de ahorro",
+      "empty": "Aún no hay ingresos ni gastos en este período."
+    },
+    "spending": {
+      "title": "Desglose de gastos",
+      "uncategorized": "Sin categoría",
+      "other": "Otros",
+      "prevMonth": "Mes anterior",
+      "nextMonth": "Mes siguiente",
+      "empty": "No hay gastos registrados este mes.",
+      "noTransactions": "No se encontraron transacciones."
+    },
+    "trends": {
+      "title": "Tendencias",
+      "category": "Categoría",
+      "thisMonth": "Este mes",
+      "vsLastMonth": "vs mes anterior",
+      "vsLastYear": "vs año anterior",
+      "new": "Nuevo",
+      "empty": "Aún no hay datos suficientes para comparar."
+    },
+    "recurring": {
+      "title": "Gastos recurrentes",
+      "description": "Suscripciones y facturas detectadas a partir de transacciones repetidas",
+      "monthlyTotal": "Total recurrente mensual",
+      "showInactive": "Mostrar inactivos",
+      "nextExpected": "próximo",
+      "lastCharge": "último",
+      "perMonth": "mes",
+      "empty": "Aún no se detectan gastos recurrentes. Aparecen tras tres cargos similares a un ritmo constante.",
+      "track": "Seguir este",
+      "tracked": "En seguimiento"
+    },
+    "netWorth": {
+      "title": "Patrimonio por tipo",
+      "cash": "Efectivo",
+      "investments": "Inversiones",
+      "property": "Propiedades y otros",
+      "liabilities": "Pasivos",
+      "empty": "Aún no hay cuentas en esta moneda."
+    },
+    "incomeSources": {
+      "title": "Fuentes de ingresos",
+      "empty": "No hay ingresos registrados este mes."
+    }
+  },
   "accounts": {
     "title": "Cuentas",
+    "subtitle": "Todo lo que tienes y lo que debes, de un vistazo",
     "assets": "Activos",
     "liabilities": "Pasivos",
     "debts": "Deudas",
@@ -98,6 +264,10 @@
       "deleted": "Cuenta eliminada",
       "sold": "Activo vendido",
       "saleFailed": "No se pudo vender",
+      "reconciled": "Punto de control guardado",
+      "confirmedUpToDate": "Marcada como al día",
+      "balanceAdjusted": "Saldo corregido",
+      "reconcileFailed": "No se pudo conciliar",
       "hasTransactions": {
         "title": "La cuenta tiene transacciones",
         "description": "Mejor archívala."
@@ -127,13 +297,79 @@
       "cashAccount": "Cuenta de efectivo",
       "salePrice": "Precio de venta",
       "note": "Nota",
-      "netAfterFee": "Recibes {net} después de la comisión de {fee}.",
+      "internalFeeNote": "La comisión interna de {fee} se cobra a la cuenta del activo.",
+      "netAfterFee": "Recibes {net} después de la comisión externa de {fee}.",
       "noCash": "Primero crea una cuenta de efectivo en {currency} para recibir el dinero.",
       "submit": "Vender"
+    },
+    "freshness": {
+      "lastTransaction": "Última transacción: {when}",
+      "noTransactions": "Aún sin transacciones",
+      "reconciled": "Conciliada {when}",
+      "confirm": "Todo está al día"
+    },
+    "reconcile": {
+      "action": "Conciliar saldo",
+      "title": "Conciliar saldo",
+      "titleNamed": "Conciliar {name}",
+      "intro": "Escribe el saldo que muestra tu banco o plataforma ahora mismo. Si no coincide con lo registrado aquí, puedes corregir la diferencia al momento o dejarla anotada.",
+      "recordedBalance": "Saldo registrado",
+      "recordedOwed": "Deuda registrada",
+      "lastReconciled": "Última conciliación",
+      "actualBalance": "Saldo real",
+      "actualOwed": "Deuda real",
+      "match": "Los saldos coinciden — esta cuenta está al día.",
+      "missingIncome": "El saldo real es {amount} mayor que el registrado — probablemente faltan ingresos o transferencias entrantes.",
+      "missingExpenses": "El saldo real es {amount} menor que el registrado — probablemente faltan gastos.",
+      "missingCharges": "Debes {amount} más de lo registrado — probablemente faltan cargos.",
+      "missingPayments": "Debes {amount} menos de lo registrado — probablemente faltan pagos.",
+      "diffHint": "Al guardar se anota la diferencia sin cerrarla — registra las transacciones que faltan y vuelve a conciliar.",
+      "adjust": "Corregir el saldo con un ajuste",
+      "adjustPreviewIncome": "Añade un ingreso de {amount} el {date} para que el saldo coincida.",
+      "adjustPreviewExpense": "Añade un gasto de {amount} el {date} para que el saldo coincida.",
+      "submit": "Guardar punto de control",
+      "submitAdjust": "Guardar y corregir"
+    },
+    "detail": {
+      "notFound": "Cuenta no encontrada",
+      "backToAccounts": "Volver a cuentas",
+      "currentBalance": "Saldo actual",
+      "amountOwed": "Deuda",
+      "balanceHistory": "Historial de saldo",
+      "amountOwedHistory": "Deuda a lo largo del tiempo",
+      "cashflow": {
+        "title": "Entradas y salidas",
+        "description": "Todo lo que pasó por esta cuenta, transferencias incluidas.",
+        "empty": "Aún sin movimientos en este período."
+      },
+      "categories": {
+        "title": "Gastos por categoría",
+        "empty": "Sin gastos categorizados en este período."
+      },
+      "stats": {
+        "thisMonthIn": "Entradas del mes",
+        "thisMonthOut": "Salidas del mes",
+        "avgMonthlyNet": "Neto mensual promedio",
+        "transactions": "Transacciones"
+      },
+      "recent": {
+        "title": "Transacciones recientes",
+        "viewAll": "Ver todas",
+        "empty": "Aún sin transacciones."
+      },
+      "reconciliations": {
+        "title": "Historial de conciliaciones",
+        "empty": "Nunca conciliada. Guarda un punto de control para saber qué tan al día están tus registros."
+      },
+      "fixedValue": {
+        "currentValue": "Valor actual",
+        "since": "Registrado desde {date}"
+      }
     }
   },
   "transactions": {
     "title": "Transacciones",
+    "subtitle": "Tus ingresos, gastos y transferencias, día a día",
     "transfer": "Transferencia",
     "income": "Ingreso",
     "expense": "Gasto",
@@ -141,6 +377,12 @@
     "empty": "No se encontraron transacciones.",
     "allAccounts": "Todas las cuentas",
     "allTypes": "Todos los tipos",
+    "allCategories": "Todas las categorías",
+    "clearFilters": "Limpiar filtros",
+    "staleAlert": {
+      "title": "{count} cuenta lleva más de una semana sin transacciones | {count} cuentas llevan más de una semana sin transacciones",
+      "action": "Revisar cuentas"
+    },
     "toasts": {
       "saved": "Transacción guardada",
       "updated": "Transacción actualizada",
@@ -152,7 +394,7 @@
       "transferMessage": "¿Eliminar esta transferencia de {amount}? Se eliminarán ambos lados.",
       "incomeMessage": "¿Eliminar este ingreso de {amount}? Esta acción no se puede deshacer.",
       "expenseMessage": "¿Eliminar este gasto de {amount}? Esta acción no se puede deshacer.",
-      "feeNote": "Su comisión también se eliminará."
+      "feeNote": "Sus comisiones también se eliminarán."
     },
     "modal": {
       "editTitle": "Editar transacción",
@@ -161,8 +403,8 @@
       "selectAccount": "Selecciona una cuenta",
       "category": "Categoría",
       "noCategory": "Sin categoría",
-      "netAfterFee": "Neto recibido después de la comisión: {amount}",
-      "totalWithFee": "Total con comisión: {amount}"
+      "netAfterFee": "Neto recibido después de comisiones: {amount}",
+      "totalWithFee": "Total con comisiones: {amount}"
     }
   },
   "transfers": {
@@ -176,9 +418,80 @@
       "to": "Hacia",
       "source": "Origen",
       "destination": "Destino",
-      "netAfterFee": "El destino recibe {net} después de la comisión de {fee}.",
-      "noDestination": "Agrega otra cuenta en la misma moneda para poder transferir.",
+      "sourcePaysTotal": "La cuenta de origen paga {total} en total, incluyendo la comisión interna de {fee}.",
+      "netAfterFee": "El destino recibe {net} después de la comisión externa de {fee}.",
+      "receivedAmount": "Monto recibido ({currency})",
+      "impliedRate": "Tasa implícita: 1 {base} = {rate}",
+      "binanceReference": "Binance P2P: {rate}",
+      "noDestination": "Agrega otra cuenta para poder transferir.",
+      "repeatRoute": "Repetir una transferencia reciente",
       "submit": "Transferir"
+    }
+  },
+  "planning": {
+    "title": "Planificación",
+    "subtitle": "Planifica tu salida de las deudas y el camino hacia tus metas.",
+    "debt": {
+      "title": "Plan de pago de deudas",
+      "description": "Define la tasa y el pago de cada deuda, elige una estrategia y mira cuándo estarás libre de deudas.",
+      "noDebts": "No tienes deudas abiertas — nada que pagar. ¡Disfrútalo!",
+      "apr": "Tasa anual %",
+      "monthlyPayment": "Pago mensual",
+      "extraPerMonth": "Extra al mes",
+      "extraHelp": "Además de los pagos de arriba.",
+      "strategy": "Estrategia",
+      "snowball": "Bola de nieve",
+      "avalanche": "Avalancha",
+      "snowballHint": "Primero el saldo más pequeño — victorias rápidas que te mantienen motivado.",
+      "avalancheHint": "Primero el interés más alto — la opción más barata en total.",
+      "needPayments": "Ingresa un pago mensual para cada deuda para proyectar un plan de pago.",
+      "neverPaysOff": {
+        "title": "Estos pagos no alcanzan a cubrir los intereses",
+        "description": "El saldo crece más rápido de lo que lo pagas. Sube los pagos o el monto extra para ver un plan de pago."
+      },
+      "totalDebt": "Deuda total",
+      "debtFree": "Libre de deudas en",
+      "inMonths": "en {n} mes | en {n} meses",
+      "totalInterest": "Interés total",
+      "savesVs": "Ahorra {amount} en intereses frente a {strategy}",
+      "otherSaves": "{strategy} te ahorraría {amount} en intereses",
+      "sameInterest": "Ambas estrategias cuestan lo mismo aquí.",
+      "payoffOrder": "Orden de pago",
+      "coaching": {
+        "title": "Recomendación con IA",
+        "empty": "Obtén una lectura en lenguaje sencillo de este plan y si cambiar de estrategia ayudaría.",
+        "generate": "Aconséjame",
+        "regenerate": "Regenerar",
+        "failed": "No se pudo generar la recomendación"
+      }
+    },
+    "whatIf": {
+      "title": "Simulador de escenarios",
+      "description": "Elige una meta y prueba un monto mensual — mira cuándo la alcanzarías.",
+      "empty": "Aún no hay metas. Crea una para simular tu ahorro hacia ella.",
+      "goal": "Meta",
+      "monthlySaving": "Ahorro mensual",
+      "currentPaceHint": "Tu ritmo reciente es {amount}/mes.",
+      "alreadyAchieved": "Esta meta ya está lograda.",
+      "noProgress": "Con este monto mensual la meta queda fuera de alcance — prueba un número más alto.",
+      "reachOn": "Alcanzarías {goal} en {date}",
+      "onTarget": "justo en tu fecha objetivo",
+      "beforeTarget": "{n} mes antes | {n} meses antes",
+      "afterTarget": "{n} mes tarde | {n} meses tarde",
+      "inMonths": "{n} mes desde hoy | {n} meses desde hoy",
+      "requiredForDate": "llegar a tu fecha objetivo del {date} requiere {amount}/mes",
+      "series": {
+        "plan": "Este plan",
+        "pace": "Ritmo actual",
+        "required": "Necesario para la fecha objetivo"
+      },
+      "coaching": {
+        "title": "Recomendación con IA",
+        "empty": "Obtén una lectura en lenguaje sencillo de si este plan te lleva a la meta.",
+        "generate": "Aconséjame",
+        "regenerate": "Regenerar",
+        "failed": "No se pudo generar la recomendación"
+      }
     }
   },
   "goals": {
@@ -294,18 +607,424 @@
     }
   },
   "goalIcons": {
-    "target": { "label": "General", "description": "Cualquier meta de ahorro" },
-    "piggy-bank": { "label": "Ahorros", "description": "Construye un colchón de efectivo" },
-    "house": { "label": "Hogar", "description": "Comprar o renovar una casa" },
-    "plane": { "label": "Viaje", "description": "Un viaje o unas vacaciones" },
-    "car": { "label": "Vehículo", "description": "Un carro u otro vehículo" },
-    "graduation-cap": { "label": "Educación", "description": "Matrícula o cursos" },
-    "gem": { "label": "Lujo", "description": "Un gusto de alto precio" },
-    "baby": { "label": "Familia", "description": "Un bebé o una familia que crece" },
-    "heart": { "label": "Boda", "description": "Una boda o celebración" },
-    "shield": { "label": "Emergencia", "description": "Un respaldo para imprevistos" },
-    "gift": { "label": "Regalo", "description": "Un regalo para alguien" },
-    "palmtree": { "label": "Jubilación", "description": "Un ahorro a largo plazo" }
+    "target": {
+      "label": "General",
+      "description": "Cualquier meta de ahorro"
+    },
+    "piggy-bank": {
+      "label": "Ahorros",
+      "description": "Construye un colchón de efectivo"
+    },
+    "house": {
+      "label": "Hogar",
+      "description": "Comprar o renovar una casa"
+    },
+    "plane": {
+      "label": "Viaje",
+      "description": "Un viaje o unas vacaciones"
+    },
+    "car": {
+      "label": "Vehículo",
+      "description": "Un carro u otro vehículo"
+    },
+    "graduation-cap": {
+      "label": "Educación",
+      "description": "Matrícula o cursos"
+    },
+    "gem": {
+      "label": "Lujo",
+      "description": "Un gusto de alto precio"
+    },
+    "baby": {
+      "label": "Familia",
+      "description": "Un bebé o una familia que crece"
+    },
+    "heart": {
+      "label": "Boda",
+      "description": "Una boda o celebración"
+    },
+    "shield": {
+      "label": "Emergencia",
+      "description": "Un respaldo para imprevistos"
+    },
+    "gift": {
+      "label": "Regalo",
+      "description": "Un regalo para alguien"
+    },
+    "palmtree": {
+      "label": "Jubilación",
+      "description": "Un ahorro a largo plazo"
+    }
+  },
+  "budgets": {
+    "title": "Presupuestos",
+    "subtitle": "Define límites mensuales por categoría — o dale un destino a cada unidad de ingreso.",
+    "new": "Nuevo presupuesto",
+    "empty": "Aún no hay presupuestos. Define un límite mensual para una categoría y controla tu gasto.",
+    "prevMonth": "Mes anterior",
+    "nextMonth": "Mes siguiente",
+    "mode": {
+      "category": "Límites",
+      "envelope": "Sobres"
+    },
+    "alert": {
+      "title": "{count} presupuesto superó su límite este mes | {count} presupuestos superaron su límite este mes"
+    },
+    "summary": {
+      "budgeted": "Presupuestado",
+      "spent": "Gastado",
+      "remaining": "Restante",
+      "afterBills": "{amount} tras los pagos recurrentes"
+    },
+    "limits": {
+      "title": "Límites mensuales"
+    },
+    "envelope": {
+      "title": "Sobres",
+      "income": "Ingreso mensual esperado",
+      "setIncome": "Definir ingreso",
+      "allocated": "Asignado",
+      "fullyAllocated": "Todo asignado",
+      "toAllocate": "{amount} por asignar",
+      "overAllocated": "Sobreasignado por {amount}",
+      "noIncome": "Define tu ingreso mensual esperado para empezar a repartirlo entre sobres.",
+      "committed": "{amount} de este mes ya están comprometidos en pagos recurrentes."
+    },
+    "row": {
+      "over": "Excedido por {amount}",
+      "left": "{amount} disponible",
+      "leftAfterBills": "quedan {amount} tras los recibos",
+      "committed": "{amount} comprometidos en pagos recurrentes este mes",
+      "noEstimate": "{count} pago recurrente de este mes aún no tiene estimación, así que no se cuenta | {count} pagos recurrentes de este mes aún no tienen estimación, así que no se cuentan"
+    },
+    "unbudgeted": {
+      "title": "Gasto sin presupuesto",
+      "description": "Categorías con gasto este mes pero sin presupuesto todavía",
+      "add": "Crear presupuesto"
+    },
+    "modal": {
+      "newTitle": "Nuevo presupuesto",
+      "editTitle": "Editar presupuesto",
+      "category": "Categoría",
+      "categoryPlaceholder": "Elige una categoría",
+      "amount": "Monto mensual",
+      "amountHelp": "Aplica cada mes",
+      "currencyHelp": "La moneda no puede cambiar después de crearlo"
+    },
+    "toasts": {
+      "created": "Presupuesto guardado",
+      "updated": "Presupuesto actualizado",
+      "deleted": "Presupuesto eliminado",
+      "incomeSaved": "Ingreso esperado guardado"
+    },
+    "confirmDelete": {
+      "title": "Eliminar presupuesto",
+      "message": "¿Eliminar el presupuesto de \"{name}\"? Tus transacciones no se ven afectadas."
+    }
+  },
+  "recurring": {
+    "title": "Pagos recurrentes",
+    "subtitle": "Los recibos que pagas con cierta frecuencia. La app te pregunta si pagaste cada uno — nunca inventa un cargo.",
+    "new": "Nuevo pago recurrente",
+    "tracked": "Pagos en seguimiento",
+    "paused": "En pausa",
+    "pause": "Pausar",
+    "resume": "Reanudar",
+    "until": "hasta {date}",
+    "noEstimate": "Sin estimación",
+    "empty": "Todavía no sigues ningún pago recurrente",
+    "emptyHint": "Agrega los recibos que pagas con frecuencia — internet, gimnasio, alquiler — y cada vez que toque, la app te preguntará si lo pagaste y cuánto.",
+    "pendingBanner": "{count} pago recurrente por revisar | {count} pagos recurrentes por revisar",
+    "pendingBannerHint": "Indica si pagaste cada uno y por cuánto.",
+    "bannerAction": "Revisar",
+    "modal": {
+      "newTitle": "Nuevo pago recurrente",
+      "editTitle": "Editar pago recurrente",
+      "description": "No se registra nada automáticamente — te preguntaremos cada vez que toque.",
+      "name": "Nombre",
+      "nameHelp": "Se usa como descripción de la transacción cuando confirmas un pago.",
+      "namePlaceholder": "Internet, Gimnasio, Tenis…",
+      "account": "Cuenta",
+      "cadence": "Se repite",
+      "estimate": "Monto estimado",
+      "estimateHelp": "Opcional. Solo es un punto de partida para la revisión — el monto real lo confirmas cada vez.",
+      "estimatePlaceholder": "Déjalo vacío si varía mucho",
+      "startDate": "Primera fecha",
+      "startDateHelp": "Las demás fechas se cuentan a partir de aquí.",
+      "endDate": "Termina el",
+      "endDateHelp": "Opcional.",
+      "enabled": "Activo",
+      "enabledHelp": "Al pausarlo deja de vencer; se conserva el historial que ya respondiste."
+    },
+    "review": {
+      "title": "¿Pagaste estos?",
+      "description": "Responde lo que recuerdes y deja el resto — los que no respondas siguen en la cola.",
+      "paid": "Lo pagué",
+      "skipped": "No lo pagué",
+      "paidOn": "Pagado el",
+      "lastPaid": "La última vez: {amount}",
+      "amountRequired": "Ingresa el monto que pagaste",
+      "note": "¿Qué pasó?",
+      "noteHelp": "Opcional — para que el hueco tenga sentido dentro de unos meses.",
+      "notePlaceholder": "Lo pagó mi familia, lo cancelé, me lo condonaron…",
+      "markAllPaid": "Marcar todos como pagados",
+      "skipAll": "Marcar todos como no pagados",
+      "action": "Guardar {count} respuesta | Guardar {count} respuestas"
+    },
+    "forecast": {
+      "monthlyTotal": "Estimado al mes",
+      "nextUp": "Próximos",
+      "missingEstimate": "{count} pago aún no tiene estimación | {count} pagos aún no tienen estimación"
+    },
+    "history": {
+      "title": "Respondidos",
+      "undo": "Deshacer"
+    },
+    "confirmDelete": {
+      "title": "¿Eliminar el pago recurrente?",
+      "message": "«{description}» dejará de vencer. Se conservan las transacciones que ya creó."
+    },
+    "confirmUndo": {
+      "title": "¿Deshacer esta respuesta?",
+      "message": "«{description}» volverá a quedar pendiente de revisión.",
+      "messagePaid": "Se eliminará la transacción creada para «{description}» y volverá a quedar pendiente de revisión."
+    },
+    "toasts": {
+      "created": "Pago recurrente creado",
+      "updated": "Pago recurrente actualizado",
+      "deleted": "Pago recurrente eliminado",
+      "confirmed": "{created} pagados · {skipped} omitidos",
+      "undone": "Respuesta deshecha"
+    }
+  },
+  "shoppingLists": {
+    "title": "Listas de compras",
+    "subtitle": "Calcula tu compra en bolívares y mira los dólares a vender.",
+    "new": "Nueva lista",
+    "empty": "Aún no hay listas de compras. Crea una y agrega lo que necesitas comprar.",
+    "notFound": "No se encontró esta lista de compras.",
+    "backToLists": "Volver a las listas",
+    "noItems": "Aún no hay artículos — escribe abajo para agregar el primero.",
+    "itemCount": "{count} artículo | {count} artículos",
+    "checkedCount": "{checked}/{total} marcados",
+    "card": {
+      "view": "Ver {name}"
+    },
+    "table": {
+      "item": "Artículo",
+      "quantity": "Cant.",
+      "unitPrice": "Precio unit. (Bs.)",
+      "total": "Total"
+    },
+    "entry": {
+      "namePlaceholder": "Agregar un artículo…",
+      "qtyPlaceholder": "1",
+      "pricePlaceholder": "0.00",
+      "add": "Agregar artículo",
+      "editing": "Editando \"{name}\""
+    },
+    "rates": {
+      "title": "Tasas de cambio",
+      "bcv": "Tasa BCV",
+      "binance": "Tasa Binance P2P",
+      "refresh": "Actualizar",
+      "updated": "Actualizada {date}",
+      "unavailable": "No se pudo obtener — ingrésala manualmente",
+      "perUsd": "Bs. por USD"
+    },
+    "summary": {
+      "totalVes": "Total a comprar",
+      "ofFullTotal": "de {amount} en total",
+      "usdAtBcv": "USD a vender a tasa BCV",
+      "usdAtBinance": "USD a vender a tasa Binance"
+    },
+    "brecha": {
+      "title": "Brecha: {pct}",
+      "wide": "La tasa de Binance está {pct} por encima del BCV — un gran momento para vender tus dólares.",
+      "moderate": "La tasa de Binance está {pct} por encima del BCV — una prima razonable para vender.",
+      "narrow": "Solo {pct} entre las dos tasas — poca prima para vender ahora.",
+      "inverted": "La tasa oficial está por encima de la paralela ahora mismo — algo inusual, verifica antes de vender.",
+      "saves": "Vender en Binance requiere {amount} menos para esta lista.",
+      "badge": {
+        "wide": "Buen momento para vender",
+        "moderate": "Razonable",
+        "narrow": "Pareja",
+        "inverted": "Inusual"
+      }
+    },
+    "modal": {
+      "newTitle": "Nueva lista de compras",
+      "editTitle": "Renombrar lista",
+      "namePlaceholder": "p. ej. Mercado semanal"
+    },
+    "toasts": {
+      "created": "Lista creada",
+      "updated": "Lista actualizada",
+      "deleted": "Lista eliminada"
+    },
+    "confirmDelete": {
+      "title": "Eliminar lista",
+      "message": "¿Eliminar \"{name}\" y todos sus artículos? Esto no se puede deshacer."
+    },
+    "confirmDeleteItem": {
+      "title": "Eliminar artículo",
+      "message": "¿Eliminar \"{name}\"?"
+    }
+  },
+  "tasks": {
+    "title": "Tareas del mes",
+    "subtitle": "Lo que quieres completar antes de que termine el mes",
+    "new": "Nueva tarea",
+    "empty": "Aún no hay tareas este mes. Anota lo que quieres lograr.",
+    "progress": "{done} de {total} completadas",
+    "prevMonth": "Mes anterior",
+    "nextMonth": "Mes siguiente",
+    "currentMonth": "Hoy",
+    "uncategorized": "Sin categoría",
+    "toggleDone": "Marcar como completada",
+    "taskActions": "Acciones de la tarea",
+    "carriedFrom": "de {month}",
+    "linkedTo": "Vinculada a \"{title}\"",
+    "moveToMonth": "Mover a {month}",
+    "priorities": {
+      "HIGH": "Alta",
+      "MEDIUM": "Media",
+      "LOW": "Baja"
+    },
+    "modal": {
+      "newTitle": "Nueva tarea",
+      "editTitle": "Editar tarea",
+      "taskTitle": "Título",
+      "titlePlaceholder": "p. ej. Renovar el seguro del carro",
+      "notes": "Notas",
+      "priority": "Prioridad",
+      "dueDate": "Fecha límite",
+      "category": "Categoría",
+      "noCategory": "Sin categoría",
+      "manageCategories": "Gestionar categorías",
+      "longTask": "Tarea a largo plazo",
+      "longTaskHelp": "Esta tarea cuenta como progreso hacia la tarea a largo plazo vinculada.",
+      "noLongTask": "Ninguna"
+    },
+    "categories": {
+      "title": "Categorías de tareas",
+      "manageButton": "Categorías",
+      "new": "Nueva categoría",
+      "empty": "Aún no hay categorías: crea temas como Casa, Salud o Finanzas.",
+      "namePlaceholder": "p. ej. Casa",
+      "icon": "Icono",
+      "color": "Color",
+      "confirmDelete": {
+        "title": "Eliminar categoría",
+        "message": "¿Eliminar \"{name}\"? Sus tareas se conservarán, sin categoría."
+      },
+      "toasts": {
+        "created": "Categoría creada",
+        "updated": "Categoría actualizada",
+        "deleted": "Categoría eliminada"
+      }
+    },
+    "carryOver": {
+      "banner": "{count} tarea pendiente de un mes anterior | {count} tareas pendientes de meses anteriores",
+      "bannerAction": "Revisar y traspasar",
+      "title": "Traspasar tareas",
+      "description": "Elige qué tareas pendientes mover a este mes.",
+      "selectAll": "Seleccionar todas",
+      "selectNone": "Deseleccionar todas",
+      "action": "Traspasar {count} tarea | Traspasar {count} tareas",
+      "toast": "{count} tarea movida a este mes | {count} tareas movidas a este mes"
+    },
+    "long": {
+      "title": "Tareas a largo plazo",
+      "subtitle": "Compromisos que toman más de un mes, como aprender inglés",
+      "new": "Nueva tarea a largo plazo",
+      "empty": "Aún no hay tareas a largo plazo. Anota las grandes metas en las que trabajas.",
+      "progressHelp": "Tareas mensuales completadas vinculadas a esta",
+      "modal": {
+        "newTitle": "Nueva tarea a largo plazo",
+        "editTitle": "Editar tarea a largo plazo",
+        "titlePlaceholder": "p. ej. Aprender inglés",
+        "targetDate": "Fecha objetivo"
+      },
+      "confirmDelete": {
+        "title": "Eliminar tarea a largo plazo",
+        "message": "¿Eliminar \"{title}\"? Sus tareas mensuales vinculadas se conservarán, sin vínculo."
+      },
+      "toasts": {
+        "created": "Tarea a largo plazo creada",
+        "updated": "Tarea a largo plazo actualizada",
+        "deleted": "Tarea a largo plazo eliminada"
+      }
+    },
+    "confirmDelete": {
+      "title": "Eliminar tarea",
+      "message": "¿Eliminar \"{title}\"? Esta acción no se puede deshacer."
+    },
+    "toasts": {
+      "created": "Tarea creada",
+      "updated": "Tarea actualizada",
+      "deleted": "Tarea eliminada",
+      "movedNext": "Tarea movida al mes siguiente",
+      "movedPrev": "Tarea movida al mes anterior"
+    }
+  },
+  "notes": {
+    "title": "Notas",
+    "subtitle": "Todo lo que vale la pena guardar: un comando que siempre olvidas, una receta, una lista de pasos.",
+    "new": "Nueva nota",
+    "empty": "Aún no tienes notas.",
+    "emptyHint": "Anota lo que buscarías dos veces: un comando de terminal, una receta, los pasos para renovar un documento.",
+    "noResults": "Ninguna nota coincide con estos filtros.",
+    "notFound": "No se encontró esta nota.",
+    "backToNotes": "Volver a las notas",
+    "searchPlaceholder": "Buscar notas…",
+    "clearSearch": "Limpiar búsqueda",
+    "clearFilters": "Limpiar filtros",
+    "pin": "Fijar nota",
+    "unpin": "Dejar de fijar",
+    "editDetails": "Editar título y etiquetas",
+    "updatedAt": "Actualizada el {date}",
+    "fields": {
+      "title": "Título",
+      "tags": "Etiquetas"
+    },
+    "card": {
+      "open": "Abrir {title}",
+      "empty": "Nota vacía"
+    },
+    "code": {
+      "copy": "Copiar",
+      "copied": "Copiado",
+      "plainText": "texto"
+    },
+    "editor": {
+      "write": "Escribir",
+      "preview": "Vista previa",
+      "placeholder": "Escribe en Markdown. Encierra los comandos entre ``` para tener un botón de copiar.",
+      "hint": "Markdown disponible: **negrita**, # títulos, - listas, - [ ] casillas y bloques de código con ```.",
+      "emptyPreview": "Todavía no hay nada que previsualizar.",
+      "unsavedChanges": "Cambios sin guardar",
+      "unsaved": {
+        "title": "¿Salir sin guardar?",
+        "message": "Esta nota tiene cambios sin guardar. ¿Salir de todos modos y perderlos?"
+      }
+    },
+    "modal": {
+      "newTitle": "Nueva nota",
+      "editTitle": "Editar nota",
+      "titlePlaceholder": "ej. Reiniciar la base de datos local",
+      "tagsPlaceholder": "Escribe una etiqueta y pulsa Enter",
+      "tagsHint": "Hasta 12"
+    },
+    "toasts": {
+      "created": "Nota creada",
+      "updated": "Nota actualizada",
+      "deleted": "Nota eliminada"
+    },
+    "confirmDelete": {
+      "title": "Eliminar nota",
+      "message": "¿Eliminar \"{title}\"? Esta acción no se puede deshacer."
+    }
   },
   "auth": {
     "signIn": "Iniciar sesión",
@@ -378,10 +1097,11 @@
     "nav": {
       "general": "General",
       "account": "Cuenta",
+      "financialProfile": "Perfil financiero",
       "preferences": "Preferencias",
       "apiKey": "Clave API",
       "accounts": "Cuentas",
-      "imports": "Importaciones",
+      "imports": "Importar y exportar",
       "transactions": "Transacciones",
       "tags": "Etiquetas",
       "categories": "Categorías",
@@ -397,6 +1117,41 @@
       "placeholderTitle": "Editar tu perfil aún no está disponible",
       "placeholderDescription": "Pronto podrás actualizar tu nombre, correo y contraseña desde aquí."
     },
+    "financialProfile": {
+      "title": "Perfil financiero",
+      "description": "Opcional — ayuda a que el resumen y el chat de IA den consejos ajustados a tu situación.",
+      "jobIncome": "Empleo e ingresos",
+      "jobTitle": "Puesto de trabajo",
+      "jobTitlePlaceholder": "ej. Ingeniero de software",
+      "income": "Ingresos",
+      "incomePlaceholder": "Déjalo vacío si prefieres no decirlo",
+      "aboutYou": "Sobre ti",
+      "employmentType": "Tipo de empleo",
+      "employmentTypes": {
+        "EMPLOYEE": "Empleado",
+        "SELF_EMPLOYED": "Trabajador independiente",
+        "FREELANCER": "Freelancer",
+        "BUSINESS_OWNER": "Dueño de negocio"
+      },
+      "maritalStatus": "Estado civil",
+      "maritalStatuses": {
+        "SINGLE": "Soltero/a",
+        "PARTNERED": "En pareja",
+        "MARRIED": "Casado/a"
+      },
+      "dependents": "Dependientes",
+      "dependentsHint": "Hijos u otras personas que mantienes económicamente",
+      "riskTolerance": "Tolerancia al riesgo",
+      "riskTolerances": {
+        "CONSERVATIVE": "Conservadora",
+        "MODERATE": "Moderada",
+        "AGGRESSIVE": "Agresiva"
+      },
+      "financialNotes": "Metas y preocupaciones",
+      "financialNotesPlaceholder": "ej. ahorrando para una casa, quiero pagar deudas más rápido, me preocupa la estabilidad laboral",
+      "disclosure": "Si completas cualquiera de estos campos, se envía al modelo de IA de OpenCode Go junto con tus otros datos financieros al usar el resumen o el chat — nunca se muestra a otros usuarios, y nunca es obligatorio.",
+      "saved": "Perfil financiero guardado"
+    },
     "preferences": {
       "title": "Preferencias",
       "description": "Idioma, moneda, formato de fecha y apariencia.",
@@ -407,7 +1162,7 @@
     },
     "apiKey": {
       "title": "Clave API",
-      "description": "Acceso programático a tus datos de BetoTracker.",
+      "description": "Acceso programático a tus datos de Meridiano.",
       "placeholderTitle": "Aún no hay claves API",
       "placeholderDescription": "Genera una clave para acceder a tus datos desde scripts e integraciones."
     },
@@ -418,16 +1173,57 @@
       "placeholderDescription": "Conecta, renombra y organiza tus cuentas financieras desde aquí."
     },
     "imports": {
-      "title": "Importaciones",
-      "description": "Trae datos desde otras aplicaciones.",
-      "placeholderTitle": "Las importaciones llegan pronto",
-      "placeholderDescription": "Sube un CSV para importar transacciones y saldos a BetoTracker."
+      "title": "Importar y exportar",
+      "description": "Descarga una copia de seguridad completa de tus datos, o vuelve a importarla.",
+      "export": {
+        "title": "Exportar tus datos",
+        "description": "Descarga todo lo que has registrado como un archivo JSON: cuentas, transacciones, metas, presupuestos y más.",
+        "button": "Exportar datos",
+        "failed": "Error al exportar"
+      },
+      "import": {
+        "title": "Importar una copia de seguridad",
+        "description": "Restaura un archivo de copia de seguridad de Meridiano. Esto se suma a tus datos existentes: nada se elimina ni se sobrescribe.",
+        "dropLabel": "Suelta un archivo de copia de seguridad aquí",
+        "fileHint": "Archivos JSON exportados desde Meridiano",
+        "button": "Importar",
+        "confirmTitle": "¿Importar esta copia de seguridad?",
+        "confirmMessage": "Esto suma las cuentas, transacciones y demás datos de la copia a lo que ya tienes. Nada existente se elimina ni se modifica.",
+        "success": "Copia de seguridad importada",
+        "failed": "Error al importar",
+        "invalidFile": "Eso no parece un archivo de copia de seguridad válido",
+        "conflict": "Esta copia entra en conflicto con datos que ya tienes.",
+        "result": {
+          "title": "Qué se importó",
+          "description": "Todo lo que la copia añadió a tu cuenta. No se eliminó ni sobrescribió nada.",
+          "empty": "No había nada nuevo que añadir: ya tenías todo lo de esta copia.",
+          "accounts": "Cuentas",
+          "transactions": "Transacciones",
+          "categoriesAdded": "Categorías añadidas",
+          "categoriesMatched": "Categorías enlazadas con las existentes",
+          "goals": "Metas",
+          "goalAccounts": "Cuentas vinculadas a metas",
+          "budgets": "Presupuestos",
+          "budgetIncomes": "Ingresos de presupuesto",
+          "recurringTransactions": "Pagos recurrentes",
+          "recurringOccurrences": "Respuestas de pagos recurrentes",
+          "transactionRules": "Reglas de categorización",
+          "accountReconciliations": "Conciliaciones",
+          "shoppingLists": "Listas de compra",
+          "shoppingListItems": "Artículos de listas de compra",
+          "taskCategoriesAdded": "Categorías de tareas añadidas",
+          "taskCategoriesMatched": "Categorías de tareas enlazadas con las existentes",
+          "longTasks": "Tareas de largo plazo",
+          "tasks": "Tareas",
+          "notes": "Notas"
+        }
+      }
     },
     "merchants": {
       "title": "Comercios",
       "description": "Identifica a quién le pagaste.",
       "placeholderTitle": "Aún no hay comercios",
-      "placeholderDescription": "BetoTracker agrupará aquí las transacciones por comercio."
+      "placeholderDescription": "Meridiano agrupará aquí las transacciones por comercio."
     },
     "rules": {
       "title": "Reglas",
@@ -444,13 +1240,19 @@
     "categories": {
       "title": "Categorías",
       "description": "Organiza las transacciones en categorías.",
-      "placeholderTitle": "La administración de categorías llega pronto",
-      "placeholderDescription": "Crea y personaliza las categorías que usas en tus transacciones."
+      "restore": "Restaurar predeterminadas",
+      "restoreHint": "Agrega las categorías iniciales que te falten. No se renombra ni se elimina nada.",
+      "restored": "Se agregó {count} categoría | Se agregaron {count} categorías",
+      "upToDate": "Ya tienes todas las categorías predeterminadas",
+      "empty": "Aún no tienes categorías",
+      "custom": "Personalizada",
+      "placeholderTitle": "La edición de categorías llega pronto",
+      "placeholderDescription": "Renombrar, recolorear y eliminar tus propias categorías estará aquí."
     }
   },
   "landing": {
     "seo": {
-      "title": "BetoTracker — Finanzas personales, con claridad",
+      "title": "Meridiano — Finanzas personales, con claridad",
       "description": "Controla ingresos, gastos y patrimonio neto en todas las monedas que uses. Hecho para registrar rápido y con un panel que por fin tiene sentido."
     },
     "title": "Cada moneda.\nUna imagen clara.",
@@ -461,6 +1263,8 @@
     },
     "nav": {
       "features": "Funciones",
+      "howItWorks": "Cómo funciona",
+      "goals": "Metas",
       "metrics": "Métricas",
       "open": "Abrir navegación",
       "close": "Cerrar navegación"
@@ -478,6 +1282,36 @@
     },
     "logos": {
       "title": "Funciona con el dinero que ya usas"
+    },
+    "preview": {
+      "headline": "Vista previa",
+      "title": "Este es tu panel.",
+      "description": "La vista que abrirás cada día — patrimonio, distribución y cuentas, siempre al día.",
+      "welcome": "Hola de nuevo, Beto",
+      "accounts": {
+        "indexFunds": "Fondos indexados",
+        "revolut": "Revolut Diaria",
+        "bitcoin": "Bitcoin"
+      }
+    },
+    "howItWorks": {
+      "headline": "Cómo funciona",
+      "title": "Del registro al panorama completo en minutos.",
+      "description": "Sin importaciones que vigilar ni hojas de cálculo que mantener. Tres pasos y tus finanzas se siguen solas.",
+      "steps": {
+        "addAccounts": {
+          "title": "Añade tus cuentas",
+          "description": "Efectivo, inversiones, cripto, propiedades — en cualquier moneda. Elige un tipo, define un saldo inicial y listo."
+        },
+        "logDaily": {
+          "title": "Registra sobre la marcha",
+          "description": "Anota ingresos y gastos en segundos. Las transferencias entre cuentas se mantienen vinculadas automáticamente."
+        },
+        "watchGrow": {
+          "title": "Mira crecer el panorama",
+          "description": "Patrimonio, distribución y metas se actualizan con cada registro — por moneda, sin mezclar."
+        }
+      }
     },
     "features": {
       "headline": "Hecho para el día a día",
@@ -508,6 +1342,29 @@
         "description": "Cada cuenta y transacción está limitada a ti. Tus datos nunca se comparten."
       }
     },
+    "goals": {
+      "headline": "Metas de ahorro",
+      "title": "Ahorra para lo que importa.",
+      "description": "Define un objetivo, vincula una cuenta y deja que cada aporte mueva el anillo — las insignias de ritmo te mantienen al tanto.",
+      "highlights": {
+        "target": {
+          "title": "Define un objetivo",
+          "description": "Un monto, una moneda y una fecha opcional — es todo lo que necesita una meta."
+        },
+        "linked": {
+          "title": "Vinculadas a saldos reales",
+          "description": "El progreso fluye desde tus cuentas, así que el anillo siempre está al día."
+        },
+        "pace": {
+          "title": "Conoce tu ritmo",
+          "description": "En camino o atrasado — una insignia y un número mensual lo dicen claramente."
+        }
+      },
+      "preview": {
+        "emergencyFund": "Fondo de emergencia",
+        "tripToJapan": "Viaje a Japón"
+      }
+    },
     "metrics": {
       "headline": "En números",
       "title": "Hecho para la forma en que realmente llevas tus cuentas.",
@@ -522,7 +1379,7 @@
       "description": "Gratis para empezar. Sin tarjeta de crédito. Configura tu primera cuenta en menos de un minuto."
     },
     "footer": {
-      "tagline": "BetoTracker · Finanzas personales, rápido."
+      "tagline": "Meridiano · Finanzas personales, rápido."
     }
   }
 }

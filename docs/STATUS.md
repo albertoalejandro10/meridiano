@@ -1,8 +1,8 @@
-# BetoTracker — Project Status
+# Meridiano — Project Status
 
 > Last updated: 2026-06-29. Keep this document current as features land.
 
-BetoTracker is a personal finance web app (fast transaction entry, multi-currency, dashboards), UI/UX inspired by [Maybe Finance](https://github.com/maybe-finance/maybe), built with Nuxt UI.
+Meridiano is a personal finance web app (fast transaction entry, multi-currency, dashboards), UI/UX inspired by [Maybe Finance](https://github.com/maybe-finance/maybe), built with Nuxt UI.
 
 ## Stack
 
@@ -49,7 +49,7 @@ BetoTracker is a personal finance web app (fast transaction entry, multi-currenc
 2. Transfers (linked transaction pair + nullable `transferId`)
 3. Tags (m:n) + category management UI
 4. Budgets
-5. Recurring transactions (`RecurringRule` + cron)
+5. ~~Recurring transactions (`RecurringRule` + cron)~~ — **shipped, deliberately without a cron.** Bills change price and are sometimes paid by someone else, so due dates are derived and the user is *asked* ("did you pay this?") rather than charged automatically. See the Recurring payments section in `CLAUDE.md`.
 6. Assets/Debts as first-class models + net worth snapshots
 7. Multi-currency conversion (FreeCurrencyAPI cron, manual VES rate)
 8. More dashboard charts (see `app/components/chart/README.md`)

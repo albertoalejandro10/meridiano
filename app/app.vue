@@ -10,7 +10,7 @@ const { locale } = useI18n()
 const uiLocale = computed(() => uiLocales[locale.value as keyof typeof uiLocales])
 
 useHead({
-  titleTemplate: title => (title ? `${title} · BetoTracker` : 'BetoTracker'),
+  titleTemplate: title => (title ? `${title} · Meridiano` : 'Meridiano'),
   htmlAttrs: {
     lang: () => uiLocale.value.code,
     dir: () => uiLocale.value.dir,
