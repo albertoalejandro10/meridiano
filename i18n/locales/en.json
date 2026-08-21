@@ -7,14 +7,30 @@
     "new": "New",
     "name": "Name",
     "currency": "Currency",
+    "cadence": {
+      "WEEKLY": "Weekly",
+      "BIWEEKLY": "Biweekly",
+      "MONTHLY": "Monthly",
+      "QUARTERLY": "Quarterly",
+      "YEARLY": "Yearly"
+    },
     "amount": "Amount",
     "date": "Date",
-    "fee": "Fee",
+    "internalFee": "Internal fee",
+    "externalFee": "External fee",
+    "lastFee": "Last time: {amount}",
     "description": "Description",
     "optional": "Optional",
     "optionalNote": "Optional note",
     "value": "Value",
     "loadMore": "Load more",
+    "edit": "Edit",
+    "delete": "Delete",
+    "rename": "Rename",
+    "actions": "Actions",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "relativeDays": "today | yesterday | {n} days ago",
     "tryAgain": "Please try again.",
     "somethingWrong": "Something went wrong",
     "toasts": {
@@ -31,9 +47,17 @@
   },
   "nav": {
     "dashboard": "Dashboard",
+    "chat": "Chat",
     "transactions": "Transactions",
+    "analytics": "Analytics",
     "accounts": "Accounts",
+    "recurring": "Recurring",
+    "budgets": "Budgets",
     "goals": "Goals",
+    "planning": "Planning",
+    "shoppingLists": "Shopping lists",
+    "tasks": "Tasks",
+    "notes": "Notes",
     "settings": "Settings",
     "signOut": "Sign out",
     "account": "Account"
@@ -64,6 +88,75 @@
     "LOAN": "Loan",
     "OTHER_LIABILITY": "Other Liability"
   },
+  "categories": {
+    "defaults": {
+      "salary": "Salary",
+      "freelance": "Freelance",
+      "bonus": "Bonus",
+      "investments": "Investment income",
+      "rentalIncome": "Rental income",
+      "remittances": "Remittances",
+      "refunds": "Refunds",
+      "gifts": "Gifts received",
+      "otherIncome": "Other income",
+      "groceries": "Groceries",
+      "dining": "Dining out",
+      "transport": "Transport",
+      "fuel": "Fuel",
+      "housing": "Housing",
+      "utilities": "Utilities",
+      "internetPhone": "Internet & phone",
+      "health": "Health",
+      "insurance": "Insurance",
+      "education": "Education",
+      "childcare": "Childcare",
+      "shopping": "Shopping",
+      "clothing": "Clothing",
+      "personalCare": "Personal care",
+      "fitness": "Fitness",
+      "entertainment": "Entertainment",
+      "subscriptions": "Subscriptions",
+      "travel": "Travel",
+      "pets": "Pets",
+      "giftsGiven": "Gifts",
+      "donations": "Donations",
+      "taxes": "Taxes",
+      "fees": "Fees",
+      "other": "Other",
+      "adjustment": "Balance adjustment"
+    }
+  },
+  "chat": {
+    "title": "AI Chat",
+    "newConversation": "New conversation",
+    "untitled": "Untitled conversation",
+    "noConversations": "No conversations yet.",
+    "conversationActions": "Conversation actions",
+    "inputPlaceholder": "Ask about your finances…",
+    "sendFailed": "Couldn't send your message",
+    "retry": "Try again",
+    "noReply": "This message never got an answer.",
+    "disclosure": "Your financial data is sent to OpenCode Go's AI model to answer your questions.",
+    "empty": {
+      "title": "Ask about your finances",
+      "description": "Start a new conversation to ask about your balances, spending, recurring bills, or savings goals."
+    },
+    "modelPicker": {
+      "placeholder": "Model"
+    },
+    "confirmDelete": {
+      "title": "Delete conversation?",
+      "message": "This will permanently delete \"{title}\" and its messages."
+    },
+    "toasts": {
+      "createFailed": "Couldn't start a new conversation",
+      "renamed": "Conversation renamed",
+      "renameFailed": "Couldn't rename conversation",
+      "deleted": "Conversation deleted",
+      "deleteFailed": "Couldn't delete conversation"
+    },
+    "showConversations": "Show conversations"
+  },
   "dashboard": {
     "title": "Home",
     "tabs": {
@@ -81,8 +174,81 @@
     "noAssets": "No assets yet. Create an account to get started.",
     "lastTransaction": "Last transaction"
   },
+  "analytics": {
+    "title": "Analytics",
+    "subtitle": "Insights into your spending, income, and net worth",
+    "range": {
+      "m3": "Last 3 months",
+      "m6": "Last 6 months",
+      "m12": "Last 12 months",
+      "m24": "Last 24 months"
+    },
+    "digest": {
+      "title": "AI financial digest",
+      "description": "A quick, plain-language read on your finances, generated from the data below.",
+      "empty": "Get a short summary of what's going on with your money this month.",
+      "generate": "Explain my finances",
+      "regenerate": "Regenerate",
+      "failed": "Couldn't generate the digest",
+      "generatedAt": "Generated {when}",
+      "followUp": "Ask a follow-up",
+      "followUpTitle": "Follow-up on my digest",
+      "followUpFailed": "Couldn't start the conversation"
+    },
+    "cashflow": {
+      "title": "Cash flow",
+      "income": "Income",
+      "expenses": "Expenses",
+      "avgSavingsRate": "Avg. savings rate",
+      "savingsRate": "Savings rate",
+      "empty": "No income or expenses in this period yet."
+    },
+    "spending": {
+      "title": "Spending breakdown",
+      "uncategorized": "Uncategorized",
+      "other": "Other",
+      "prevMonth": "Previous month",
+      "nextMonth": "Next month",
+      "empty": "No spending recorded for this month.",
+      "noTransactions": "No transactions found."
+    },
+    "trends": {
+      "title": "Trends",
+      "category": "Category",
+      "thisMonth": "This month",
+      "vsLastMonth": "vs last month",
+      "vsLastYear": "vs last year",
+      "new": "New",
+      "empty": "Not enough data to compare yet."
+    },
+    "recurring": {
+      "title": "Recurring expenses",
+      "description": "Subscriptions and bills detected from repeating transactions",
+      "monthlyTotal": "Monthly recurring total",
+      "showInactive": "Show inactive",
+      "nextExpected": "next",
+      "lastCharge": "last",
+      "perMonth": "mo",
+      "empty": "No recurring expenses detected yet. They show up after three similar charges at a steady rhythm.",
+      "track": "Track this",
+      "tracked": "Tracked"
+    },
+    "netWorth": {
+      "title": "Net worth by type",
+      "cash": "Cash",
+      "investments": "Investments",
+      "property": "Property & other",
+      "liabilities": "Liabilities",
+      "empty": "No accounts in this currency yet."
+    },
+    "incomeSources": {
+      "title": "Income sources",
+      "empty": "No income recorded for this month."
+    }
+  },
   "accounts": {
     "title": "Accounts",
+    "subtitle": "Everything you own and owe, at a glance",
     "assets": "Assets",
     "liabilities": "Liabilities",
     "debts": "Debts",
@@ -98,6 +264,10 @@
       "deleted": "Account deleted",
       "sold": "Asset sold",
       "saleFailed": "Sale failed",
+      "reconciled": "Checkpoint saved",
+      "confirmedUpToDate": "Marked as up to date",
+      "balanceAdjusted": "Balance corrected",
+      "reconcileFailed": "Reconciliation failed",
       "hasTransactions": {
         "title": "Account has transactions",
         "description": "Archive it instead."
@@ -127,13 +297,79 @@
       "cashAccount": "Cash account",
       "salePrice": "Sale price",
       "note": "Note",
-      "netAfterFee": "You receive {net} after the {fee} fee.",
+      "internalFeeNote": "The {fee} internal fee is charged to the asset account.",
+      "netAfterFee": "You receive {net} after the {fee} external fee.",
       "noCash": "Create a cash account in {currency} to receive the proceeds first.",
       "submit": "Sell"
+    },
+    "freshness": {
+      "lastTransaction": "Last transaction: {when}",
+      "noTransactions": "No transactions yet",
+      "reconciled": "Reconciled {when}",
+      "confirm": "Everything's up to date"
+    },
+    "reconcile": {
+      "action": "Reconcile balance",
+      "title": "Reconcile balance",
+      "titleNamed": "Reconcile {name}",
+      "intro": "Enter the balance your bank or platform shows right now. If it doesn't match what's recorded here, you can correct the difference on the spot or leave it as a note to yourself.",
+      "recordedBalance": "Recorded balance",
+      "recordedOwed": "Recorded amount owed",
+      "lastReconciled": "Last reconciled",
+      "actualBalance": "Actual balance",
+      "actualOwed": "Actual amount owed",
+      "match": "Balances match — this account is fully caught up.",
+      "missingIncome": "The real balance is {amount} higher than recorded — income or incoming transfers are likely missing.",
+      "missingExpenses": "The real balance is {amount} lower than recorded — expenses are likely missing.",
+      "missingCharges": "You owe {amount} more than recorded — charges are likely missing.",
+      "missingPayments": "You owe {amount} less than recorded — payments are likely missing.",
+      "diffHint": "Saving records the gap without closing it — register the missing transactions and reconcile again.",
+      "adjust": "Correct the balance with an adjustment",
+      "adjustPreviewIncome": "Adds an income of {amount} on {date} so the balance matches.",
+      "adjustPreviewExpense": "Adds an expense of {amount} on {date} so the balance matches.",
+      "submit": "Save checkpoint",
+      "submitAdjust": "Save and correct"
+    },
+    "detail": {
+      "notFound": "Account not found",
+      "backToAccounts": "Back to accounts",
+      "currentBalance": "Current balance",
+      "amountOwed": "Amount owed",
+      "balanceHistory": "Balance history",
+      "amountOwedHistory": "Amount owed over time",
+      "cashflow": {
+        "title": "Money in & out",
+        "description": "Everything that moved through this account, transfers included.",
+        "empty": "No activity in this period yet."
+      },
+      "categories": {
+        "title": "Spending by category",
+        "empty": "No categorized spending in this period."
+      },
+      "stats": {
+        "thisMonthIn": "This month in",
+        "thisMonthOut": "This month out",
+        "avgMonthlyNet": "Avg monthly net",
+        "transactions": "Transactions"
+      },
+      "recent": {
+        "title": "Recent transactions",
+        "viewAll": "View all",
+        "empty": "No transactions yet."
+      },
+      "reconciliations": {
+        "title": "Reconciliation history",
+        "empty": "Never reconciled. Save a checkpoint to track how well your records match reality."
+      },
+      "fixedValue": {
+        "currentValue": "Current value",
+        "since": "Recorded since {date}"
+      }
     }
   },
   "transactions": {
     "title": "Transactions",
+    "subtitle": "Your income, expenses and transfers, day by day",
     "transfer": "Transfer",
     "income": "Income",
     "expense": "Expense",
@@ -141,6 +377,12 @@
     "empty": "No transactions found.",
     "allAccounts": "All accounts",
     "allTypes": "All types",
+    "allCategories": "All categories",
+    "clearFilters": "Clear filters",
+    "staleAlert": {
+      "title": "{count} account hasn't seen a transaction in over a week | {count} accounts haven't seen a transaction in over a week",
+      "action": "Review accounts"
+    },
     "toasts": {
       "saved": "Transaction saved",
       "updated": "Transaction updated",
@@ -152,7 +394,7 @@
       "transferMessage": "Delete this transfer of {amount}? Both sides will be removed.",
       "incomeMessage": "Delete this income of {amount}? This cannot be undone.",
       "expenseMessage": "Delete this expense of {amount}? This cannot be undone.",
-      "feeNote": "Its fee will be removed too."
+      "feeNote": "Its fees will be removed too."
     },
     "modal": {
       "editTitle": "Edit transaction",
@@ -161,8 +403,8 @@
       "selectAccount": "Select account",
       "category": "Category",
       "noCategory": "No category",
-      "netAfterFee": "Net received after the fee: {amount}",
-      "totalWithFee": "Total with fee: {amount}"
+      "netAfterFee": "Net received after fees: {amount}",
+      "totalWithFee": "Total with fees: {amount}"
     }
   },
   "transfers": {
@@ -176,9 +418,80 @@
       "to": "To",
       "source": "Source",
       "destination": "Destination",
-      "netAfterFee": "Destination receives {net} after the {fee} fee.",
-      "noDestination": "Add another account in the same currency to transfer into.",
+      "sourcePaysTotal": "The source account pays {total} in total, including the {fee} internal fee.",
+      "netAfterFee": "Destination receives {net} after the {fee} external fee.",
+      "receivedAmount": "Amount received ({currency})",
+      "impliedRate": "Implied rate: 1 {base} = {rate}",
+      "binanceReference": "Binance P2P: {rate}",
+      "noDestination": "Add another account to transfer into.",
+      "repeatRoute": "Repeat a recent transfer",
       "submit": "Transfer"
+    }
+  },
+  "planning": {
+    "title": "Planning",
+    "subtitle": "Plan your way out of debt and toward your goals.",
+    "debt": {
+      "title": "Debt payoff planner",
+      "description": "Set each debt's rate and payment, pick a strategy, and see when you'll be debt-free.",
+      "noDebts": "No open debts — nothing to pay off. Enjoy it!",
+      "apr": "APR %",
+      "monthlyPayment": "Monthly payment",
+      "extraPerMonth": "Extra per month",
+      "extraHelp": "On top of the payments above.",
+      "strategy": "Strategy",
+      "snowball": "Snowball",
+      "avalanche": "Avalanche",
+      "snowballHint": "Smallest balance first — quick wins keep you motivated.",
+      "avalancheHint": "Highest interest first — cheapest overall.",
+      "needPayments": "Enter a monthly payment for each debt to project a payoff plan.",
+      "neverPaysOff": {
+        "title": "These payments don't keep up with interest",
+        "description": "The balance keeps growing faster than you pay it down. Raise the payments or the extra amount to see a payoff plan."
+      },
+      "totalDebt": "Total debt",
+      "debtFree": "Debt-free by",
+      "inMonths": "in {n} month | in {n} months",
+      "totalInterest": "Total interest",
+      "savesVs": "Saves {amount} in interest vs {strategy}",
+      "otherSaves": "{strategy} would save you {amount} in interest",
+      "sameInterest": "Both strategies cost the same here.",
+      "payoffOrder": "Payoff order",
+      "coaching": {
+        "title": "AI coaching",
+        "empty": "Get a plain-language read on this plan and whether switching strategies would help.",
+        "generate": "Coach me",
+        "regenerate": "Regenerate",
+        "failed": "Couldn't generate coaching"
+      }
+    },
+    "whatIf": {
+      "title": "What-if simulator",
+      "description": "Pick a goal and try a monthly amount — see when you'd get there.",
+      "empty": "No goals yet. Create one to simulate saving toward it.",
+      "goal": "Goal",
+      "monthlySaving": "Monthly saving",
+      "currentPaceHint": "Your recent pace is {amount}/month.",
+      "alreadyAchieved": "This goal is already achieved.",
+      "noProgress": "At this monthly amount the goal stays out of reach — try a higher number.",
+      "reachOn": "You'd reach {goal} in {date}",
+      "onTarget": "right on your target date",
+      "beforeTarget": "{n} month early | {n} months early",
+      "afterTarget": "{n} month late | {n} months late",
+      "inMonths": "{n} month from now | {n} months from now",
+      "requiredForDate": "hitting your target date of {date} needs {amount}/month",
+      "series": {
+        "plan": "This plan",
+        "pace": "Current pace",
+        "required": "Needed for target date"
+      },
+      "coaching": {
+        "title": "AI coaching",
+        "empty": "Get a plain-language read on whether this plan gets you there.",
+        "generate": "Coach me",
+        "regenerate": "Regenerate",
+        "failed": "Couldn't generate coaching"
+      }
     }
   },
   "goals": {
@@ -294,18 +607,424 @@
     }
   },
   "goalIcons": {
-    "target": { "label": "General", "description": "Any savings goal" },
-    "piggy-bank": { "label": "Savings", "description": "Build a cash cushion" },
-    "house": { "label": "Home", "description": "Buy or renovate a home" },
-    "plane": { "label": "Travel", "description": "A trip or vacation" },
-    "car": { "label": "Vehicle", "description": "A car or other vehicle" },
-    "graduation-cap": { "label": "Education", "description": "Tuition or courses" },
-    "gem": { "label": "Luxury", "description": "A big-ticket splurge" },
-    "baby": { "label": "Family", "description": "A baby or growing family" },
-    "heart": { "label": "Wedding", "description": "A wedding or celebration" },
-    "shield": { "label": "Emergency", "description": "A rainy-day safety net" },
-    "gift": { "label": "Gift", "description": "A present for someone" },
-    "palmtree": { "label": "Retirement", "description": "A long-term nest egg" }
+    "target": {
+      "label": "General",
+      "description": "Any savings goal"
+    },
+    "piggy-bank": {
+      "label": "Savings",
+      "description": "Build a cash cushion"
+    },
+    "house": {
+      "label": "Home",
+      "description": "Buy or renovate a home"
+    },
+    "plane": {
+      "label": "Travel",
+      "description": "A trip or vacation"
+    },
+    "car": {
+      "label": "Vehicle",
+      "description": "A car or other vehicle"
+    },
+    "graduation-cap": {
+      "label": "Education",
+      "description": "Tuition or courses"
+    },
+    "gem": {
+      "label": "Luxury",
+      "description": "A big-ticket splurge"
+    },
+    "baby": {
+      "label": "Family",
+      "description": "A baby or growing family"
+    },
+    "heart": {
+      "label": "Wedding",
+      "description": "A wedding or celebration"
+    },
+    "shield": {
+      "label": "Emergency",
+      "description": "A rainy-day safety net"
+    },
+    "gift": {
+      "label": "Gift",
+      "description": "A present for someone"
+    },
+    "palmtree": {
+      "label": "Retirement",
+      "description": "A long-term nest egg"
+    }
+  },
+  "budgets": {
+    "title": "Budgets",
+    "subtitle": "Set monthly limits per category — or give every unit of income a job.",
+    "new": "New budget",
+    "empty": "No budgets yet. Set a monthly limit for a category and track your spending against it.",
+    "prevMonth": "Previous month",
+    "nextMonth": "Next month",
+    "mode": {
+      "category": "Limits",
+      "envelope": "Envelopes"
+    },
+    "alert": {
+      "title": "{count} budget over its limit this month | {count} budgets over their limit this month"
+    },
+    "summary": {
+      "budgeted": "Budgeted",
+      "spent": "Spent",
+      "remaining": "Remaining",
+      "afterBills": "{amount} after recurring bills"
+    },
+    "limits": {
+      "title": "Monthly limits"
+    },
+    "envelope": {
+      "title": "Envelopes",
+      "income": "Expected monthly income",
+      "setIncome": "Set income",
+      "allocated": "Allocated",
+      "fullyAllocated": "Fully allocated",
+      "toAllocate": "{amount} left to allocate",
+      "overAllocated": "Over-allocated by {amount}",
+      "noIncome": "Set your expected monthly income to start allocating it across envelopes.",
+      "committed": "{amount} of this month is already committed to recurring bills."
+    },
+    "row": {
+      "over": "Over by {amount}",
+      "left": "{amount} left",
+      "leftAfterBills": "{amount} left after bills",
+      "committed": "{amount} committed to recurring bills this month",
+      "noEstimate": "{count} recurring bill this month has no estimate yet, so it is not counted | {count} recurring bills this month have no estimate yet, so they are not counted"
+    },
+    "unbudgeted": {
+      "title": "Unbudgeted spending",
+      "description": "Categories with spending this month but no budget yet",
+      "add": "Set budget"
+    },
+    "modal": {
+      "newTitle": "New budget",
+      "editTitle": "Edit budget",
+      "category": "Category",
+      "categoryPlaceholder": "Pick a category",
+      "amount": "Monthly amount",
+      "amountHelp": "Applies every month",
+      "currencyHelp": "Currency can’t change after creation"
+    },
+    "toasts": {
+      "created": "Budget saved",
+      "updated": "Budget updated",
+      "deleted": "Budget deleted",
+      "incomeSaved": "Expected income saved"
+    },
+    "confirmDelete": {
+      "title": "Delete budget",
+      "message": "Delete the budget for \"{name}\"? Your transactions are not affected."
+    }
+  },
+  "recurring": {
+    "title": "Recurring payments",
+    "subtitle": "Bills you pay on a rhythm. The app asks whether each one was paid — it never invents a charge.",
+    "new": "New recurring payment",
+    "tracked": "Tracked payments",
+    "paused": "Paused",
+    "pause": "Pause",
+    "resume": "Resume",
+    "until": "until {date}",
+    "noEstimate": "No estimate",
+    "empty": "No recurring payments tracked yet",
+    "emptyHint": "Add the bills you pay on a rhythm — internet, gym, rent — and each time one comes due the app will ask whether you paid it, and for how much.",
+    "pendingBanner": "{count} recurring payment needs review | {count} recurring payments need review",
+    "pendingBannerHint": "Tell the app whether each one was paid, and for how much.",
+    "bannerAction": "Review",
+    "modal": {
+      "newTitle": "New recurring payment",
+      "editTitle": "Edit recurring payment",
+      "description": "Nothing is recorded automatically — you will be asked each time it comes due.",
+      "name": "Name",
+      "nameHelp": "Used as the transaction description when you confirm a payment.",
+      "namePlaceholder": "Internet, Gym, Tennis…",
+      "account": "Account",
+      "cadence": "Repeats",
+      "estimate": "Estimated amount",
+      "estimateHelp": "Optional. Just a starting point for the review form — you confirm the real amount each time.",
+      "estimatePlaceholder": "Leave empty if it varies a lot",
+      "startDate": "First due date",
+      "startDateHelp": "Every later due date is counted from here.",
+      "endDate": "Ends on",
+      "endDateHelp": "Optional.",
+      "enabled": "Active",
+      "enabledHelp": "Pausing stops it coming due; your answered history is kept."
+    },
+    "review": {
+      "title": "Did you pay these?",
+      "description": "Answer what you remember and leave the rest — unanswered payments stay in the queue.",
+      "paid": "I paid it",
+      "skipped": "Didn't pay",
+      "paidOn": "Paid on",
+      "lastPaid": "Last time: {amount}",
+      "amountRequired": "Enter the amount you paid",
+      "note": "What happened?",
+      "noteHelp": "Optional — so the gap makes sense months from now.",
+      "notePlaceholder": "My family paid it, cancelled, waived…",
+      "markAllPaid": "Mark all as paid",
+      "skipAll": "Mark all as not paid",
+      "action": "Save {count} answer | Save {count} answers"
+    },
+    "forecast": {
+      "monthlyTotal": "Expected per month",
+      "nextUp": "Coming up",
+      "missingEstimate": "{count} payment has no estimate yet | {count} payments have no estimate yet"
+    },
+    "history": {
+      "title": "Answered",
+      "undo": "Undo"
+    },
+    "confirmDelete": {
+      "title": "Delete recurring payment?",
+      "message": "“{description}” will stop coming due. The transactions it already created are kept."
+    },
+    "confirmUndo": {
+      "title": "Undo this answer?",
+      "message": "“{description}” will go back to needing review.",
+      "messagePaid": "The transaction created for “{description}” will be deleted and it will go back to needing review."
+    },
+    "toasts": {
+      "created": "Recurring payment created",
+      "updated": "Recurring payment updated",
+      "deleted": "Recurring payment deleted",
+      "confirmed": "{created} paid · {skipped} skipped",
+      "undone": "Answer undone"
+    }
+  },
+  "shoppingLists": {
+    "title": "Shopping lists",
+    "subtitle": "Price your shopping in bolívares and see the dollars to sell.",
+    "new": "New list",
+    "empty": "No shopping lists yet. Create one and add what you need to buy.",
+    "notFound": "This shopping list could not be found.",
+    "backToLists": "Back to lists",
+    "noItems": "No items yet — start typing below to add the first one.",
+    "itemCount": "{count} item | {count} items",
+    "checkedCount": "{checked}/{total} checked",
+    "card": {
+      "view": "View {name}"
+    },
+    "table": {
+      "item": "Item",
+      "quantity": "Qty",
+      "unitPrice": "Unit price (Bs.)",
+      "total": "Total"
+    },
+    "entry": {
+      "namePlaceholder": "Add an item…",
+      "qtyPlaceholder": "1",
+      "pricePlaceholder": "0.00",
+      "add": "Add item",
+      "editing": "Editing \"{name}\""
+    },
+    "rates": {
+      "title": "Exchange rates",
+      "bcv": "BCV rate",
+      "binance": "Binance P2P rate",
+      "refresh": "Refresh",
+      "updated": "Updated {date}",
+      "unavailable": "Couldn't fetch — enter manually",
+      "perUsd": "Bs. per USD"
+    },
+    "summary": {
+      "totalVes": "Total to buy",
+      "ofFullTotal": "of {amount} total",
+      "usdAtBcv": "USD to sell at BCV",
+      "usdAtBinance": "USD to sell at Binance"
+    },
+    "brecha": {
+      "title": "Rate gap: {pct}",
+      "wide": "The Binance rate sits {pct} above BCV — a great time to sell your dollars.",
+      "moderate": "The Binance rate sits {pct} above BCV — a fair premium for selling.",
+      "narrow": "Only {pct} between the two rates — little premium to sell right now.",
+      "inverted": "The official rate is above the parallel rate right now — unusual, double-check before selling.",
+      "saves": "Selling at Binance needs {amount} less for this list.",
+      "badge": {
+        "wide": "Good time to sell",
+        "moderate": "Fair",
+        "narrow": "Close",
+        "inverted": "Unusual"
+      }
+    },
+    "modal": {
+      "newTitle": "New shopping list",
+      "editTitle": "Rename list",
+      "namePlaceholder": "e.g. Weekly groceries"
+    },
+    "toasts": {
+      "created": "List created",
+      "updated": "List updated",
+      "deleted": "List deleted"
+    },
+    "confirmDelete": {
+      "title": "Delete list",
+      "message": "Delete \"{name}\" and all its items? This cannot be undone."
+    },
+    "confirmDeleteItem": {
+      "title": "Delete item",
+      "message": "Delete \"{name}\"?"
+    }
+  },
+  "tasks": {
+    "title": "Monthly tasks",
+    "subtitle": "What you want to get done before the month ends",
+    "new": "New task",
+    "empty": "No tasks this month yet. Write down what you want to get done.",
+    "progress": "{done} of {total} done",
+    "prevMonth": "Previous month",
+    "nextMonth": "Next month",
+    "currentMonth": "Today",
+    "uncategorized": "Uncategorized",
+    "toggleDone": "Mark as done",
+    "taskActions": "Task actions",
+    "carriedFrom": "from {month}",
+    "linkedTo": "Linked to \"{title}\"",
+    "moveToMonth": "Move to {month}",
+    "priorities": {
+      "HIGH": "High",
+      "MEDIUM": "Medium",
+      "LOW": "Low"
+    },
+    "modal": {
+      "newTitle": "New task",
+      "editTitle": "Edit task",
+      "taskTitle": "Title",
+      "titlePlaceholder": "e.g. Renew the car insurance",
+      "notes": "Notes",
+      "priority": "Priority",
+      "dueDate": "Due date",
+      "category": "Category",
+      "noCategory": "No category",
+      "manageCategories": "Manage categories",
+      "longTask": "Long-term task",
+      "longTaskHelp": "This task counts as progress toward the linked long-term task.",
+      "noLongTask": "None"
+    },
+    "categories": {
+      "title": "Task categories",
+      "manageButton": "Categories",
+      "new": "New category",
+      "empty": "No categories yet — create topics like Home, Health, or Finances.",
+      "namePlaceholder": "e.g. Home",
+      "icon": "Icon",
+      "color": "Color",
+      "confirmDelete": {
+        "title": "Delete category",
+        "message": "Delete \"{name}\"? Its tasks will stay, without a category."
+      },
+      "toasts": {
+        "created": "Category created",
+        "updated": "Category updated",
+        "deleted": "Category deleted"
+      }
+    },
+    "carryOver": {
+      "banner": "{count} pending task from a previous month | {count} pending tasks from previous months",
+      "bannerAction": "Review & carry over",
+      "title": "Carry over tasks",
+      "description": "Pick which pending tasks to move into this month.",
+      "selectAll": "Select all",
+      "selectNone": "Select none",
+      "action": "Carry over {count} task | Carry over {count} tasks",
+      "toast": "{count} task moved to this month | {count} tasks moved to this month"
+    },
+    "long": {
+      "title": "Long-term tasks",
+      "subtitle": "Commitments that take longer than a month, like learning English",
+      "new": "New long-term task",
+      "empty": "No long-term tasks yet. Capture the big things you're working toward.",
+      "progressHelp": "Completed monthly tasks linked to this",
+      "modal": {
+        "newTitle": "New long-term task",
+        "editTitle": "Edit long-term task",
+        "titlePlaceholder": "e.g. Learn English",
+        "targetDate": "Target date"
+      },
+      "confirmDelete": {
+        "title": "Delete long-term task",
+        "message": "Delete \"{title}\"? Its linked monthly tasks will stay, unlinked."
+      },
+      "toasts": {
+        "created": "Long-term task created",
+        "updated": "Long-term task updated",
+        "deleted": "Long-term task deleted"
+      }
+    },
+    "confirmDelete": {
+      "title": "Delete task",
+      "message": "Delete \"{title}\"? This cannot be undone."
+    },
+    "toasts": {
+      "created": "Task created",
+      "updated": "Task updated",
+      "deleted": "Task deleted",
+      "movedNext": "Task moved to the next month",
+      "movedPrev": "Task moved to the previous month"
+    }
+  },
+  "notes": {
+    "title": "Notes",
+    "subtitle": "Anything worth keeping — a command you always forget, a recipe, a checklist.",
+    "new": "New note",
+    "empty": "No notes yet.",
+    "emptyHint": "Write down anything you'd otherwise look up twice: a terminal command, a recipe, the steps to renew a document.",
+    "noResults": "No notes match these filters.",
+    "notFound": "This note could not be found.",
+    "backToNotes": "Back to notes",
+    "searchPlaceholder": "Search notes…",
+    "clearSearch": "Clear search",
+    "clearFilters": "Clear filters",
+    "pin": "Pin note",
+    "unpin": "Unpin note",
+    "editDetails": "Edit title and tags",
+    "updatedAt": "Updated {date}",
+    "fields": {
+      "title": "Title",
+      "tags": "Tags"
+    },
+    "card": {
+      "open": "Open {title}",
+      "empty": "Empty note"
+    },
+    "code": {
+      "copy": "Copy",
+      "copied": "Copied",
+      "plainText": "text"
+    },
+    "editor": {
+      "write": "Write",
+      "preview": "Preview",
+      "placeholder": "Write in Markdown. Wrap commands in ``` fences to get a copy button.",
+      "hint": "Markdown supported: **bold**, # headings, - lists, - [ ] checkboxes, and ``` fenced code.",
+      "emptyPreview": "Nothing to preview yet.",
+      "unsavedChanges": "Unsaved changes",
+      "unsaved": {
+        "title": "Leave without saving?",
+        "message": "This note has unsaved changes. Leave anyway and lose them?"
+      }
+    },
+    "modal": {
+      "newTitle": "New note",
+      "editTitle": "Edit note",
+      "titlePlaceholder": "e.g. Reset the local database",
+      "tagsPlaceholder": "Add a tag and press Enter",
+      "tagsHint": "Up to 12"
+    },
+    "toasts": {
+      "created": "Note created",
+      "updated": "Note updated",
+      "deleted": "Note deleted"
+    },
+    "confirmDelete": {
+      "title": "Delete note",
+      "message": "Delete \"{title}\"? This cannot be undone."
+    }
   },
   "auth": {
     "signIn": "Sign in",
@@ -378,10 +1097,11 @@
     "nav": {
       "general": "General",
       "account": "Account",
+      "financialProfile": "Financial profile",
       "preferences": "Preferences",
       "apiKey": "API Key",
       "accounts": "Accounts",
-      "imports": "Imports",
+      "imports": "Import & Export",
       "transactions": "Transactions",
       "tags": "Tags",
       "categories": "Categories",
@@ -397,6 +1117,41 @@
       "placeholderTitle": "Editing your profile isn't available yet",
       "placeholderDescription": "Soon you'll be able to update your name, email, and password from here."
     },
+    "financialProfile": {
+      "title": "Financial profile",
+      "description": "Optional — helps the AI digest and chat give advice that fits your situation.",
+      "jobIncome": "Job & income",
+      "jobTitle": "Job title",
+      "jobTitlePlaceholder": "e.g. Software engineer",
+      "income": "Income",
+      "incomePlaceholder": "Leave empty if you'd rather not say",
+      "aboutYou": "About you",
+      "employmentType": "Employment type",
+      "employmentTypes": {
+        "EMPLOYEE": "Employee",
+        "SELF_EMPLOYED": "Self-employed",
+        "FREELANCER": "Freelancer",
+        "BUSINESS_OWNER": "Business owner"
+      },
+      "maritalStatus": "Marital status",
+      "maritalStatuses": {
+        "SINGLE": "Single",
+        "PARTNERED": "Partnered",
+        "MARRIED": "Married"
+      },
+      "dependents": "Dependents",
+      "dependentsHint": "Kids or others you financially support",
+      "riskTolerance": "Risk tolerance",
+      "riskTolerances": {
+        "CONSERVATIVE": "Conservative",
+        "MODERATE": "Moderate",
+        "AGGRESSIVE": "Aggressive"
+      },
+      "financialNotes": "Goals & concerns",
+      "financialNotesPlaceholder": "e.g. saving for a house, want to pay off debt faster, worried about job stability",
+      "disclosure": "If you fill any of this in, it's sent to OpenCode Go's AI model along with your other financial data when you use the digest or chat — never shown to other users, and never required.",
+      "saved": "Financial profile saved"
+    },
     "preferences": {
       "title": "Preferences",
       "description": "Language, currency, date format, and appearance.",
@@ -407,7 +1162,7 @@
     },
     "apiKey": {
       "title": "API Key",
-      "description": "Programmatic access to your BetoTracker data.",
+      "description": "Programmatic access to your Meridiano data.",
       "placeholderTitle": "No API keys yet",
       "placeholderDescription": "Generate a key to access your data from scripts and integrations."
     },
@@ -418,16 +1173,57 @@
       "placeholderDescription": "Connect, rename, and organize your financial accounts from here."
     },
     "imports": {
-      "title": "Imports",
-      "description": "Bring in data from other apps.",
-      "placeholderTitle": "Imports are coming soon",
-      "placeholderDescription": "Upload a CSV to import transactions and balances into BetoTracker."
+      "title": "Import & Export",
+      "description": "Download a full backup of your data, or bring one back in.",
+      "export": {
+        "title": "Export your data",
+        "description": "Download everything you've tracked as a JSON file — accounts, transactions, goals, budgets, and more.",
+        "button": "Export data",
+        "failed": "Export failed"
+      },
+      "import": {
+        "title": "Import a backup",
+        "description": "Restore a Meridiano backup file. This adds to your existing data — nothing is deleted or overwritten.",
+        "dropLabel": "Drop a backup file here",
+        "fileHint": "JSON files exported from Meridiano",
+        "button": "Import",
+        "confirmTitle": "Import this backup?",
+        "confirmMessage": "This adds the backup's accounts, transactions, and other data to what you already have. Nothing existing is deleted or changed.",
+        "success": "Backup imported",
+        "failed": "Import failed",
+        "invalidFile": "That doesn't look like a valid backup file",
+        "conflict": "This backup conflicts with data you already have.",
+        "result": {
+          "title": "What was imported",
+          "description": "Everything the backup added to your account. Nothing was deleted or overwritten.",
+          "empty": "Nothing new to add — you already had everything in this backup.",
+          "accounts": "Accounts",
+          "transactions": "Transactions",
+          "categoriesAdded": "Categories added",
+          "categoriesMatched": "Categories matched to existing ones",
+          "goals": "Goals",
+          "goalAccounts": "Goal accounts linked",
+          "budgets": "Budgets",
+          "budgetIncomes": "Budget incomes",
+          "recurringTransactions": "Recurring payments",
+          "recurringOccurrences": "Recurring payment answers",
+          "transactionRules": "Categorization rules",
+          "accountReconciliations": "Reconciliations",
+          "shoppingLists": "Shopping lists",
+          "shoppingListItems": "Shopping list items",
+          "taskCategoriesAdded": "Task categories added",
+          "taskCategoriesMatched": "Task categories matched to existing ones",
+          "longTasks": "Long-term tasks",
+          "tasks": "Tasks",
+          "notes": "Notes"
+        }
+      }
     },
     "merchants": {
       "title": "Merchants",
       "description": "Recognize who you paid.",
       "placeholderTitle": "No merchants yet",
-      "placeholderDescription": "BetoTracker will group transactions by merchant here."
+      "placeholderDescription": "Meridiano will group transactions by merchant here."
     },
     "rules": {
       "title": "Rules",
@@ -444,13 +1240,19 @@
     "categories": {
       "title": "Categories",
       "description": "Organize transactions into categories.",
-      "placeholderTitle": "Category management is coming soon",
-      "placeholderDescription": "Create and customize the categories used across your transactions."
+      "restore": "Restore defaults",
+      "restoreHint": "Adds any starter category you're missing. Nothing is renamed or removed.",
+      "restored": "Added {count} category | Added {count} categories",
+      "upToDate": "You already have every default category",
+      "empty": "No categories yet",
+      "custom": "Custom",
+      "placeholderTitle": "Editing categories is coming soon",
+      "placeholderDescription": "Renaming, recoloring and deleting your own categories lands here."
     }
   },
   "landing": {
     "seo": {
-      "title": "BetoTracker — Personal finance, clearly",
+      "title": "Meridiano — Personal finance, clearly",
       "description": "Track income, expenses and net worth across every currency you hold. Built for fast entry and a dashboard that finally makes sense."
     },
     "title": "Every currency.\nOne clear picture.",
@@ -461,6 +1263,8 @@
     },
     "nav": {
       "features": "Features",
+      "howItWorks": "How it works",
+      "goals": "Goals",
       "metrics": "Metrics",
       "open": "Open navigation",
       "close": "Close navigation"
@@ -478,6 +1282,36 @@
     },
     "logos": {
       "title": "Works with the money you already use"
+    },
+    "preview": {
+      "headline": "Live preview",
+      "title": "This is your dashboard.",
+      "description": "The view you'll open every day — net worth, allocation and accounts, always current.",
+      "welcome": "Welcome back, Beto",
+      "accounts": {
+        "indexFunds": "Index Funds",
+        "revolut": "Revolut Everyday",
+        "bitcoin": "Bitcoin"
+      }
+    },
+    "howItWorks": {
+      "headline": "How it works",
+      "title": "From sign-up to full picture in minutes.",
+      "description": "No imports to babysit, no spreadsheets to maintain. Three steps and your finances track themselves.",
+      "steps": {
+        "addAccounts": {
+          "title": "Add your accounts",
+          "description": "Cash, investments, crypto, property — in any currency. Pick a type, set a starting balance, done."
+        },
+        "logDaily": {
+          "title": "Log as you go",
+          "description": "Record income and expenses in seconds. Transfers between accounts stay linked automatically."
+        },
+        "watchGrow": {
+          "title": "Watch the picture build",
+          "description": "Net worth, allocation and goals update with every entry — per currency, never mixed."
+        }
+      }
     },
     "features": {
       "headline": "Built for daily use",
@@ -508,6 +1342,29 @@
         "description": "Every account and transaction is scoped to you. Your data is never shared."
       }
     },
+    "goals": {
+      "headline": "Savings goals",
+      "title": "Save for what matters.",
+      "description": "Set a target, link an account and let every contribution move the ring — pace badges keep you honest.",
+      "highlights": {
+        "target": {
+          "title": "Set a target",
+          "description": "An amount, a currency and an optional date — that's all a goal needs."
+        },
+        "linked": {
+          "title": "Linked to real balances",
+          "description": "Progress flows from your accounts, so the ring is always current."
+        },
+        "pace": {
+          "title": "Know your pace",
+          "description": "On track or behind — one badge and a monthly number say it plainly."
+        }
+      },
+      "preview": {
+        "emergencyFund": "Emergency Fund",
+        "tripToJapan": "Trip to Japan"
+      }
+    },
     "metrics": {
       "headline": "By the numbers",
       "title": "Built for the way you actually track.",
@@ -522,7 +1379,7 @@
       "description": "Free to start. No credit card. Set up your first account in under a minute."
     },
     "footer": {
-      "tagline": "BetoTracker · Personal finance, fast."
+      "tagline": "Meridiano · Personal finance, fast."
     }
   }
 }

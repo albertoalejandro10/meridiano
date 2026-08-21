@@ -1,17 +1,25 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ['@nuxthub/core', '@nuxt/ui', 'nuxt-charts', '@pinia/nuxt', 'nuxt-auth-utils', 'motion-v/nuxt', '@nuxtjs/i18n'],
+  modules: ['@nuxthub/core', '@nuxt/ui', 'nuxt-charts', '@pinia/nuxt', 'nuxt-auth-utils', 'motion-v/nuxt', '@nuxtjs/i18n', '@comark/nuxt'],
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
+  vite: {
+    // The landing hero's WebGL background (`shaders/vue`) pulls in Three.js.
+    // Letting Vite pre-bundle them produces a single ~5 MB optimized file in
+    // which esbuild has stripped `import.meta.url`; Vite's asset-import-meta-url
+    // transform filter (`/new\s+URL.+import\.meta\.url/s`) then backtracks the
+    // whole blob and dev crashes with "Maximum call stack size exceeded".
+    // Excluding them keeps the raw ESM (with `import.meta.url` intact), so the
+    // filter matches fast. Dev-only: production build doesn't pre-bundle deps.
+    optimizeDeps: { exclude: ['shaders', 'three'] },
+  },
   i18n: {
-    // No locale in URLs — the language is a user preference (Settings →
-    // Preferences), persisted in the i18n cookie like the theme is.
     strategy: 'no_prefix',
     defaultLocale: 'en',
     locales: [
       { code: 'en', name: 'English', file: 'en.json', language: 'en-US' },
-      { code: 'es', name: 'Español', file: 'es.json', language: 'es-VE' },
+      { code: 'es', name: 'Español', file: 'es.json', language: 'es-ES' },
     ],
     detectBrowserLanguage: {
       useCookie: true,
@@ -20,10 +28,11 @@ export default defineNuxtConfig({
     },
   },
   runtimeConfig: {
+    // Server-only — set via NUXT_OPENCODE_API_KEY (an OpenCode Go API key, see
+    // https://opencode.ai/docs/go/). Empty in dev until configured; the AI
+    // digest endpoint returns 503 rather than calling out with no key.
+    opencodeApiKey: '',
     public: {
-      // Canonical origin for links we send out (password reset). Required in
-      // production — never derived from the request Host header. Override with
-      // NUXT_PUBLIC_SITE_URL; empty in dev falls back to the request origin.
       siteUrl: '',
     },
   },

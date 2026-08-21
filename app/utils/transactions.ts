@@ -8,7 +8,8 @@ interface GroupableTransaction {
   type: 'INCOME' | 'EXPENSE'
   transferId: string | null
   feeOfId: string | null
-  fee: string | number | null
+  internalFee: string | number | null
+  externalFee: string | number | null
 }
 
 export function groupTransactionRows<T extends GroupableTransaction>(items: T[]): (T & { transferPair?: boolean })[] {
@@ -17,7 +18,8 @@ export function groupTransactionRows<T extends GroupableTransaction>(items: T[])
   const rows: (T & { transferPair?: boolean })[] = []
 
   for (const tx of items) {
-    // Fee rows fold into their parent, which carries the amount as `fee`.
+    // Fee rows fold into their parent, which carries the amounts as
+    // `internalFee`/`externalFee`.
     if (tx.feeOfId && loadedIds.has(tx.feeOfId)) continue
 
     if (!tx.transferId) {
@@ -33,9 +35,26 @@ export function groupTransactionRows<T extends GroupableTransaction>(items: T[])
       continue
     }
     // Represent the pair by its EXPENSE (source) leg so the direction is
-    // stable, and take the fee from whichever leg the API attached it to.
+    // stable, and take the fees from whichever leg the API attached them to.
     const source = tx.type === 'EXPENSE' ? tx : sibling
-    rows.push({ ...source, fee: tx.fee ?? sibling.fee, transferPair: true })
+    rows.push({
+      ...source,
+      internalFee: tx.internalFee ?? sibling.internalFee,
+      externalFee: tx.externalFee ?? sibling.externalFee,
+      transferPair: true,
+    })
   }
   return rows
+}
+
+// Amount label for a collapsed transfer pair. Cross-currency shows both sides
+// ("$100.00 → Bs 16,450.00"); same-currency stays a single amount. The format
+// function is injected because locale-aware formatting lives in a composable.
+export function transferPairAmount(
+  tx: { amount: string | number, currency: string, transferAmount?: string | number | null, transferCurrency?: string | null },
+  format: (amount: number, currency: string) => string,
+): string {
+  const source = format(Number(tx.amount), tx.currency)
+  if (!tx.transferAmount || !tx.transferCurrency || tx.transferCurrency === tx.currency) return source
+  return `${source} → ${format(Number(tx.transferAmount), tx.transferCurrency)}`
 }

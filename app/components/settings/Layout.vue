@@ -9,6 +9,7 @@ const groups = computed<NavigationMenuItem[][]>(() => [
   [
     { label: t('settings.nav.general'), type: 'label' },
     { label: t('settings.nav.account'), icon: 'i-lucide-circle-user', to: '/app/settings/account' },
+    { label: t('settings.nav.financialProfile'), icon: 'i-lucide-briefcase', to: '/app/settings/financial-profile' },
     { label: t('settings.nav.preferences'), icon: 'i-lucide-sliders-horizontal', to: '/app/settings/preferences' },
     { label: t('settings.nav.apiKey'), icon: 'i-lucide-key', to: '/app/settings/api-key' },
     { label: t('settings.nav.accounts'), icon: 'i-lucide-wallet', to: '/app/settings/accounts' },

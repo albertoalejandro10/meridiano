@@ -1,4 +1,4 @@
-import type { AccountInput, AccountType, SellAssetInput } from '~~/shared/schemas'
+import type { AccountInput, AccountType, ReconcileInput, SellAssetInput } from '~~/shared/schemas'
 
 export const useAccountsStore = defineStore('accounts', () => {
   const { data: accounts, refresh, status } = useFetch('/api/v1/accounts', {
@@ -8,8 +8,8 @@ export const useAccountsStore = defineStore('accounts', () => {
 
   type Account = typeof accounts.value[number]
 
-  const toast = useToast()
   const { confirm } = useConfirm()
+  const { run } = useMutations()
   // Stores can't use useI18n() (no component instance) — $i18n is the safe
   // accessor. Translate inside action bodies (event time), never at setup,
   // so a locale switch never leaves stale-language toasts.
@@ -18,69 +18,50 @@ export const useAccountsStore = defineStore('accounts', () => {
   // Account mutations change data derived elsewhere (goal progress sums linked
   // balances; transaction rows embed the account name), so refresh every loaded
   // query, not just the accounts list.
-  async function refreshAll() {
-    await refreshNuxtData()
-  }
+  const refreshAll = () => refreshNuxtData()
 
   // Create/update rethrow so the calling modal can stay open on failure.
-  async function createAccount(input: AccountInput) {
-    try {
-      await $fetch('/api/v1/accounts', { method: 'POST', body: input })
-      await refreshAll()
-      toast.add({ title: $i18n.t('accounts.toasts.created'), color: 'success' })
-    }
-    catch (e: unknown) {
-      const err = e as { data?: { statusMessage?: string } }
-      toast.add({ title: $i18n.t('common.toasts.createFailed'), description: err.data?.statusMessage, color: 'error' })
-      throw e
-    }
-  }
+  const createAccount = (input: AccountInput) => run({
+    action: () => $fetch('/api/v1/accounts', { method: 'POST', body: input }),
+    refresh: refreshAll,
+    success: 'accounts.toasts.created',
+    failure: 'create',
+    rethrow: true,
+  })
 
-  async function updateAccount(id: string, input: Partial<AccountInput>) {
-    try {
-      await $fetch(`/api/v1/accounts/${id}`, { method: 'PATCH', body: input })
-      await refreshAll()
-      toast.add({ title: $i18n.t('accounts.toasts.updated'), color: 'success' })
-    }
-    catch (e: unknown) {
-      const err = e as { data?: { statusMessage?: string } }
-      toast.add({ title: $i18n.t('common.toasts.updateFailed'), description: err.data?.statusMessage, color: 'error' })
-      throw e
-    }
-  }
+  const updateAccount = (id: string, input: Partial<AccountInput>) => run({
+    action: () => $fetch(`/api/v1/accounts/${id}`, { method: 'PATCH', body: input }),
+    refresh: refreshAll,
+    success: 'accounts.toasts.updated',
+    failure: 'update',
+    rethrow: true,
+  })
 
   // No rethrow: there is no modal to keep open — the toast (and the boolean,
-  // for callers that navigate afterwards) is the whole story.
+  // for callers that navigate afterwards) is the whole story. A 409 means the
+  // account still has transactions, which deserves its own explanation.
   async function deleteAccount(id: string): Promise<boolean> {
-    try {
-      await $fetch(`/api/v1/accounts/${id}`, { method: 'DELETE' })
-      await refreshAll()
-      toast.add({ title: $i18n.t('accounts.toasts.deleted'), color: 'success' })
-      return true
-    }
-    catch (e: unknown) {
-      const err = e as { statusCode?: number, statusMessage?: string }
-      toast.add({
-        title: err.statusCode === 409 ? $i18n.t('accounts.toasts.hasTransactions.title') : $i18n.t('common.toasts.deleteFailed'),
-        description: err.statusCode === 409 ? $i18n.t('accounts.toasts.hasTransactions.description') : err.statusMessage,
-        color: 'error',
-      })
-      return false
-    }
+    const result = await run({
+      action: () => $fetch(`/api/v1/accounts/${id}`, { method: 'DELETE' }),
+      refresh: refreshAll,
+      success: 'accounts.toasts.deleted',
+      failure: e => errorStatus(e) === 409
+        ? {
+            title: $i18n.t('accounts.toasts.hasTransactions.title'),
+            description: $i18n.t('accounts.toasts.hasTransactions.description'),
+          }
+        : { title: $i18n.t('common.toasts.deleteFailed'), description: errorMessage(e) },
+    })
+    return result !== undefined
   }
 
-  async function sellAsset(assetId: string, input: SellAssetInput) {
-    try {
-      await $fetch(`/api/v1/accounts/${assetId}/sell`, { method: 'POST', body: input })
-      await refreshAll()
-      toast.add({ title: $i18n.t('accounts.toasts.sold'), color: 'success' })
-    }
-    catch (e: unknown) {
-      const err = e as { data?: { statusMessage?: string } }
-      toast.add({ title: $i18n.t('accounts.toasts.saleFailed'), description: err.data?.statusMessage, color: 'error' })
-      throw e
-    }
-  }
+  const sellAsset = (assetId: string, input: SellAssetInput) => run({
+    action: () => $fetch(`/api/v1/accounts/${assetId}/sell`, { method: 'POST', body: input }),
+    refresh: refreshAll,
+    success: 'accounts.toasts.sold',
+    failure: 'accounts.toasts.saleFailed',
+    rethrow: true,
+  })
 
   // --- Account modal (create/edit) ---
   const modalOpen = ref(false)
@@ -104,6 +85,34 @@ export const useAccountsStore = defineStore('accounts', () => {
     modalOpen.value = true
   }
 
+  // Rethrows like create/update so the reconcile modal stays open on failure.
+  // Refreshes everything, not just the accounts list: the detail page's
+  // reconciliation history is its own `account-stats:…` key.
+  // The modal only sets applyAdjustment when there's a real difference to close,
+  // so the toast never claims a correction that didn't happen.
+  const reconcileAccount = (id: string, input: ReconcileInput) => run({
+    action: () => $fetch(`/api/v1/accounts/${id}/reconcile`, { method: 'POST', body: input }),
+    refresh: refreshAll,
+    success: input.applyAdjustment ? 'accounts.toasts.balanceAdjusted' : 'accounts.toasts.reconciled',
+    failure: 'accounts.toasts.reconcileFailed',
+    rethrow: true,
+  })
+
+  // One-click "nothing's missing": a checkpoint at the balance the user is
+  // looking at, which resets the staleness clock. No rethrow — there's no modal
+  // to keep open, the toast is the whole story.
+  const confirmUpToDate = (account: { id: string, balance: number }) => run({
+    action: () => $fetch(`/api/v1/accounts/${account.id}/reconcile`, {
+      method: 'POST',
+      // Local 'yyyy-MM-dd' like the reconcile modal sends — a raw Date would
+      // serialize as UTC and land on tomorrow's checkpoint late in the evening.
+      body: { statedBalance: account.balance, date: toISODate(new Date()) },
+    }),
+    refresh: refreshAll,
+    success: 'accounts.toasts.confirmedUpToDate',
+    failure: 'accounts.toasts.reconcileFailed',
+  })
+
   // --- Sell-asset modal ---
   const sellModalOpen = ref(false)
   const sellingAsset = ref<Account | undefined>()
@@ -111,6 +120,15 @@ export const useAccountsStore = defineStore('accounts', () => {
   function openSell(account: Account) {
     sellingAsset.value = account
     sellModalOpen.value = true
+  }
+
+  // --- Reconcile modal ---
+  const reconcileModalOpen = ref(false)
+  const reconcilingAccount = ref<Account | undefined>()
+
+  function openReconcile(account: Account) {
+    reconcilingAccount.value = account
+    reconcileModalOpen.value = true
   }
 
   async function confirmDelete(account: { id: string, name: string }): Promise<boolean> {
@@ -138,6 +156,11 @@ export const useAccountsStore = defineStore('accounts', () => {
     sellModalOpen,
     sellingAsset,
     openSell,
+    reconcileAccount,
+    confirmUpToDate,
+    reconcileModalOpen,
+    reconcilingAccount,
+    openReconcile,
     confirmDelete,
   }
 })

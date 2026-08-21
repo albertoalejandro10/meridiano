@@ -4,6 +4,5 @@ export default defineAppConfig({
       primary: 'sky',
       neutral: 'mist'
     },
-    
   }
 })

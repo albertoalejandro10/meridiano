@@ -2,7 +2,7 @@ import { db, schema } from '@nuxthub/db'
 import { and, eq } from 'drizzle-orm'
 
 export default defineEventHandler(async (event) => {
-  const userId = event.context.userId as string
+  const userId = event.context.userId
   const id = getRouterParam(event, 'id')!
 
   const row = await db.query.transactions.findFirst({

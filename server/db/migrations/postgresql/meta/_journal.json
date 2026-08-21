@@ -36,6 +36,118 @@
       "when": 1783612478119,
       "tag": "0004_flawless_sleepwalker",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1783882030628,
+      "tag": "0005_striped_mongoose",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1784250196459,
+      "tag": "0006_magical_goblin_queen",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1784253475383,
+      "tag": "0007_early_hex",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1784434653220,
+      "tag": "0008_bitter_chameleon",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1784439193637,
+      "tag": "0009_brainy_master_mold",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1784916030351,
+      "tag": "0010_sloppy_mister_fear",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1784918063966,
+      "tag": "0011_perfect_piledriver",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1785299536915,
+      "tag": "0012_true_obadiah_stane",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1785348606784,
+      "tag": "0013_legal_reptil",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1785464265951,
+      "tag": "0014_clever_wolf_cub",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1785471857982,
+      "tag": "0015_premium_prima",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1785479360547,
+      "tag": "0016_narrow_strong_guy",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1785480404145,
+      "tag": "0017_fixed_mephisto",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1785604962413,
+      "tag": "0018_opposite_forgotten_one",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1786377263919,
+      "tag": "0019_concerned_vermin",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1787276497280,
+      "tag": "0020_tidy_mister_sinister",
+      "breakpoints": true
     }
   ]
 }

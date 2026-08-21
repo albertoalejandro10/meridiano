@@ -1,4 +1,4 @@
-# BetoTracker Documentation
+# Meridiano Documentation
 
 ## Quick Start
 

@@ -1,6 +1,6 @@
 ---
 name: dependencies
-description: Rules for adding or updating dependencies in BetoTracker. Use whenever installing, upgrading, or removing packages.
+description: Rules for adding or updating dependencies in Meridiano. Use whenever installing, upgrading, or removing packages.
 ---
 
 # Dependency Rules

@@ -24,8 +24,7 @@ const state = reactive<AccountInput>({
   archived: false,
 })
 
-watch(open, (isOpen) => {
-  if (!isOpen) return
+const { saving, submit } = useModalForm(open, () => {
   state.name = account.value?.name ?? ''
   state.type = (account.value?.type as AccountInput['type']) ?? modalType.value ?? options.value[0]!.value
   state.currency = (account.value?.currency as AccountInput['currency']) ?? 'USD'
@@ -46,26 +45,13 @@ const title = computed(() => {
 const isLiability = computed(() => accountGroup(state.type) === 'liability')
 const balanceLabel = computed(() => (isLiability.value ? t('accounts.modal.amountOwed') : t('accounts.modal.initialBalance')))
 
-const saving = ref(false)
-
-async function onSubmit() {
-  saving.value = true
-  try {
-    const payload = {
-      ...state,
-      initialBalance: isLiability.value ? Math.abs(Number(state.initialBalance)) : state.initialBalance,
-    }
-    if (account.value) await updateAccount(account.value.id, payload)
-    else await createAccount(payload)
-    open.value = false
+const onSubmit = () => submit(() => {
+  const payload = {
+    ...state,
+    initialBalance: isLiability.value ? Math.abs(Number(state.initialBalance)) : state.initialBalance,
   }
-  catch {
-    // toast handled in the store; keep the modal open for another attempt
-  }
-  finally {
-    saving.value = false
-  }
-}
+  return account.value ? updateAccount(account.value.id, payload) : createAccount(payload)
+})
 </script>
 
 <template>
@@ -110,10 +96,7 @@ async function onSubmit() {
 
         <USwitch v-if="account" v-model="state.archived" :label="$t('accounts.modal.archived')" />
 
-        <div class="flex justify-end gap-2 pt-2">
-          <UButton :label="$t('common.cancel')" color="neutral" variant="ghost" @click="open = false" />
-          <UButton type="submit" :label="account ? $t('common.save') : $t('common.create')" :loading="saving" />
-        </div>
+        <ModalActions :is-edit="!!account" :saving="saving" @cancel="open = false" />
       </UForm>
     </template>
   </UModal>

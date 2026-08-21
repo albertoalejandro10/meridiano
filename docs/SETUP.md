@@ -1,6 +1,6 @@
-# BetoTracker Setup Guide
+# Meridiano Setup Guide
 
-BetoTracker runs on **NuxtHub** with a **PostgreSQL** database (via Drizzle ORM) and **email/password auth** (nuxt-auth-utils). This guide covers local development and deployment.
+Meridiano runs on **NuxtHub** with a **PostgreSQL** database (via Drizzle ORM) and **email/password auth** (nuxt-auth-utils). This guide covers local development and deployment.
 
 ## Local Development
 

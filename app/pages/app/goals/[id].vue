@@ -67,20 +67,17 @@ async function onDelete() {
     await navigateTo('/app/goals')
   }
 }
+
+const breadcrumbItems = useBreadcrumbs([
+  { labelKey: 'goals.title', icon: 'i-lucide-target', to: '/app/goals' },
+  { label: () => goal.value?.name },
+])
 </script>
 
 <template>
   <UDashboardPanel id="goal-detail">
     <template #body>
-      <UButton
-        to="/app/goals"
-        :label="$t('goals.title')"
-        icon="i-lucide-arrow-left"
-        color="neutral"
-        variant="ghost"
-        size="sm"
-        class="mb-4 -ml-2 self-start"
-      />
+      <UBreadcrumb :items="breadcrumbItems" class="mb-4" />
 
       <div v-if="error" class="flex flex-col items-center gap-4 py-24 text-center">
         <UIcon name="i-lucide-search-x" class="size-10 text-muted" />

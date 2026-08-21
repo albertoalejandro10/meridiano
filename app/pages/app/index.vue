@@ -3,6 +3,7 @@ definePageMeta({ layout: 'dashboard' })
 
 const { t } = useI18n()
 const { formatMoney, formatMoneyByCurrency, formatFullDate } = useLocaleFormat()
+const { categoryLabel } = useCategoryLabel()
 
 useSeoMeta({ title: () => t('dashboard.title') })
 
@@ -88,9 +89,23 @@ const otherNetWorths = computed(() =>
     .join(' · '),
 )
 
-// The allocation card compares proportions, so it only makes sense within one currency.
+// The allocation card compares proportions, so it only makes sense within one
+// currency. Negative balances (overdrafts) hold no share of the allocation.
 const allocationAssets = computed(() => assets.value.filter(a => a.currency === currency.value))
-const totalAssets = computed(() => allocationAssets.value.reduce((sum, a) => sum + a.balance, 0))
+const totalAssets = computed(() => allocationAssets.value.reduce((sum, a) => sum + Math.max(a.balance, 0), 0))
+
+// Color each asset by allocation rank — the same palette slots as the analytics
+// charts, with everything past the 8th sharing the gray "other" slot — and sort
+// by size so the stacked bar reads largest-first.
+const allocationRows = computed(() =>
+  [...allocationAssets.value]
+    .sort((a, b) => b.balance - a.balance)
+    .map((account, i) => ({
+      account,
+      color: chartColors[i] ?? chartOtherColor,
+      share: percentOf(Math.max(account.balance, 0), totalAssets.value),
+    })),
+)
 
 // Walk loaded transactions backwards from today's value to build a daily series
 // (last 30 days, limited to the fetched page). For the net-worth series INCOME
@@ -142,31 +157,31 @@ const lastTransactionBanner = computed(() => {
   if (!tx) return undefined
   const name = tx.transferId
     ? t('transactions.transfer')
-    : (tx.description || tx.category?.name || (tx.type === 'INCOME' ? t('transactions.income') : t('transactions.expense')))
+    : (tx.description || categoryLabel(tx.category) || (tx.type === 'INCOME' ? t('transactions.income') : t('transactions.expense')))
   const where = tx.transferId
     ? (tx.type === 'EXPENSE' ? `${tx.account?.name} → ${tx.transferAccount}` : `${tx.transferAccount} → ${tx.account?.name}`)
     : tx.account?.name
-  const sign = tx.transferPair ? '' : tx.type === 'INCOME' ? '+' : '−'
+  const amountLabel = tx.transferPair
+    ? transferPairAmount(tx, formatMoney)
+    : (tx.type === 'INCOME' ? '+' : '−') + formatMoney(Number(tx.amount), tx.currency)
   return {
     icon: tx.transferId
       ? 'i-lucide-arrow-left-right'
       : (tx.type === 'INCOME' ? 'i-lucide-arrow-down-left' : 'i-lucide-arrow-up-right'),
-    title: `${t('dashboard.lastTransaction')}: ${name} · ${sign}${formatMoney(Number(tx.amount), tx.currency)} · ${where} · ${formatFullDate(tx.date)}`,
+    title: `${t('dashboard.lastTransaction')}: ${name} · ${amountLabel} · ${where} · ${formatFullDate(tx.date)}`,
   }
 })
 
-const breadcrumbItems = computed(() => [
-  { label: t('dashboard.title'), icon: 'i-lucide-house', to: '/app' },
-])
-
-const sidePanelOpen = ref(true)
+const breadcrumbItems = useBreadcrumbs()
 </script>
 
 <template>
   <UDashboardPanel id="home">
     <template #body>
+      <UBreadcrumb :items="breadcrumbItems" class="mb-4" />
+
       <div class="flex gap-6">
-        <div v-if="sidePanelOpen" class="w-80 shrink-0 space-y-4">
+        <div class="w-80 shrink-0 space-y-4">
           <UTabs v-model="tab" :items="tabItems" size="sm" />
 
           <UButton
@@ -211,7 +226,9 @@ const sidePanelOpen = ref(true)
                     class="border-t border-default pt-2 first:border-t-0 first:pt-0"
                   >
                     <div class="flex items-center justify-between gap-2">
-                      <span class="text-sm truncate">{{ account.name }}</span>
+                      <NuxtLink :to="`/app/accounts/${account.id}`" class="text-sm truncate hover:underline">
+                        {{ account.name }}
+                      </NuxtLink>
                       <div class="flex items-center gap-1 shrink-0">
                         <span class="text-sm font-medium" :class="group.liability || account.balance < 0 ? 'text-error' : ''">
                           {{ formatMoney(account.balance, account.currency) }}
@@ -259,17 +276,6 @@ const sidePanelOpen = ref(true)
         </div>
 
         <div class="flex-1 min-w-0 space-y-6">
-          <div class="flex items-center gap-2">
-            <UButton
-              :icon="sidePanelOpen ? 'i-lucide-panel-left-close' : 'i-lucide-panel-left-open'"
-              color="neutral"
-              variant="ghost"
-              size="sm"
-              @click="sidePanelOpen = !sidePanelOpen"
-            />
-            <UBreadcrumb :items="breadcrumbItems" />
-          </div>
-
           <div class="flex items-start justify-between gap-4">
             <div>
               <h1 class="text-xl font-semibold">
@@ -281,6 +287,8 @@ const sidePanelOpen = ref(true)
             </div>
             <UButton :label="$t('common.new')" icon="i-lucide-plus" @click="transactionsStore.openCreate()" />
           </div>
+
+          <RecurringPendingBanner />
 
           <UPageCard variant="subtle">
             <div class="flex items-start justify-between gap-4 mb-4">
@@ -306,36 +314,48 @@ const sidePanelOpen = ref(true)
           </UPageCard>
 
           <UPageCard :title="currencyItems.length > 1 ? `${$t('dashboard.assets')} (${currency})` : $t('dashboard.assets')" variant="subtle">
-            <div v-if="allocationAssets.length" class="divide-y divide-default">
-              <div
-                v-for="account in allocationAssets"
-                :key="account.id"
-                class="flex items-center justify-between gap-4 py-3"
-              >
-                <div class="flex items-center gap-3 min-w-0">
-                  <UIcon :name="accountTypeIcon(account.type)" class="size-5 shrink-0 text-muted" />
-                  <div class="min-w-0">
-                    <p class="text-sm font-medium truncate">
-                      {{ account.name }}
-                    </p>
-                    <p class="text-xs text-muted">
-                      {{ $t(accountTypeLabelKey(account.type)) }}
-                    </p>
+            <template v-if="allocationRows.length">
+              <!-- One stacked bar: every asset's share of the total, in its color -->
+              <div class="flex h-3 w-full overflow-hidden rounded-full bg-elevated mb-2">
+                <div
+                  v-for="row in allocationRows"
+                  :key="row.account.id"
+                  class="h-full"
+                  :style="{ width: `${row.share}%`, backgroundColor: row.color }"
+                />
+              </div>
+              <div class="divide-y divide-default">
+                <div
+                  v-for="{ account, color, share } in allocationRows"
+                  :key="account.id"
+                  class="flex items-center justify-between gap-4 py-3"
+                >
+                  <div class="flex items-center gap-3 min-w-0">
+                    <span class="size-2.5 rounded-full shrink-0" :style="{ backgroundColor: color }" />
+                    <UIcon :name="accountTypeIcon(account.type)" class="size-5 shrink-0 text-muted" />
+                    <div class="min-w-0">
+                      <p class="text-sm font-medium truncate">
+                        {{ account.name }}
+                      </p>
+                      <p class="text-xs text-muted">
+                        {{ $t(accountTypeLabelKey(account.type)) }}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div class="flex items-center gap-4 shrink-0">
-                  <div class="w-24 hidden sm:block">
-                    <UProgress :model-value="percentOf(account.balance, totalAssets)" size="sm" />
+                  <div class="flex items-center gap-4 shrink-0">
+                    <div class="w-24 hidden sm:block h-1.5 rounded-full bg-elevated overflow-hidden">
+                      <div class="h-full rounded-full" :style="{ width: `${share}%`, backgroundColor: color }" />
+                    </div>
+                    <span class="text-xs text-muted w-10 text-right hidden sm:block">
+                      {{ formatPercent(Math.max(account.balance, 0), totalAssets) }}
+                    </span>
+                    <span class="text-sm font-semibold w-28 text-right">
+                      {{ formatMoney(account.balance, account.currency) }}
+                    </span>
                   </div>
-                  <span class="text-xs text-muted w-10 text-right hidden sm:block">
-                    {{ formatPercent(account.balance, totalAssets) }}
-                  </span>
-                  <span class="text-sm font-semibold w-28 text-right">
-                    {{ formatMoney(account.balance, account.currency) }}
-                  </span>
                 </div>
               </div>
-            </div>
+            </template>
             <p v-else class="text-sm text-muted">
               {{ $t('dashboard.noAssets') }}
             </p>

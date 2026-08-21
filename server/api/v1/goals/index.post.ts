@@ -2,7 +2,7 @@ import { db, schema } from '@nuxthub/db'
 import { goalSchema } from '~~/shared/schemas'
 
 export default defineEventHandler(async (event) => {
-  const userId = event.context.userId as string
+  const userId = event.context.userId
   const body = await readValidatedBody(event, goalSchema.parse)
 
   const { targetAmount, startDate, targetDate, accountIds, ...rest } = body

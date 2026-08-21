@@ -3,7 +3,7 @@ import { and, eq } from 'drizzle-orm'
 import { transactionUpdateSchema } from '~~/shared/schemas'
 
 export default defineEventHandler(async (event) => {
-  const userId = event.context.userId as string
+  const userId = event.context.userId
   const id = getRouterParam(event, 'id')!
   const body = await readValidatedBody(event, transactionUpdateSchema.parse)
 
@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'Transfers cannot be edited. Delete it and create a new one.' })
   }
   // Fee rows stay editable as ordinary expenses, but can't nest a fee of their own.
-  if (existing.feeOfId && body.fee !== undefined) {
+  if (existing.feeOfId && (body.internalFee !== undefined || body.externalFee !== undefined)) {
     throw createError({ statusCode: 400, statusMessage: 'A fee cannot have its own fee' })
   }
 
@@ -32,26 +32,27 @@ export default defineEventHandler(async (event) => {
     currency = account.currency
   }
 
-  // `fee` is not a column — it drives the linked fee row below.
-  const { amount, date, fee, ...rest } = body
+  // The fees are not columns — they drive the linked fee rows below.
+  const { amount, date, internalFee, externalFee, ...rest } = body
   const data = {
     ...rest,
     ...(amount !== undefined && { amount: toAmount(amount) }),
     ...(date !== undefined && { date: toDateStr(date) }),
     ...(currency && { currency }),
   }
-  if (Object.keys(data).length === 0 && fee === undefined) {
-    throw createError({ statusCode: 400, statusMessage: 'Nothing to update' })
-  }
+  assertNotEmpty(data, internalFee, externalFee)
 
-  const feeRow = existing.feeOfId
-    ? null
-    : await db.query.transactions.findFirst({
+  const feeRows = existing.feeOfId
+    ? []
+    : await db.query.transactions.findMany({
         where: (tx, { eq }) => eq(tx.feeOfId, id),
-        columns: { id: true },
+        columns: { id: true, feeKind: true },
       })
+  const internalRow = feeRows.find(r => r.feeKind === 'INTERNAL')
+  const externalRow = feeRows.find(r => r.feeKind === 'EXTERNAL')
   // Resolve outside the transaction — a stray category on a rollback is harmless.
-  const feeCategoryId = fee && !feeRow ? await ensureFeesCategory(userId) : null
+  const needsCategory = (internalFee && !internalRow) || (externalFee && !externalRow)
+  const feeCategoryId = needsCategory ? await ensureFeesCategory(userId) : null
 
   await db.transaction(async (tx) => {
     let parent = existing
@@ -65,30 +66,39 @@ export default defineEventHandler(async (event) => {
       parent = updated
     }
 
-    // The fee row follows its parent's account/date so it never drifts.
+    // Fee rows follow their parent's account/date so they never drift.
     const sync = { accountId: parent.accountId, currency: parent.currency, date: parent.date }
-    if (fee === undefined) {
-      // Fee untouched — keep an existing fee row attached to the parent.
-      if (feeRow) await tx.update(schema.transactions).set(sync).where(eq(schema.transactions.id, feeRow.id))
-    } else if (!fee) {
-      // null/0 — remove the fee.
-      if (feeRow) await tx.delete(schema.transactions).where(eq(schema.transactions.id, feeRow.id))
-    } else if (feeRow) {
-      await tx
-        .update(schema.transactions)
-        .set({ ...sync, amount: toAmount(fee) })
-        .where(eq(schema.transactions.id, feeRow.id))
-    } else {
-      await tx.insert(schema.transactions).values({
-        userId,
-        ...sync,
-        type: 'EXPENSE',
-        amount: toAmount(fee),
-        categoryId: feeCategoryId,
-        description: 'Fee',
-        feeOfId: id,
-      })
+    const applyFee = async (
+      kind: 'INTERNAL' | 'EXTERNAL',
+      fee: number | null | undefined,
+      feeRow: { id: string } | undefined,
+    ) => {
+      if (fee === undefined) {
+        // Fee untouched — keep an existing fee row attached to the parent.
+        if (feeRow) await tx.update(schema.transactions).set(sync).where(eq(schema.transactions.id, feeRow.id))
+      } else if (!fee) {
+        // null/0 — remove the fee.
+        if (feeRow) await tx.delete(schema.transactions).where(eq(schema.transactions.id, feeRow.id))
+      } else if (feeRow) {
+        await tx
+          .update(schema.transactions)
+          .set({ ...sync, amount: toAmount(fee) })
+          .where(eq(schema.transactions.id, feeRow.id))
+      } else {
+        await tx.insert(schema.transactions).values({
+          userId,
+          ...sync,
+          type: 'EXPENSE',
+          amount: toAmount(fee),
+          categoryId: feeCategoryId,
+          description: kind === 'INTERNAL' ? 'Internal fee' : 'External fee',
+          feeOfId: id,
+          feeKind: kind,
+        })
+      }
     }
+    await applyFee('INTERNAL', internalFee, internalRow)
+    await applyFee('EXTERNAL', externalFee, externalRow)
   })
 
   return db.query.transactions.findFirst({

@@ -1,7 +1,7 @@
 import { db } from '@nuxthub/db'
 
 export default defineEventHandler(async (event) => {
-  const userId = event.context.userId as string
+  const userId = event.context.userId
 
   const [goals, accounts, netByCurrency] = await Promise.all([
     db.query.goals.findMany({

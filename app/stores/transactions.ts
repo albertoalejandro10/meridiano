@@ -10,9 +10,10 @@ export interface TransactionRow {
   amount: string | number
   date: string
   description: string | null
-  // Linked fee: the amount of this row's fee row (enriched by the list API),
+  // Linked fees: the amounts of this row's fee rows (enriched by the list API),
   // and the parent id when this row IS a fee (fee rows can't nest fees).
-  fee?: string | number | null
+  internalFee?: string | number | null
+  externalFee?: string | number | null
   feeOfId?: string | null
 }
 
@@ -26,8 +27,8 @@ export const useTransactionsStore = defineStore('transactions', () => {
     default: () => ({ items: [], nextCursor: null }),
   })
 
-  const toast = useToast()
   const { confirm } = useConfirm()
+  const { run } = useMutations()
   // Stores can't use useI18n() (no component instance) — $i18n is the safe
   // accessor. Translate inside action bodies (event time), never at setup,
   // so a locale switch never leaves stale-language toasts.
@@ -35,78 +36,46 @@ export const useTransactionsStore = defineStore('transactions', () => {
 
   // Refresh every loaded query after a mutation: derived balances ('accounts'),
   // goal progress, and any transaction list on screen, whatever filters it carries.
-  async function refreshAll() {
-    await refreshNuxtData()
-  }
+  const refreshAll = () => refreshNuxtData()
 
   // Create/update rethrow so the calling modal can stay open on failure.
-  async function createTransaction(input: TransactionInput) {
-    try {
-      await $fetch('/api/v1/transactions', { method: 'POST', body: input })
-      await refreshAll()
-      toast.add({ title: $i18n.t('transactions.toasts.saved'), color: 'success' })
-    }
-    catch (e: unknown) {
-      const err = e as { data?: { statusMessage?: string } }
-      toast.add({ title: $i18n.t('common.toasts.saveFailed'), description: err.data?.statusMessage, color: 'error' })
-      throw e
-    }
-  }
+  const createTransaction = (input: TransactionInput) => run({
+    action: () => $fetch('/api/v1/transactions', { method: 'POST', body: input }),
+    refresh: refreshAll,
+    success: 'transactions.toasts.saved',
+    failure: 'save',
+    rethrow: true,
+  })
 
-  async function updateTransaction(id: string, input: Partial<TransactionInput>) {
-    try {
-      await $fetch(`/api/v1/transactions/${id}`, { method: 'PATCH', body: input })
-      await refreshAll()
-      toast.add({ title: $i18n.t('transactions.toasts.updated'), color: 'success' })
-    }
-    catch (e: unknown) {
-      const err = e as { data?: { statusMessage?: string } }
-      toast.add({ title: $i18n.t('common.toasts.updateFailed'), description: err.data?.statusMessage, color: 'error' })
-      throw e
-    }
-  }
+  const updateTransaction = (id: string, input: Partial<TransactionInput>) => run({
+    action: () => $fetch(`/api/v1/transactions/${id}`, { method: 'PATCH', body: input }),
+    refresh: refreshAll,
+    success: 'transactions.toasts.updated',
+    failure: 'update',
+    rethrow: true,
+  })
 
   // No rethrow: delete has no modal to keep open — the toast is the whole story.
   async function deleteTransaction(id: string): Promise<boolean> {
-    try {
-      await $fetch(`/api/v1/transactions/${id}`, { method: 'DELETE' })
-      await refreshAll()
-      toast.add({ title: $i18n.t('transactions.toasts.deleted'), color: 'success' })
-      return true
-    }
-    catch (e: unknown) {
-      const err = e as { data?: { statusMessage?: string } }
-      toast.add({ title: $i18n.t('common.toasts.deleteFailed'), description: err.data?.statusMessage, color: 'error' })
-      return false
-    }
+    const result = await run({
+      action: () => $fetch(`/api/v1/transactions/${id}`, { method: 'DELETE' }),
+      refresh: refreshAll,
+      success: 'transactions.toasts.deleted',
+      failure: 'delete',
+    })
+    return result !== undefined
   }
 
-  async function createTransfer(input: TransferInput) {
-    try {
-      await $fetch('/api/v1/transfers', { method: 'POST', body: input })
-      await refreshAll()
-      toast.add({ title: $i18n.t('transfers.toasts.complete'), color: 'success' })
-    }
-    catch (e: unknown) {
-      const err = e as { data?: { statusMessage?: string } }
-      toast.add({ title: $i18n.t('transfers.toasts.failed'), description: err.data?.statusMessage, color: 'error' })
-      throw e
-    }
-  }
+  const createTransfer = (input: TransferInput) => run({
+    action: () => $fetch('/api/v1/transfers', { method: 'POST', body: input }),
+    refresh: refreshAll,
+    success: 'transfers.toasts.complete',
+    failure: 'transfers.toasts.failed',
+    rethrow: true,
+  })
 
   // --- Transaction modal (create/edit) ---
-  const modalOpen = ref(false)
-  const editing = ref<TransactionRow | undefined>()
-
-  function openCreate() {
-    editing.value = undefined
-    modalOpen.value = true
-  }
-
-  function openEdit(tx: TransactionRow) {
-    editing.value = tx
-    modalOpen.value = true
-  }
+  const { modalOpen, editing, openCreate, openEdit } = useEditorModal<TransactionRow>()
 
   // --- Transfer modal ---
   const transferModalOpen = ref(false)
@@ -122,10 +91,12 @@ export const useTransactionsStore = defineStore('transactions', () => {
     type: 'INCOME' | 'EXPENSE'
     amount: string | number
     currency: string
-    fee?: string | number | null
+    internalFee?: string | number | null
+    externalFee?: string | number | null
   }): Promise<boolean> {
     const isTransfer = !!tx.transferId
-    const feeNote = Number(tx.fee ?? 0) > 0 ? ` ${$i18n.t('transactions.confirmDelete.feeNote')}` : ''
+    const hasFees = Number(tx.internalFee ?? 0) + Number(tx.externalFee ?? 0) > 0
+    const feeNote = hasFees ? ` ${$i18n.t('transactions.confirmDelete.feeNote')}` : ''
     const amount = formatMoney(Number(tx.amount), tx.currency, NUMBER_LOCALES[$i18n.locale.value])
     const confirmed = await confirm({
       title: isTransfer ? $i18n.t('transactions.confirmDelete.transferTitle') : $i18n.t('transactions.confirmDelete.title'),
