@@ -1,3 +1,4 @@
+import type { ButtonProps } from '@nuxt/ui'
 import { LazyConfirmModal } from '#components'
 
 export const useConfirm = () => {
@@ -6,6 +7,9 @@ export const useConfirm = () => {
   const confirm = async (options?: {
     title?: string
     message?: string
+    // Defaults to 'error' in ConfirmModal — pass 'primary' for confirms that
+    // add rather than destroy.
+    confirmColor?: ButtonProps['color']
   }): Promise<boolean> => {
     // $i18n instead of useI18n(): confirm() is called from stores/event
     // handlers where there is no component instance.
@@ -17,6 +21,7 @@ export const useConfirm = () => {
     const instance = modal.open({
       title: options?.title || $i18n.t('confirm.title'),
       message: options?.message || $i18n.t('confirm.message'),
+      ...(options?.confirmColor && { confirmColor: options.confirmColor }),
     })
 
     return await instance.result

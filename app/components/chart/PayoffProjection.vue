@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
-  data: { date: Date, value: number }[]
+  data: { date: Date, snowball: number, avalanche: number }[]
   currency: string
   height?: number
 }>(), {
@@ -8,23 +8,24 @@ const props = withDefaults(defineProps<{
 })
 
 const { t } = useI18n()
-const { formatMoney, formatShortDate, formatFullDate } = useLocaleFormat()
+const { formatMoney, formatMonth } = useLocaleFormat()
 
 const categories = computed(() => ({
-  value: { name: t('dashboard.netWorth'), color: 'var(--ui-primary)' },
+  snowball: { name: t('planning.debt.snowball'), color: 'var(--chart-1)' },
+  avalanche: { name: t('planning.debt.avalanche'), color: 'var(--chart-2)' },
 }))
 
 // Axis ticks are row indices (the library's x accessor is the index), so look
 // the date up in the data instead of treating the tick as a timestamp.
 const xFormatter = (tick: number | Date) => {
   const row = props.data[Math.round(Number(tick))]
-  return row ? formatShortDate(row.date) : ''
+  return row ? formatMonth(row.date) : ''
 }
-const tooltipTitle = (row: { date: Date, value: number }) => formatFullDate(row.date, 'PPPP')
+const tooltipTitle = (row: { date: Date }) => formatMonth(row.date)
 </script>
 
 <template>
-  <AreaChart
+  <LineChart
     :data="data"
     :categories="categories"
     :height="height"
@@ -32,7 +33,6 @@ const tooltipTitle = (row: { date: Date, value: number }) => formatFullDate(row.
     :x-formatter="xFormatter"
     :y-formatter="(tick: number) => formatMoney(tick, currency)"
     :tooltip-title-formatter="tooltipTitle"
-    hide-legend
     :x-grid-line="false"
     :y-grid-line="false"
   />

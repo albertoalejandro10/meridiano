@@ -1,6 +1,6 @@
 # Charts
 
-Reusable chart components for BetoTracker. All charts wrap [nuxt-charts](https://nuxtcharts.com) (`vue-chrts`/Unovis under the hood), which is registered as a Nuxt module — its components (`AreaChart`, `LineChart`, `BarChart`, `DonutChart`, …) are auto-imported.
+Reusable chart components for Meridiano. All charts wrap [nuxt-charts](https://nuxtcharts.com) (`vue-chrts`/Unovis under the hood), which is registered as a Nuxt module — its components (`AreaChart`, `LineChart`, `BarChart`, `DonutChart`, …) are auto-imported.
 
 ## Conventions
 
@@ -17,6 +17,12 @@ Reusable chart components for BetoTracker. All charts wrap [nuxt-charts](https:/
 | --- | --- |
 | `<ChartSparkline :data="series" />` | Tiny trend line (account rows, cards). Auto-colors green/red by trend. Optional `height` (default 48). |
 | `<ChartNetWorth :data="series" :currency="'USD'" />` | Net worth area chart for the home page. Optional `height` (default 250). |
+| `<ChartCashflow :data="rows" :currency="'USD'" />` | Grouped income-vs-expenses bars per month (analytics). Rows are `{ month: 'yyyy-MM', income, expenses }`. Optional `height` (default 250). |
+| `<ChartSpendingDonut :data="segments" :currency="'USD'" @select="…" />` | Category breakdown donut (analytics). Segments are `{ key, label, value, color }` — colors come from `chartColors` in `app/utils/charts.ts`. Emits `select` with the clicked segment index. Optional `height` (default 250). |
+| `<ChartNetWorthStacked :data="series" :currency="'USD'" />` | Net worth stacked by account-type group (analytics). Rows are `{ date, cash, investments, property, liabilities }` with liabilities already negated. Optional `height` (default 280). |
+| `<ChartSavingsRate :data="rows" />` | Small savings-rate line (analytics). Rows are `{ month: 'yyyy-MM', rate: number \| null }`; null months (no income) are skipped. Optional `height` (default 120). |
+| `<ChartPayoffProjection :data="rows" :currency="'USD'" />` | Remaining-debt lines comparing the snowball vs avalanche strategies (planning). Rows are `{ date, snowball, avalanche }` with 0 after a strategy finishes. Optional `height` (default 250). |
+| `<ChartGoalScenarios :data="rows" :currency="'USD'" />` | Goal-saving pace comparison lines (planning what-if). Rows are `GoalScenarioRow` from `simulateGoalScenarios`: `plan` always, `pace`/`required` only when they'd visibly diverge — the drawn series follow the first row's keys. Optional `height` (default 250). |
 
 ## Adding a new chart
 

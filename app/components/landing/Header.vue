@@ -14,6 +14,18 @@ const items = computed(() => [
     active: activeSection.value === 'features'
   },
   {
+    label: t('landing.nav.howItWorks'),
+    to: '#how-it-works',
+    exactHash: true,
+    active: activeSection.value === 'how-it-works'
+  },
+  {
+    label: t('landing.nav.goals'),
+    to: '#goals',
+    exactHash: true,
+    active: activeSection.value === 'goals'
+  },
+  {
     label: t('landing.nav.metrics'),
     to: '#metrics',
     exactHash: true,
@@ -36,7 +48,7 @@ onMounted(() => {
     }
   }, { rootMargin: '-50% 0px -50% 0px' })
 
-  document.querySelectorAll('#features, #metrics').forEach(el => observer!.observe(el))
+  document.querySelectorAll('#features, #how-it-works, #goals, #metrics').forEach(el => observer!.observe(el))
 })
 
 onUnmounted(() => {
@@ -80,6 +92,9 @@ const variants: Record<string, VariantType | ((custom: unknown) => VariantType)>
     />
 
     <template #right>
+      <LocalePicker />
+      <ThemePicker />
+
       <template v-if="loggedIn">
         <UButton
           :label="$t('nav.dashboard')"

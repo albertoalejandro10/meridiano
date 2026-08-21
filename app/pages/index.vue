@@ -1,7 +1,6 @@
 <script setup lang="ts">
 definePageMeta({
-  layout: 'landing',
-  colorMode: 'dark'
+  layout: 'landing'
 })
 
 const { t } = useI18n()
@@ -18,6 +17,16 @@ type NavLink = {
   variant?: 'soft'
   size?: 'xl'
   trailingIcon?: string
+}
+
+// Metric values count up from zero; prefix/suffix carry the non-numeric
+// framing ("<5s", "3+").
+type Metric = {
+  value: number
+  prefix?: string
+  suffix?: string
+  label: string
+  class: string
 }
 
 const page = computed(() => ({
@@ -38,12 +47,12 @@ const page = computed(() => ({
     lines: [
       { segments: [
         { text: '$ ', style: 'prompt' },
-        { text: 'beto add', style: 'cmd' },
+        { text: 'mrd add', style: 'cmd' },
         { text: ' income', style: 'flag' }
       ] },
       { segments: [
         { text: `→ ${t('landing.terminal.amount')} `, style: 'dim' },
-        { text: '1,200.00 EUR', style: 'cmd' }
+        { text: '1,200.00 USD', style: 'cmd' }
       ] },
       { segments: [
         { text: `→ ${t('landing.terminal.account')} `, style: 'dim' },
@@ -65,7 +74,7 @@ const page = computed(() => ({
       ] },
       { segments: [
         { text: `✓ ${t('landing.terminal.netWorth')} `, style: 'success' },
-        { text: '€18,940.12', style: 'metric-good' },
+        { text: '$18,940.12', style: 'metric-good' },
         { text: ` ${t('landing.terminal.acrossAccounts')}`, style: 'dim' }
       ] }
     ]
@@ -79,6 +88,11 @@ const page = computed(() => ({
       'i-simple-icons-wise',
       'i-simple-icons-revolut'
     ]
+  },
+  preview: {
+    headline: t('landing.preview.headline'),
+    title: t('landing.preview.title'),
+    description: t('landing.preview.description')
   },
   features: {
     headline: t('landing.features.headline'),
@@ -117,16 +131,60 @@ const page = computed(() => ({
       }
     ]
   },
+  howItWorks: {
+    headline: t('landing.howItWorks.headline'),
+    title: t('landing.howItWorks.title'),
+    description: t('landing.howItWorks.description'),
+    items: [
+      {
+        icon: 'i-lucide-wallet',
+        title: t('landing.howItWorks.steps.addAccounts.title'),
+        description: t('landing.howItWorks.steps.addAccounts.description')
+      },
+      {
+        icon: 'i-lucide-receipt-text',
+        title: t('landing.howItWorks.steps.logDaily.title'),
+        description: t('landing.howItWorks.steps.logDaily.description')
+      },
+      {
+        icon: 'i-lucide-chart-line',
+        title: t('landing.howItWorks.steps.watchGrow.title'),
+        description: t('landing.howItWorks.steps.watchGrow.description')
+      }
+    ]
+  },
+  goals: {
+    headline: t('landing.goals.headline'),
+    title: t('landing.goals.title'),
+    description: t('landing.goals.description'),
+    highlights: [
+      {
+        icon: 'i-lucide-target',
+        title: t('landing.goals.highlights.target.title'),
+        description: t('landing.goals.highlights.target.description')
+      },
+      {
+        icon: 'i-lucide-link',
+        title: t('landing.goals.highlights.linked.title'),
+        description: t('landing.goals.highlights.linked.description')
+      },
+      {
+        icon: 'i-lucide-gauge',
+        title: t('landing.goals.highlights.pace.title'),
+        description: t('landing.goals.highlights.pace.description')
+      }
+    ]
+  },
   metrics: {
     headline: t('landing.metrics.headline'),
     title: t('landing.metrics.title'),
     description: t('landing.metrics.description'),
     items: [
-      { value: '3+', label: t('landing.metrics.currencies'), class: 'text-primary' },
-      { value: '<5s', label: t('landing.metrics.perEntry'), class: 'text-success' },
-      { value: '1', label: t('landing.metrics.netWorthNumber'), class: 'text-info' },
-      { value: '0', label: t('landing.metrics.spreadsheets'), class: 'text-warning' }
-    ]
+      { value: 3, suffix: '+', label: t('landing.metrics.currencies'), class: 'text-primary' },
+      { value: 5, prefix: '<', suffix: 's', label: t('landing.metrics.perEntry'), class: 'text-success' },
+      { value: 1, label: t('landing.metrics.netWorthNumber'), class: 'text-info' },
+      { value: 0, label: t('landing.metrics.spreadsheets'), class: 'text-warning' }
+    ] satisfies Metric[]
   },
   cta: {
     title: t('landing.cta.title'),
@@ -152,32 +210,6 @@ const heroTitle = computed(() => {
     secondary: secondaryParts.join(' ').trim()
   }
 })
-
-function enterMotion(delay: number = 0) {
-  return {
-    initial: { opacity: 0, y: 16 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6, delay }
-  }
-}
-
-function scrollMotion(delay: number = 0) {
-  return {
-    initial: { opacity: 0, y: 16 },
-    whileInView: { opacity: 1, y: 0 },
-    inViewOptions: { once: true, amount: 1 },
-    transition: { duration: 0.6, delay }
-  }
-}
-
-function staggerMotion(index: number = 0) {
-  return {
-    initial: { opacity: 0 },
-    whileInView: { opacity: 1 },
-    inViewOptions: { once: true, amount: 1 },
-    transition: { duration: 0.6, delay: index * 0.08 }
-  }
-}
 </script>
 
 <template>
@@ -194,6 +226,10 @@ function staggerMotion(index: number = 0) {
       }"
     >
       <template #top>
+        <Motion v-bind="staggerMotion(0)">
+          <LandingHeroShaders class="absolute top-0 inset-x-0 opacity-15 h-full" />
+        </Motion>
+
         <LandingGradientGlow class="top-0 w-2/3 h-1/2" />
       </template>
 
@@ -203,7 +239,7 @@ function staggerMotion(index: number = 0) {
             color="neutral"
             variant="soft"
             :label="page.hero.headline"
-            class="rounded-full px-3 py-1.5 gap-1.5 bg-white/5 backdrop-blur"
+            class="rounded-full px-3 py-1.5 gap-1.5 bg-elevated/50 backdrop-blur"
           >
             <template #leading>
               <UChip
@@ -228,7 +264,7 @@ function staggerMotion(index: number = 0) {
             v-if="heroTitle.secondary"
             class="animate-shimmer bg-size-[200%_auto] bg-clip-text text-transparent"
             :style="{
-              backgroundImage: 'linear-gradient(135deg, var(--ui-primary), color-mix(in oklch, var(--ui-primary) 45%, white), var(--ui-primary))',
+              backgroundImage: 'linear-gradient(135deg, var(--ui-primary), color-mix(in oklch, var(--ui-primary) 45%, var(--ui-text-highlighted)), var(--ui-primary))',
               animationDuration: '10s'
             }"
           >
@@ -284,135 +320,172 @@ function staggerMotion(index: number = 0) {
       </Motion>
     </UPageHero>
 
-    <!-- Features -->
-    <UPageSection
-      id="features"
-      :ui="{
-        root: 'scroll-mt-(--ui-header-height)',
-        container: 'max-w-5xl',
-        headline: 'font-mono font-medium text-xs text-primary uppercase tracking-[0.12em] text-center',
-        title: 'max-w-lg mx-auto',
-        description: 'max-w-md mx-auto text-dimmed'
-      }"
+    <!-- Dashboard preview -->
+    <LandingSection
+      id="preview"
+      :headline="page.preview.headline"
+      :title="page.preview.title"
+      :description="page.preview.description"
     >
-      <template #headline>
-        <Motion
-          as="span"
-          v-bind="scrollMotion()"
-          class="inline-block"
-        >
-          {{ page.features.headline }}
-        </Motion>
-      </template>
+      <LandingDashboardPreview />
+    </LandingSection>
 
-      <template #title>
-        <Motion
-          as="span"
-          v-bind="scrollMotion(0.1)"
-          class="inline-block"
-        >
-          {{ page.features.title }}
-        </Motion>
-      </template>
+    <!-- Features -->
+    <LandingSection
+      id="features"
+      :headline="page.features.headline"
+      :title="page.features.title"
+      :description="page.features.description"
+    >
+      <div class="relative">
+        <LandingGradientGlow class="top-1/2 -translate-y-1/2 w-[110%] h-[140%]" />
 
-      <template #description>
-        <Motion
-          as="span"
-          v-bind="scrollMotion(0.2)"
-          class="inline-block"
-        >
-          {{ page.features.description }}
-        </Motion>
-      </template>
+        <div class="relative rounded-2xl border border-default bg-default overflow-hidden">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px">
+            <Motion
+              v-for="(feature, index) in page.features.items"
+              :key="feature.title"
+              v-bind="staggerMotion(index)"
+              :while-hover="{ y: -4 }"
+              class="h-full"
+            >
+              <UPageCard
+                :icon="feature.icon"
+                :title="feature.title"
+                :description="feature.description"
+                spotlight
+                class="rounded-none h-full duration-300"
+                :ui="{
+                  leading: 'mb-5 flex size-9 justify-center rounded-lg bg-primary/10',
+                  title: 'text-sm tracking-tight',
+                  description: 'text-sm leading-relaxed sm:line-clamp-2 lg:line-clamp-3 text-dimmed'
+                }"
+              />
+            </Motion>
+          </div>
+        </div>
+      </div>
+    </LandingSection>
 
-      <div class="rounded-2xl border border-default bg-default overflow-hidden">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px">
+    <!-- How it works -->
+    <LandingSection
+      id="how-it-works"
+      :headline="page.howItWorks.headline"
+      :title="page.howItWorks.title"
+      :description="page.howItWorks.description"
+    >
+      <div class="relative">
+        <LandingGradientGlow class="top-1/2 -translate-y-1/2 w-[110%] h-[140%]" />
+
+        <div class="relative grid grid-cols-1 sm:grid-cols-3 gap-6">
           <Motion
-            v-for="(feature, index) in page.features.items"
-            :key="feature.title"
+            v-for="(step, index) in page.howItWorks.items"
+            :key="step.title"
             v-bind="staggerMotion(index)"
+            :while-hover="{ y: -4 }"
+            class="h-full"
           >
             <UPageCard
-              :icon="feature.icon"
-              :title="feature.title"
-              :description="feature.description"
-              class="rounded-none duration-300"
-              to="#"
+              :title="step.title"
+              :description="step.description"
+              spotlight
+              class="h-full duration-300"
               :ui="{
-                leading: 'mb-5 flex size-9 justify-center rounded-lg bg-primary/10',
                 title: 'text-sm tracking-tight',
-                description: 'text-sm leading-relaxed sm:line-clamp-2 lg:line-clamp-3 text-dimmed'
+                description: 'text-sm leading-relaxed text-dimmed'
               }"
-            />
+            >
+              <template #leading>
+                <div class="mb-5 flex items-center justify-between w-full">
+                  <span class="flex size-9 items-center justify-center rounded-lg bg-primary/10">
+                    <UIcon :name="step.icon" class="size-5 text-primary" />
+                  </span>
+                  <span class="font-mono text-4xl font-bold leading-none text-muted/40">
+                    {{ String(index + 1).padStart(2, '0') }}
+                  </span>
+                </div>
+              </template>
+            </UPageCard>
           </Motion>
         </div>
       </div>
-    </UPageSection>
+    </LandingSection>
+
+    <!-- Goals -->
+    <LandingSection
+      id="goals"
+      :headline="page.goals.headline"
+      :title="page.goals.title"
+      :description="page.goals.description"
+    >
+      <div class="relative">
+        <LandingGradientGlow class="top-1/2 -translate-y-1/2 w-[110%] h-[140%]" />
+
+        <div class="relative grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+          <div class="flex flex-col gap-8 max-w-md max-lg:mx-auto">
+            <Motion
+              v-for="(highlight, index) in page.goals.highlights"
+              :key="highlight.title"
+              v-bind="staggerMotion(index)"
+            >
+              <UPageFeature
+                :icon="highlight.icon"
+                :title="highlight.title"
+                :description="highlight.description"
+                orientation="horizontal"
+                :ui="{
+                  root: 'gap-4',
+                  leading: 'flex size-9 items-center justify-center rounded-lg bg-primary/10 p-0',
+                  leadingIcon: 'size-5',
+                  title: 'text-sm tracking-tight',
+                  description: 'text-sm leading-relaxed text-dimmed'
+                }"
+              />
+            </Motion>
+          </div>
+
+          <LandingGoalsPreview />
+        </div>
+      </div>
+    </LandingSection>
 
     <!-- Metrics -->
-    <UPageSection
+    <LandingSection
       id="metrics"
-      :ui="{
-        root: 'scroll-mt-(--ui-header-height)',
-        container: 'max-w-5xl',
-        headline: 'font-mono font-medium text-xs text-primary uppercase tracking-[0.12em] text-center',
-        title: 'max-w-lg mx-auto',
-        description: 'max-w-md mx-auto text-dimmed'
-      }"
+      :headline="page.metrics.headline"
+      :title="page.metrics.title"
+      :description="page.metrics.description"
     >
-      <template #headline>
-        <Motion
-          as="span"
-          v-bind="scrollMotion()"
-          class="inline-block"
-        >
-          {{ page.metrics.headline }}
-        </Motion>
-      </template>
+      <div class="relative">
+        <LandingGradientGlow class="top-1/2 -translate-y-1/2 w-[110%] h-[140%]" />
 
-      <template #title>
-        <Motion
-          as="span"
-          v-bind="scrollMotion(0.1)"
-          class="inline-block"
-        >
-          {{ page.metrics.title }}
-        </Motion>
-      </template>
-
-      <template #description>
-        <Motion
-          as="span"
-          v-bind="scrollMotion(0.2)"
-          class="inline-block"
-        >
-          {{ page.metrics.description }}
-        </Motion>
-      </template>
-
-      <div class="rounded-2xl border border-default bg-default overflow-hidden">
-        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-px">
-          <Motion
-            v-for="(metric, index) in page.metrics.items"
-            :key="metric.label"
-            v-bind="staggerMotion(index)"
-          >
-            <UPageCard
-              :title="metric.value"
-              :description="metric.label"
-              class="rounded-none duration-300"
-              to="#"
-              :ui="{
-                root: 'text-center',
-                wrapper: 'items-center',
-                title: ['text-4xl font-bold tracking-tight leading-none', metric.class],
-                description: 'font-mono text-xs uppercase tracking-[0.06em] text-dimmed mt-3'
-              }"
-            />
-          </Motion>
+        <div class="relative rounded-2xl border border-default bg-default overflow-hidden">
+          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-px">
+            <Motion
+              v-for="(metric, index) in page.metrics.items"
+              :key="metric.label"
+              v-bind="staggerMotion(index)"
+              class="h-full"
+            >
+              <UPageCard
+                :description="metric.label"
+                class="rounded-none h-full duration-300"
+                :ui="{
+                  root: 'text-center',
+                  wrapper: 'items-center',
+                  title: ['text-4xl font-bold tracking-tight leading-none tabular-nums', metric.class],
+                  description: 'font-mono text-xs uppercase tracking-[0.06em] text-dimmed mt-3'
+                }"
+              >
+                <template #title>
+                  {{ metric.prefix }}<LandingCountUp :value="metric.value" />{{ metric.suffix }}
+                </template>
+              </UPageCard>
+            </Motion>
+          </div>
         </div>
       </div>
-    </UPageSection>
+    </LandingSection>
 
     <!-- CTA -->
     <UPageCTA
