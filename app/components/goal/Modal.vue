@@ -53,8 +53,7 @@ const assetItems = computed<ListboxItem[]>(() =>
   })),
 )
 
-watch(open, (isOpen) => {
-  if (!isOpen) return
+const { saving, submit } = useModalForm(open, () => {
   state.name = goal.value?.name ?? ''
   state.targetAmount = Number(goal.value?.targetAmount ?? 0)
   state.currency = (goal.value?.currency as GoalInput['currency']) ?? 'USD'
@@ -73,28 +72,15 @@ watch(() => state.currency, (cur) => {
   state.accountIds = state.accountIds.filter(id => allowed.has(id))
 })
 
-const saving = ref(false)
-
-async function onSubmit() {
-  saving.value = true
-  try {
-    const input = {
-      ...state,
-      accountIds: [...state.accountIds],
-      startDate: new Date(state.startDate),
-      targetDate: state.targetDate ? new Date(state.targetDate) : null,
-    }
-    if (goal.value) await updateGoal(goal.value.id, input)
-    else await createGoal(input)
-    open.value = false
+const onSubmit = () => submit(() => {
+  const input = {
+    ...state,
+    accountIds: [...state.accountIds],
+    startDate: new Date(state.startDate),
+    targetDate: state.targetDate ? new Date(state.targetDate) : null,
   }
-  catch {
-    // toast handled in the store; keep the modal open for another attempt
-  }
-  finally {
-    saving.value = false
-  }
-}
+  return goal.value ? updateGoal(goal.value.id, input) : createGoal(input)
+})
 </script>
 
 <template>
@@ -174,10 +160,7 @@ async function onSubmit() {
           </p>
         </UFormField>
 
-        <div class="flex justify-end gap-2 pt-2">
-          <UButton :label="$t('common.cancel')" color="neutral" variant="ghost" @click="open = false" />
-          <UButton type="submit" :label="goal ? $t('common.save') : $t('common.create')" :loading="saving" />
-        </div>
+        <ModalActions :is-edit="!!goal" :saving="saving" @cancel="open = false" />
       </UForm>
     </template>
   </UModal>

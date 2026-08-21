@@ -21,11 +21,17 @@ const summary = computed(() => {
   }
   return [...map].map(([currency, v]) => ({ currency, ...v, pct: percentOf(v.saved, v.target) }))
 })
+
+const breadcrumbItems = useBreadcrumbs([
+  { labelKey: 'goals.title', icon: 'i-lucide-target', to: '/app/goals' },
+])
 </script>
 
 <template>
   <UDashboardPanel id="goals">
     <template #body>
+      <UBreadcrumb :items="breadcrumbItems" class="mb-4" />
+
       <div class="mb-6 flex items-start justify-between gap-4">
         <div>
           <h1 class="text-xl font-semibold">

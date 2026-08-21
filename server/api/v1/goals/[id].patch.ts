@@ -3,7 +3,7 @@ import { and, eq } from 'drizzle-orm'
 import { goalUpdateSchema } from '~~/shared/schemas'
 
 export default defineEventHandler(async (event) => {
-  const userId = event.context.userId as string
+  const userId = event.context.userId
   const id = getRouterParam(event, 'id')!
   const body = await readValidatedBody(event, goalUpdateSchema.parse)
 
@@ -14,9 +14,7 @@ export default defineEventHandler(async (event) => {
     ...(startDate !== undefined && { startDate: toDateStr(startDate) }),
     ...(targetDate !== undefined && { targetDate: targetDate === null ? null : toDateStr(targetDate) }),
   }
-  if (Object.keys(data).length === 0 && accountIds === undefined) {
-    throw createError({ statusCode: 400, statusMessage: 'Nothing to update' })
-  }
+  assertNotEmpty(data, accountIds)
 
   const goal = await db.transaction(async (tx) => {
     let current: typeof schema.goals.$inferSelect | undefined

@@ -20,8 +20,8 @@ export const useGoalsStore = defineStore('goals', () => {
     default: () => [],
   })
 
-  const toast = useToast()
   const { confirm } = useConfirm()
+  const { run } = useMutations()
   // Stores can't use useI18n() (no component instance) — $i18n is the safe
   // accessor. Translate inside action bodies (event time), never at setup,
   // so a locale switch never leaves stale-language toasts.
@@ -30,64 +30,41 @@ export const useGoalsStore = defineStore('goals', () => {
   // Create/update rethrow so the calling modal can stay open on failure.
   // Goals are leaf data (nothing derives from them), so creates only refresh
   // the list; updates also refresh the goal's detail key when it's loaded.
-  async function createGoal(input: GoalInput) {
-    try {
-      await $fetch('/api/v1/goals', { method: 'POST', body: input })
-      await refresh()
-      toast.add({ title: $i18n.t('goals.toasts.created'), color: 'success' })
-    }
-    catch (e: unknown) {
-      const err = e as { data?: { statusMessage?: string } }
-      toast.add({ title: $i18n.t('common.toasts.createFailed'), description: err.data?.statusMessage, color: 'error' })
-      throw e
-    }
-  }
+  const createGoal = (input: GoalInput) => run({
+    action: () => $fetch('/api/v1/goals', { method: 'POST', body: input }),
+    refresh,
+    success: 'goals.toasts.created',
+    failure: 'create',
+    rethrow: true,
+  })
 
-  async function updateGoal(id: string, input: Partial<GoalInput>) {
-    try {
-      await $fetch(`/api/v1/goals/${id}`, { method: 'PATCH', body: input })
-      // The detail key is a no-op when that page isn't loaded.
-      await refreshNuxtData(['goals', `goal-${id}`])
-      toast.add({ title: $i18n.t('goals.toasts.updated'), color: 'success' })
-    }
-    catch (e: unknown) {
-      const err = e as { data?: { statusMessage?: string } }
-      toast.add({ title: $i18n.t('common.toasts.updateFailed'), description: err.data?.statusMessage, color: 'error' })
-      throw e
-    }
-  }
+  const updateGoal = (id: string, input: Partial<GoalInput>) => run({
+    action: () => $fetch(`/api/v1/goals/${id}`, { method: 'PATCH', body: input }),
+    // The detail key is a no-op when that page isn't loaded.
+    refresh: ['goals', `goal-${id}`],
+    success: 'goals.toasts.updated',
+    failure: 'update',
+    rethrow: true,
+  })
 
   // No rethrow: the boolean tells callers whether to navigate away afterwards.
   async function deleteGoal(id: string): Promise<boolean> {
-    try {
-      await $fetch(`/api/v1/goals/${id}`, { method: 'DELETE' })
-      await refresh()
-      // Never refetch a deleted goal — drop its cached detail payload so
-      // back-navigation to its URL doesn't serve the corpse.
-      clearNuxtData(`goal-${id}`)
-      toast.add({ title: $i18n.t('goals.toasts.deleted'), color: 'success' })
-      return true
-    }
-    catch (e: unknown) {
-      const err = e as { data?: { statusMessage?: string } }
-      toast.add({ title: $i18n.t('common.toasts.deleteFailed'), description: err.data?.statusMessage, color: 'error' })
-      return false
-    }
+    const result = await run({
+      action: () => $fetch(`/api/v1/goals/${id}`, { method: 'DELETE' }),
+      refresh,
+      success: 'goals.toasts.deleted',
+      failure: 'delete',
+    })
+    if (result === undefined) return false
+
+    // Never refetch a deleted goal — drop its cached detail payload so
+    // back-navigation to its URL doesn't serve the corpse.
+    clearNuxtData(`goal-${id}`)
+    return true
   }
 
   // --- Goal modal (create/edit) ---
-  const modalOpen = ref(false)
-  const editing = ref<GoalModalGoal | undefined>()
-
-  function openCreate() {
-    editing.value = undefined
-    modalOpen.value = true
-  }
-
-  function openEdit(goal: GoalModalGoal) {
-    editing.value = goal
-    modalOpen.value = true
-  }
+  const { modalOpen, editing, openCreate, openEdit } = useEditorModal<GoalModalGoal>()
 
   async function confirmDelete(goal: { id: string, name: string }): Promise<boolean> {
     const confirmed = await confirm({

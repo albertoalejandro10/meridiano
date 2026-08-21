@@ -3,6 +3,7 @@ import { transactionSchema, type TransactionInput } from '~~/shared/schemas'
 
 const { t } = useI18n()
 const { formatMoney } = useLocaleFormat()
+const { categoryLabel, sortCategories } = useCategoryLabel()
 
 const transactionsStore = useTransactionsStore()
 // `editing` doubles as the mode switch: set → edit that transaction, unset → create.
@@ -11,22 +12,24 @@ const { createTransaction, updateTransaction } = transactionsStore
 
 const { accounts } = storeToRefs(useAccountsStore())
 const { data: categories } = useCategories()
+const { data: feeDefaults } = useFeeDefaults()
 
 const state = reactive({
   type: 'EXPENSE' as TransactionInput['type'],
   amount: 0,
-  fee: 0,
+  internalFee: 0,
+  externalFee: 0,
   accountId: '',
   categoryId: null as string | null,
   date: toISODate(new Date()),
   description: '',
 })
 
-watch(open, (isOpen) => {
-  if (!isOpen) return
+const { saving, submit } = useModalForm(open, () => {
   state.type = transaction.value?.type ?? 'EXPENSE'
   state.amount = Number(transaction.value?.amount ?? 0) || 0
-  state.fee = Number(transaction.value?.fee ?? 0) || 0
+  state.internalFee = Number(transaction.value?.internalFee ?? 0) || 0
+  state.externalFee = Number(transaction.value?.externalFee ?? 0) || 0
   state.accountId = transaction.value?.accountId ?? accounts.value.find(a => canTransact(a.type))?.id ?? ''
   state.categoryId = transaction.value?.categoryId ?? null
   state.date = transaction.value?.date ?? toISODate(new Date())
@@ -52,36 +55,39 @@ const accountCurrency = computed(() => accounts.value.find(a => a.id === state.a
 
 const categoryItems = computed(() => [
   { label: t('transactions.modal.noCategory'), value: null },
-  ...(categories.value ?? [])
-    .filter(c => !c.type || c.type === state.type)
-    .map(c => ({ label: c.name, value: c.id, icon: c.icon ?? undefined })),
+  ...sortCategories((categories.value ?? []).filter(c => !c.type || c.type === state.type))
+    .map(c => ({ label: categoryLabel(c), value: c.id, icon: c.icon ?? undefined })),
 ])
 
-const saving = ref(false)
+const totalFees = computed(() => (Number(state.internalFee) || 0) + (Number(state.externalFee) || 0))
 
-async function onSubmit() {
-  saving.value = true
-  try {
-    const payload = {
-      ...state,
-      amount: Number(state.amount),
-      // Fee rows can't carry a fee of their own — omit the field for them
-      // (undefined keys are dropped from the JSON body).
-      fee: transaction.value?.feeOfId ? undefined : Number(state.fee) || null,
-      date: new Date(state.date),
-      description: state.description || null,
-    }
-    if (transaction.value) await updateTransaction(transaction.value.id, payload)
-    else await createTransaction(payload)
-    open.value = false
+// A plain transaction's fees both land on its own account, so both hints key
+// off that one account. Offered rather than filled in — a silently wrong fee is
+// worse than a blank one.
+const internalHint = computed(() => {
+  const last = feeDefaults.value?.[state.accountId]?.internal
+  return last && Number(state.internalFee) !== last ? last : null
+})
+const externalHint = computed(() => {
+  const last = feeDefaults.value?.[state.accountId]?.external
+  return last && Number(state.externalFee) !== last ? last : null
+})
+
+const onSubmit = () => submit(() => {
+  const payload = {
+    ...state,
+    amount: Number(state.amount),
+    // Fee rows can't carry fees of their own — omit the fields for them
+    // (undefined keys are dropped from the JSON body).
+    internalFee: transaction.value?.feeOfId ? undefined : Number(state.internalFee) || null,
+    externalFee: transaction.value?.feeOfId ? undefined : Number(state.externalFee) || null,
+    date: new Date(state.date),
+    description: state.description || null,
   }
-  catch {
-    // toast handled in the store; keep the modal open for another attempt
-  }
-  finally {
-    saving.value = false
-  }
-}
+  return transaction.value
+    ? updateTransaction(transaction.value.id, payload)
+    : createTransaction(payload)
+})
 </script>
 
 <template>
@@ -114,36 +120,61 @@ async function onSubmit() {
         </UFormField>
 
         <UFormField :label="$t('transactions.modal.account')" name="accountId" required>
-          <USelect v-model="state.accountId" :items="accountItems" value-key="value" class="w-full" :placeholder="$t('transactions.modal.selectAccount')" />
+          <USelectMenu v-model="state.accountId" :items="accountItems" value-key="value" class="w-full" :placeholder="$t('transactions.modal.selectAccount')" />
         </UFormField>
 
         <div class="grid grid-cols-2 gap-4">
           <UFormField :label="$t('transactions.modal.category')" name="categoryId">
-            <USelect v-model="state.categoryId" :items="categoryItems" value-key="value" class="w-full" />
+            <USelectMenu v-model="state.categoryId" :items="categoryItems" value-key="value" class="w-full" :placeholder="$t('transactions.modal.noCategory')" />
           </UFormField>
           <UFormField :label="$t('common.date')" name="date">
             <UInput v-model="state.date" type="date" class="w-full" />
           </UFormField>
         </div>
 
-        <UFormField v-if="!transaction?.feeOfId" :label="$t('common.fee')" name="fee" :hint="$t('common.optional')">
-          <FeeInput v-model="state.fee" :base-amount="state.amount" :currency="accountCurrency" />
-        </UFormField>
+        <div v-if="!transaction?.feeOfId" class="grid grid-cols-2 gap-4">
+          <UFormField :label="$t('common.internalFee')" name="internalFee" :hint="$t('common.optional')">
+            <FeeInput v-model="state.internalFee" :base-amount="state.amount" :currency="accountCurrency" />
+            <UButton
+              v-if="internalHint && accountCurrency"
+              color="neutral"
+              variant="link"
+              size="xs"
+              class="mt-1 p-0"
+              :label="$t('common.lastFee', { amount: formatMoney(internalHint, accountCurrency) })"
+              @click="state.internalFee = internalHint"
+            />
+          </UFormField>
+          <UFormField :label="$t('common.externalFee')" name="externalFee" :hint="$t('common.optional')">
+            <FeeInput v-model="state.externalFee" :base-amount="state.amount" :currency="accountCurrency" />
+            <UButton
+              v-if="externalHint && accountCurrency"
+              color="neutral"
+              variant="link"
+              size="xs"
+              class="mt-1 p-0"
+              :label="$t('common.lastFee', { amount: formatMoney(externalHint, accountCurrency) })"
+              @click="state.externalFee = externalHint"
+            />
+          </UFormField>
+        </div>
 
         <UFormField :label="$t('common.description')" name="description">
           <UInput v-model="state.description" :placeholder="$t('common.optionalNote')" class="w-full" />
         </UFormField>
 
-        <p v-if="!transaction?.feeOfId && state.fee > 0 && accountCurrency" class="text-xs text-muted">
+        <p v-if="!transaction?.feeOfId && totalFees > 0 && accountCurrency" class="text-xs text-muted">
           {{ state.type === 'INCOME'
-            ? $t('transactions.modal.netAfterFee', { amount: formatMoney(state.amount - state.fee, accountCurrency) })
-            : $t('transactions.modal.totalWithFee', { amount: formatMoney(state.amount + state.fee, accountCurrency) }) }}
+            ? $t('transactions.modal.netAfterFee', { amount: formatMoney(state.amount - totalFees, accountCurrency) })
+            : $t('transactions.modal.totalWithFee', { amount: formatMoney(state.amount + totalFees, accountCurrency) }) }}
         </p>
 
-        <div class="flex justify-end gap-2 pt-2">
-          <UButton :label="$t('common.cancel')" color="neutral" variant="ghost" @click="open = false" />
-          <UButton type="submit" :label="transaction ? $t('common.save') : $t('common.add')" :loading="saving" />
-        </div>
+        <!-- "Add" rather than the generic "Create" — this is the app's most-used form. -->
+        <ModalActions
+          :submit-label="transaction ? $t('common.save') : $t('common.add')"
+          :saving="saving"
+          @cancel="open = false"
+        />
       </UForm>
     </template>
   </UModal>

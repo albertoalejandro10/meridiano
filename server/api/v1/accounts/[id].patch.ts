@@ -3,7 +3,7 @@ import { and, eq } from 'drizzle-orm'
 import { accountUpdateSchema } from '~~/shared/schemas'
 
 export default defineEventHandler(async (event) => {
-  const userId = event.context.userId as string
+  const userId = event.context.userId
   const id = getRouterParam(event, 'id')!
   const body = await readValidatedBody(event, accountUpdateSchema.parse)
 
@@ -12,9 +12,7 @@ export default defineEventHandler(async (event) => {
     ...rest,
     ...(initialBalance !== undefined && { initialBalance: toAmount(initialBalance) }),
   }
-  if (Object.keys(data).length === 0) {
-    throw createError({ statusCode: 400, statusMessage: 'Nothing to update' })
-  }
+  assertNotEmpty(data)
 
   const [account] = await db
     .update(schema.accounts)

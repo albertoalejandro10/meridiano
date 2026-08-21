@@ -10,7 +10,8 @@ const { sellAsset } = accountsStore
 const state = reactive({
   toAccountId: '',
   amount: 0,
-  fee: 0,
+  internalFee: 0,
+  externalFee: 0,
   date: toISODate(new Date()),
   description: '',
 })
@@ -22,36 +23,30 @@ const cashItems = computed(() =>
     .map(a => ({ label: `${a.name} (${a.currency})`, value: a.id })),
 )
 
-watch(open, (isOpen) => {
-  if (!isOpen) return
+const { saving, submit } = useModalForm(open, () => {
   state.toAccountId = cashItems.value[0]?.value ?? ''
   state.amount = asset.value?.balance ?? 0
-  state.fee = 0
+  state.internalFee = 0
+  state.externalFee = 0
   state.date = toISODate(new Date())
   state.description = ''
 })
 
-const saving = ref(false)
+const internalFee = computed(() => Number(state.internalFee) || 0)
+const externalFee = computed(() => Number(state.externalFee) || 0)
 
 async function onSubmit() {
-  if (!asset.value) return
-  saving.value = true
-  try {
-    await sellAsset(asset.value.id, {
-      toAccountId: state.toAccountId,
-      amount: Number(state.amount),
-      fee: Number(state.fee) || null,
-      date: new Date(state.date),
-      description: state.description || null,
-    })
-    open.value = false
-  }
-  catch {
-    // toast handled in the store
-  }
-  finally {
-    saving.value = false
-  }
+  const selling = asset.value
+  if (!selling) return
+
+  await submit(() => sellAsset(selling.id, {
+    toAccountId: state.toAccountId,
+    amount: Number(state.amount),
+    internalFee: Number(state.internalFee) || null,
+    externalFee: Number(state.externalFee) || null,
+    date: new Date(state.date),
+    description: state.description || null,
+  }))
 }
 </script>
 
@@ -64,7 +59,7 @@ async function onSubmit() {
         </p>
 
         <UFormField :label="$t('accounts.sell.depositInto')" name="toAccountId" required>
-          <USelect v-model="state.toAccountId" :items="cashItems" value-key="value" class="w-full" :placeholder="$t('accounts.sell.cashAccount')" />
+          <USelectMenu v-model="state.toAccountId" :items="cashItems" value-key="value" class="w-full" :placeholder="$t('accounts.sell.cashAccount')" />
         </UFormField>
 
         <div class="grid grid-cols-2 gap-4">
@@ -76,28 +71,38 @@ async function onSubmit() {
           </UFormField>
         </div>
 
-        <UFormField :label="$t('common.fee')" name="fee" :hint="$t('common.optional')">
-          <FeeInput v-model="state.fee" :base-amount="state.amount" :currency="asset?.currency" />
-        </UFormField>
+        <div class="grid grid-cols-2 gap-4">
+          <UFormField :label="$t('common.internalFee')" name="internalFee" :hint="$t('common.optional')">
+            <FeeInput v-model="state.internalFee" :base-amount="state.amount" :currency="asset?.currency" />
+          </UFormField>
+          <UFormField :label="$t('common.externalFee')" name="externalFee" :hint="$t('common.optional')">
+            <FeeInput v-model="state.externalFee" :base-amount="state.amount" :currency="asset?.currency" />
+          </UFormField>
+        </div>
 
         <UFormField :label="$t('accounts.sell.note')" name="description">
           <UInput v-model="state.description" :placeholder="$t('common.optionalNote')" class="w-full" />
         </UFormField>
 
-        <p v-if="asset && state.fee > 0 && state.amount > state.fee" class="text-xs text-muted">
+        <p v-if="asset && internalFee > 0" class="text-xs text-muted">
+          {{ $t('accounts.sell.internalFeeNote', { fee: formatMoney(internalFee, asset.currency) }) }}
+        </p>
+        <p v-if="asset && externalFee > 0 && state.amount > externalFee" class="text-xs text-muted">
           {{ $t('accounts.sell.netAfterFee', {
-            net: formatMoney(state.amount - state.fee, asset.currency),
-            fee: formatMoney(state.fee, asset.currency),
+            net: formatMoney(state.amount - externalFee, asset.currency),
+            fee: formatMoney(externalFee, asset.currency),
           }) }}
         </p>
         <p v-if="!cashItems.length" class="text-xs text-muted">
           {{ $t('accounts.sell.noCash', { currency: asset?.currency }) }}
         </p>
 
-        <div class="flex justify-end gap-2 pt-2">
-          <UButton :label="$t('common.cancel')" color="neutral" variant="ghost" @click="open = false" />
-          <UButton type="submit" :label="$t('accounts.sell.submit')" :loading="saving" :disabled="!cashItems.length" />
-        </div>
+        <ModalActions
+          :submit-label="$t('accounts.sell.submit')"
+          :saving="saving"
+          :disabled="!cashItems.length"
+          @cancel="open = false"
+        />
       </UForm>
     </template>
   </UModal>

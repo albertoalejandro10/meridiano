@@ -9,7 +9,7 @@ const SELLABLE_TYPES = ['VEHICLE', 'OTHER_ASSET']
 // stay out of goal savings) and the asset is archived. The realized gain/loss
 // is reflected purely as the net-worth change (proceeds - carrying value).
 export default defineEventHandler(async (event) => {
-  const userId = event.context.userId as string
+  const userId = event.context.userId
   const assetId = getRouterParam(event, 'id')!
   const body = await readValidatedBody(event, sellAssetSchema.parse)
 
@@ -34,28 +34,46 @@ export default defineEventHandler(async (event) => {
   }
 
   const transferId = crypto.randomUUID()
+  const expenseId = crypto.randomUUID()
   const incomeId = crypto.randomUUID()
   const date = toDateStr(body.date)
   const amount = toAmount(body.amount)
   const description = body.description ?? `Sold ${asset.name}`
 
   const rows: (typeof schema.transactions.$inferInsert)[] = [
-    { userId, accountId: asset.id, transferId, type: 'EXPENSE', amount, currency: asset.currency, date, description },
+    { id: expenseId, userId, accountId: asset.id, transferId, type: 'EXPENSE', amount, currency: asset.currency, date, description },
     { id: incomeId, userId, accountId: destination.id, transferId, type: 'INCOME', amount, currency: destination.currency, date, description },
   ]
-  // Sale commission, deducted from the proceeds: an EXPENSE on the destination
-  // linked to the INCOME leg (same model as transfer fees).
-  if (body.fee) {
+  // Same fee model as transfers: the internal fee (selling platform's
+  // commission) is charged to the asset side on top of the sale price; the
+  // external fee is deducted from the proceeds on the destination.
+  const feesCategoryId = (body.internalFee || body.externalFee) ? await ensureFeesCategory(userId) : null
+  if (body.internalFee) {
+    rows.push({
+      userId,
+      accountId: asset.id,
+      categoryId: feesCategoryId,
+      type: 'EXPENSE',
+      amount: toAmount(body.internalFee),
+      currency: asset.currency,
+      date,
+      description: 'Internal sale fee',
+      feeOfId: expenseId,
+      feeKind: 'INTERNAL',
+    })
+  }
+  if (body.externalFee) {
     rows.push({
       userId,
       accountId: destination.id,
-      categoryId: await ensureFeesCategory(userId),
+      categoryId: feesCategoryId,
       type: 'EXPENSE',
-      amount: toAmount(body.fee),
+      amount: toAmount(body.externalFee),
       currency: destination.currency,
       date,
-      description: 'Sale fee',
+      description: 'External sale fee',
       feeOfId: incomeId,
+      feeKind: 'EXTERNAL',
     })
   }
 

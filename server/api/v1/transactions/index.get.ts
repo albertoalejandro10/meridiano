@@ -1,14 +1,16 @@
 import { db, schema } from '@nuxthub/db'
-import { and, eq, gte, lt, lte, or } from 'drizzle-orm'
+import { and, eq, gte, isNull, lt, lte, or } from 'drizzle-orm'
 import { transactionQuerySchema } from '~~/shared/schemas'
 
 export default defineEventHandler(async (event) => {
-  const userId = event.context.userId as string
+  const userId = event.context.userId
   const q = await getValidatedQuery(event, transactionQuerySchema.parse)
 
   const t = schema.transactions
   const conditions = [eq(t.userId, userId)]
   if (q.accountId) conditions.push(eq(t.accountId, q.accountId))
+  if (q.categoryId === 'none') conditions.push(isNull(t.categoryId))
+  else if (q.categoryId) conditions.push(eq(t.categoryId, q.categoryId))
   if (q.type) conditions.push(eq(t.type, q.type))
   if (q.from) conditions.push(gte(t.date, toDateStr(q.from)))
   if (q.to) conditions.push(lte(t.date, toDateStr(q.to)))
@@ -43,32 +45,41 @@ export default defineEventHandler(async (event) => {
   const hasMore = items.length > q.limit
   if (hasMore) items.pop()
 
-  // For transfer rows, attach the counterpart account's name (the other side of the pair).
+  // For transfer rows, attach the counterpart leg's account name plus its
+  // amount and currency (they differ on cross-currency transfers).
   const transferIds = [...new Set(items.filter(i => i.transferId).map(i => i.transferId!))]
   const siblings = transferIds.length
     ? await db.query.transactions.findMany({
         where: (tx, { and, eq, inArray }) => and(eq(tx.userId, userId), inArray(tx.transferId, transferIds)),
-        columns: { transferId: true, accountId: true },
+        columns: { transferId: true, accountId: true, amount: true, currency: true },
         with: { account: { columns: { name: true } } },
       })
     : []
 
-  // Attach each row's linked fee amount (fee rows point at their parent via
-  // feeOfId), so the edit modal can prefill it. Lookup is by id, so it works
-  // even when the fee row lands on another page.
+  // Attach each row's linked fee amounts (fee rows point at their parent via
+  // feeOfId), so the edit modal can prefill them. Lookup is by id, so it works
+  // even when the fee rows land on another page.
   const itemIds = items.map(i => i.id)
   const feeRows = itemIds.length
     ? await db.query.transactions.findMany({
         where: (tx, { and, eq, inArray }) => and(eq(tx.userId, userId), inArray(tx.feeOfId, itemIds)),
-        columns: { feeOfId: true, amount: true },
+        columns: { feeOfId: true, feeKind: true, amount: true },
       })
     : []
 
   const enriched = items.map((item) => {
-    const fee = feeRows.find(f => f.feeOfId === item.id)?.amount ?? null
-    if (!item.transferId) return { ...item, transferAccount: null, fee }
+    const internalFee = feeRows.find(f => f.feeOfId === item.id && f.feeKind === 'INTERNAL')?.amount ?? null
+    const externalFee = feeRows.find(f => f.feeOfId === item.id && f.feeKind === 'EXTERNAL')?.amount ?? null
+    if (!item.transferId) return { ...item, transferAccount: null, transferAmount: null, transferCurrency: null, internalFee, externalFee }
     const other = siblings.find(s => s.transferId === item.transferId && s.accountId !== item.accountId)
-    return { ...item, transferAccount: other?.account?.name ?? null, fee }
+    return {
+      ...item,
+      transferAccount: other?.account?.name ?? null,
+      transferAmount: other?.amount ?? null,
+      transferCurrency: other?.currency ?? null,
+      internalFee,
+      externalFee,
+    }
   })
 
   return { items: enriched, nextCursor: hasMore ? enriched[enriched.length - 1]!.id : null }
